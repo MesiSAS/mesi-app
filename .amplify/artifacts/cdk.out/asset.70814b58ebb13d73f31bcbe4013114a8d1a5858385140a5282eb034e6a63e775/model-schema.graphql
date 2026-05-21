@@ -1,0 +1,15 @@
+type Archivo @model @auth(rules: [{allow: private}])
+{
+  empresa: String
+  modulo: String
+  submodulo: String
+  nombre: String
+  url: String
+  s3Key: String
+  tamano: Int
+  tipo: String
+  oculto: Boolean
+  fecha: AWSDateTime
+  anio: String
+  mes: String
+}

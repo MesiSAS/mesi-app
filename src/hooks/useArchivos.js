@@ -1,116 +1,166 @@
-import { archivosDB } from '../data/archivosDB';
+import { uploadData, getUrl, remove } from 'aws-amplify/storage';
+import { generateClient } from 'aws-amplify/data';
+
+const getClient = () => generateClient();
 
 export const useArchivos = () => {
 
-  const saveArchivo = async (empresa, modulo, año, mes, file) => {
+  // =========================
+  // SUBIR ARCHIVO
+  // =========================
+  const saveArchivo = async (empresa, modulo, anio, mes, file) => {
+    try {
+      const fileKey = `archivos/${empresa}/${modulo}/${anio}/${mes}/${Date.now()}-${file.name}`;
+      
+      console.log('SUBIENDO A:', fileKey);
+      // Subir a S3
+      const uploadResult = await uploadData({
+        path: fileKey,
+        data: file,
+        options: {
+          contentType: file.type,
+        },
+      }).result;
 
-    const archivo = {
-      id: Date.now().toString() + Math.random().toString(36).slice(2),
-      empresa,
-      modulo,
-      año,
-      mes,
+      console.log('UPLOAD RESULT:', uploadResult);
 
-      nombre: file.name,
-      tamaño: file.size,
-      tipo: file.type,
-      fecha: new Date().toISOString(),
+      // Obtener URL
+      const urlResult = await getUrl({
+        path: fileKey,
+      });
 
-      oculto: false,
+      // Guardar metadata en DynamoDB
+      const response = await getClient().models.Archivo.create({
+        empresa,
+        modulo,
+        submodulo: '',
+        nombre: file.name,
+        url: urlResult.url.toString(),
+        s3Key: fileKey,
+        tamano: file.size,
+        tipo: file.type,
+        oculto: false,
+        fecha: new Date().toISOString(),
+        anio,
+        mes,
+      });
 
-      file
-    };
+      return response.data;
 
-    await archivosDB.archivos.add(archivo);
-
-    return archivo;
+    } catch (error) {
+        console.error('ERROR SUBIENDO ARCHIVO COMPLETO:', JSON.stringify(error, null, 2));
+        console.error(error);
+        throw error;
+      }
   };
 
+  // =========================
+  // OBTENER ARCHIVOS
+  // =========================
   const getArchivosFiltrados = async (
     empresa,
     modulo,
-    año,
-    mes,
+    anio = '',
+    mes = '',
     mostrarOcultos = false
   ) => {
+    try {
 
-    let archivos = await archivosDB.archivos
-      .where({
-        empresa,
-        modulo
-      })
-      .toArray();
+      const response = await getClient().models.Archivo.list();
 
-    if (año) {
-      archivos = archivos.filter(a => a.año === año);
+      let archivos = response.data || [];
+
+      archivos = archivos.filter((a) => {
+
+        if (a.empresa !== empresa) return false;
+
+        if (a.modulo !== modulo) return false;
+
+        if (anio && a.anio !== anio) return false;
+
+        if (mes && a.mes !== mes) return false;
+
+        if (!mostrarOcultos && a.oculto) return false;
+
+        return true;
+      });
+      console.log('ARCHIVOS:', archivos);
+      return archivos.sort(
+        (a, b) => new Date(b.fecha) - new Date(a.fecha)
+      );
+
+    } catch (error) {
+      console.error('ERROR OBTENIENDO ARCHIVOS:', error);
+      return [];
     }
+  };
 
-    if (mes) {
-      archivos = archivos.filter(a => a.mes === mes);
+  // =========================
+  // ELIMINAR ARCHIVO
+  // =========================
+  const deleteArchivo = async (
+    empresa,
+    modulo,
+    anio,
+    mes,
+    id,
+    s3Key
+  ) => {
+    try {
+      console.log('S3KEY:', s3Key);
+      // Eliminar de S3
+      await remove({
+        path: s3Key,
+      });
+
+      // Eliminar metadata
+      await getClient().models.Archivo.delete({
+        id,
+      });
+
+    } catch (error) {
+      console.error('ERROR ELIMINANDO ARCHIVO:', error);
     }
+  };
 
-    if (!mostrarOcultos) {
-      archivos = archivos.filter(a => !a.oculto);
+  // =========================
+  // DESCARGAR
+  // =========================
+  const downloadArchivo = async (archivo) => {
+    window.open(archivo.url, '_blank');
+  };
+
+  // =========================
+  // OCULTAR / MOSTRAR
+  // =========================
+  const toggleOculto = async (
+    empresa,
+    modulo,
+    anio,
+    mes,
+    id
+  ) => {
+    try {
+
+      const archivo = await getClient().models.Archivo.get({ id });
+
+      if (!archivo.data) return;
+
+      await getClient().models.Archivo.update({
+        id,
+        oculto: !archivo.data.oculto,
+      });
+
+    } catch (error) {
+      console.error('ERROR TOGGLE OCULTO:', error);
     }
-
-    return archivos.sort((a, b) => {
-      return new Date(b.fecha) - new Date(a.fecha);
-    });
-  };
-
-  const toggleOculto = async (empresa, modulo, año, mes, id) => {
-
-    const archivo = await archivosDB.archivos.get(id);
-
-    if (!archivo) return;
-
-    await archivosDB.archivos.update(id, {
-      oculto: !archivo.oculto
-    });
-  };
-
-  const deleteArchivo = async (empresa, modulo, año, mes, id) => {
-    await archivosDB.archivos.delete(id);
-  };
-
-  const downloadArchivo = (archivo) => {
-
-    const url = URL.createObjectURL(archivo.file);
-
-    const link = document.createElement('a');
-
-    link.href = url;
-    link.download = archivo.nombre;
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
-
-    URL.revokeObjectURL(url);
-  };
-
-  const getAñosDisponibles = async (empresa, modulo) => {
-
-    const archivos = await archivosDB.archivos
-      .where({
-        empresa,
-        modulo
-      })
-      .toArray();
-
-    const años = [...new Set(archivos.map(a => a.año))];
-
-    return años.sort().reverse();
   };
 
   return {
     saveArchivo,
     getArchivosFiltrados,
-    toggleOculto,
     deleteArchivo,
     downloadArchivo,
-    getAñosDisponibles
+    toggleOculto,
   };
 };

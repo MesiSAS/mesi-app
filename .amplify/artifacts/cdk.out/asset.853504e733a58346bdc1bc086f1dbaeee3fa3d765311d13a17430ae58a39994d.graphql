@@ -1,0 +1,291 @@
+type Archivo @aws_iam @aws_cognito_user_pools {
+  empresa: String
+  modulo: String
+  submodulo: String
+  nombre: String
+  url: String
+  s3Key: String
+  tamano: Int
+  tipo: String
+  oculto: Boolean
+  fecha: AWSDateTime
+  anio: String
+  mes: String
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+input AmplifyAIConversationTurnErrorInput {
+  errorType: String!
+  message: String!
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelArchivoConnection @aws_iam @aws_cognito_user_pools {
+  items: [Archivo]!
+  nextToken: String
+}
+
+input ModelArchivoFilterInput {
+  empresa: ModelStringInput
+  modulo: ModelStringInput
+  submodulo: ModelStringInput
+  nombre: ModelStringInput
+  url: ModelStringInput
+  s3Key: ModelStringInput
+  tamano: ModelIntInput
+  tipo: ModelStringInput
+  oculto: ModelBooleanInput
+  fecha: ModelStringInput
+  anio: ModelStringInput
+  mes: ModelStringInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelArchivoFilterInput]
+  or: [ModelArchivoFilterInput]
+  not: ModelArchivoFilterInput
+}
+
+type Query {
+  getArchivo(id: ID!): Archivo @aws_iam @aws_cognito_user_pools
+  listArchivos(filter: ModelArchivoFilterInput, limit: Int, nextToken: String): ModelArchivoConnection @aws_iam @aws_cognito_user_pools
+}
+
+input ModelArchivoConditionInput {
+  empresa: ModelStringInput
+  modulo: ModelStringInput
+  submodulo: ModelStringInput
+  nombre: ModelStringInput
+  url: ModelStringInput
+  s3Key: ModelStringInput
+  tamano: ModelIntInput
+  tipo: ModelStringInput
+  oculto: ModelBooleanInput
+  fecha: ModelStringInput
+  anio: ModelStringInput
+  mes: ModelStringInput
+  and: [ModelArchivoConditionInput]
+  or: [ModelArchivoConditionInput]
+  not: ModelArchivoConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreateArchivoInput {
+  empresa: String
+  modulo: String
+  submodulo: String
+  nombre: String
+  url: String
+  s3Key: String
+  tamano: Int
+  tipo: String
+  oculto: Boolean
+  fecha: AWSDateTime
+  anio: String
+  mes: String
+  id: ID
+}
+
+input UpdateArchivoInput {
+  empresa: String
+  modulo: String
+  submodulo: String
+  nombre: String
+  url: String
+  s3Key: String
+  tamano: Int
+  tipo: String
+  oculto: Boolean
+  fecha: AWSDateTime
+  anio: String
+  mes: String
+  id: ID!
+}
+
+input DeleteArchivoInput {
+  id: ID!
+}
+
+type Mutation {
+  createArchivo(input: CreateArchivoInput!, condition: ModelArchivoConditionInput): Archivo @aws_iam @aws_cognito_user_pools
+  updateArchivo(input: UpdateArchivoInput!, condition: ModelArchivoConditionInput): Archivo @aws_iam @aws_cognito_user_pools
+  deleteArchivo(input: DeleteArchivoInput!, condition: ModelArchivoConditionInput): Archivo @aws_iam @aws_cognito_user_pools
+}
+
+input ModelSubscriptionArchivoFilterInput {
+  empresa: ModelSubscriptionStringInput
+  modulo: ModelSubscriptionStringInput
+  submodulo: ModelSubscriptionStringInput
+  nombre: ModelSubscriptionStringInput
+  url: ModelSubscriptionStringInput
+  s3Key: ModelSubscriptionStringInput
+  tamano: ModelSubscriptionIntInput
+  tipo: ModelSubscriptionStringInput
+  oculto: ModelSubscriptionBooleanInput
+  fecha: ModelSubscriptionStringInput
+  anio: ModelSubscriptionStringInput
+  mes: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionArchivoFilterInput]
+  or: [ModelSubscriptionArchivoFilterInput]
+}
+
+type Subscription {
+  onCreateArchivo(filter: ModelSubscriptionArchivoFilterInput): Archivo @aws_subscribe(mutations: ["createArchivo"]) @aws_iam @aws_cognito_user_pools
+  onUpdateArchivo(filter: ModelSubscriptionArchivoFilterInput): Archivo @aws_subscribe(mutations: ["updateArchivo"]) @aws_iam @aws_cognito_user_pools
+  onDeleteArchivo(filter: ModelSubscriptionArchivoFilterInput): Archivo @aws_subscribe(mutations: ["deleteArchivo"]) @aws_iam @aws_cognito_user_pools
+}

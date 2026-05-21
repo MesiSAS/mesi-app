@@ -15,7 +15,7 @@ const MESES = [
   { value: '09', label: 'Septiembre' }, { value: '10', label: 'Octubre' },
   { value: '11', label: 'Noviembre' }, { value: '12', label: 'Diciembre' },
 ];
-const AÑOS = Array.from({ length: 6 }, (_, i) => String(new Date().getFullYear() - i));
+const anioS = Array.from({ length: 6 }, (_, i) => String(new Date().getFullYear() - i));
 const getMesLabel = (value) => MESES.find(m => m.value === value)?.label || value;
 const formatSize = (bytes) => {
   if (bytes < 1024) return `${bytes} B`;
@@ -26,11 +26,11 @@ const agruparPorFecha = (archivos) => {
   const grupos = {};
 
   archivos.forEach(arch => {
-    const key = `${arch.año}__${arch.mes}`;
+    const key = `${arch.anio}__${arch.mes}`;
 
     if (!grupos[key]) {
       grupos[key] = {
-        año: arch.año,
+        anio: arch.anio,
         mes: arch.mes,
         archivos: []
       };
@@ -40,7 +40,7 @@ const agruparPorFecha = (archivos) => {
   });
 
   return Object.values(grupos).sort((a, b) => {
-    if (b.año !== a.año) return b.año.localeCompare(a.año);
+    if (b.anio !== a.anio) return b.anio.localeCompare(a.anio);
     return b.mes.localeCompare(a.mes);
   });
 };
@@ -77,7 +77,7 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
   const [submoduloActivo, setSubmoduloActivo] = useState(null);
 
   // Upload
-  const [uploadAño, setUploadAño] = useState(String(new Date().getFullYear()));
+  const [uploadanio, setUploadanio] = useState(String(new Date().getFullYear()));
   const [uploadMes, setUploadMes] = useState('');
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState('');
@@ -85,7 +85,7 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
   const fileRef = useRef();
 
   // Filter
-  const [filtroAño, setFiltroAño] = useState('');
+  const [filtroanio, setFiltroanio] = useState('');
   const [filtroMes, setFiltroMes] = useState('');
 
   // La clave de almacenamiento incluye submódulo si aplica
@@ -94,44 +94,39 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
   const [gruposExpandidos, setGruposExpandidos] = useState({});
   const [previewArchivo, setPreviewArchivo] = useState(null);
 
-  const refreshArchivos = async (
-    año = filtroAño,
-    mes = filtroMes
-  ) => {
-
+  const refreshArchivos = async (anio = filtroanio, mes = filtroMes) => {
     const data = await getArchivosFiltrados(
       empresa,
       contexto,
-      año,
+      anio,
       mes,
       isAdmin
     );
 
-    setArchivos(data);
+    setArchivos(data || []);
   };
 
   useEffect(() => {
-  refreshArchivos();
-}, [contexto]);
+    const load = async () => {
+      await refreshArchivos();
+    };
+
+    load();
+  }, [contexto]);
   // Si cambia el submódulo, refresca
   const handleSubmodulo = async (nombre) => {
+    setSubmoduloActivo(nombre);
 
-  setSubmoduloActivo(nombre);
+    const data = await getArchivosFiltrados(
+      empresa,
+      nombre ? `${modulo}__${nombre}` : modulo,
+      '',
+      '',
+      isAdmin
+    );
 
-  const nuevoContexto = nombre
-    ? `${modulo}__${nombre}`
-    : modulo;
-
-  const data = await getArchivosFiltrados(
-    empresa,
-    nuevoContexto,
-    '',
-    '',
-    isAdmin
-  );
-
-  setArchivos(data);
-};
+    setArchivos(data || []);
+  };
 
   const toggleGrupo = (key) => setGruposExpandidos(prev => ({ ...prev, [key]: !prev[key] }));
 
@@ -141,7 +136,7 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
     if (!uploadMes) { setUploadError('Selecciona el mes antes de subir.'); return; }
     setUploading(true); setUploadError('');
     try {
-      for (const file of files) await saveArchivo(empresa, contexto, uploadAño, uploadMes, file);
+      for (const file of files) await saveArchivo(empresa, contexto, uploadanio, uploadMes, file);
       setUploadSuccess(`${files.length} archivo(s) subido(s).`);
       setTimeout(() => setUploadSuccess(''), 4000);
       refreshArchivos();
@@ -150,12 +145,23 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
     fileRef.current.value = '';
   };
 
-  const handleDelete = (año, mes, id) => {
-    if (confirm('¿Eliminar este archivo?')) { deleteArchivo(empresa, contexto, año, mes, id); refreshArchivos(); }
+  const handleDelete = async (arch) => {
+    if (!confirm('¿Eliminar este archivo?')) return;
+
+    await deleteArchivo(
+      empresa,
+      contexto,
+      arch.anio,
+      arch.mes,
+      arch.id,
+      arch.s3Key
+    );
+
+    refreshArchivos();
   };
 
-  const handleToggleOculto = (año, mes, id) => {
-    toggleOculto(empresa, contexto, año, mes, id);
+  const handleToggleOculto = (anio, mes, id) => {
+    toggleOculto(empresa, contexto, anio, mes, id);
     refreshArchivos();
   };
 
@@ -216,10 +222,10 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
             </h3>
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
-                <label className="text-xs text-gray-500 font-medium uppercase block mb-2">Año</label>
-                <select value={uploadAño} onChange={e => setUploadAño(e.target.value)}
+                <label className="text-xs text-gray-500 font-medium uppercase block mb-2">anio</label>
+                <select value={uploadanio} onChange={e => setUploadanio(e.target.value)}
                   className="w-full bg-[#F5F5F7] rounded-xl px-4 py-3 outline-none text-[#1d1d1f] font-medium text-sm">
-                  {AÑOS.map(a => <option key={a} value={a}>{a}</option>)}
+                  {anioS.map(a => <option key={a} value={a}>{a}</option>)}
                 </select>
               </div>
               <div>
@@ -251,11 +257,11 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 items-end">
             <div>
-              <label className="text-xs text-gray-500 font-medium uppercase block mb-2">Año</label>
-              <select value={filtroAño} onChange={e => setFiltroAño(e.target.value)}
+              <label className="text-xs text-gray-500 font-medium uppercase block mb-2">anio</label>
+              <select value={filtroanio} onChange={e => setFiltroanio(e.target.value)}
                 className="w-full bg-[#F5F5F7] rounded-xl px-4 py-3 outline-none text-[#1d1d1f] font-medium text-sm">
                 <option value="">Todos</option>
-                {AÑOS.map(a => <option key={a} value={a}>{a}</option>)}
+                {anioS.map(a => <option key={a} value={a}>{a}</option>)}
               </select>
             </div>
             <div>
@@ -267,11 +273,11 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
               </select>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => refreshArchivos(filtroAño, filtroMes)}
+              <button onClick={() => refreshArchivos(filtroanio, filtroMes)}
                 className="flex-1 bg-[#0A353F] text-white rounded-xl px-4 py-3 font-medium text-sm hover:bg-[#0A353F]/90 transition-colors flex items-center justify-center gap-2">
                 <Filter className="w-4 h-4" /> Filtrar
               </button>
-              <button onClick={() => { setFiltroAño(''); setFiltroMes(''); refreshArchivos('', ''); }}
+              <button onClick={() => { setFiltroanio(''); setFiltroMes(''); refreshArchivos('', ''); }}
                 className="px-4 py-3 rounded-xl border border-gray-200 text-gray-500 text-sm hover:bg-gray-50 transition-colors">
                 Limpiar
               </button>
@@ -294,7 +300,7 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
           ) : (
             <div className="space-y-4">
               {grupos.map((grupo) => {
-                const key = `${grupo.año}__${grupo.mes}`;
+                const key = `${grupo.anio}__${grupo.mes}`;
                 const expandido = gruposExpandidos[key] !== false;
                 return (
                   <div key={key} className="border border-gray-100 rounded-2xl overflow-hidden">
@@ -302,7 +308,7 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
                       className="w-full flex items-center justify-between px-6 py-4 bg-[#F5F5F7] hover:bg-gray-100 transition-colors">
                       <div className="flex items-center gap-3">
                         <Calendar className="w-4 h-4 text-[#8CC63F]" />
-                        <span className="font-bold text-[#0A353F]">{getMesLabel(grupo.mes)} {grupo.año}</span>
+                        <span className="font-bold text-[#0A353F]">{getMesLabel(grupo.mes)} {grupo.anio}</span>
                         <span className="text-xs text-gray-400 bg-white px-2 py-0.5 rounded-full border border-gray-200">
                           {grupo.archivos.length} archivo(s)
                         </span>
@@ -327,7 +333,7 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
                                 )}
                               </div>
                               <p className="text-xs text-gray-400 mt-0.5">
-                                {formatSize(arch.tamaño)} · {new Date(arch.fecha).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                {formatSize(arch.tamanio)} · {new Date(arch.fecha).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })}
                               </p>
                             </div>
                             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -347,12 +353,12 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
                                 <Download className="w-4 h-4" />
                               </button>
                               {isAdmin && (<>
-                                <button onClick={() => handleToggleOculto(arch.año, arch.mes, arch.id)}
+                                <button onClick={() => handleToggleOculto(arch.anio, arch.mes, arch.id)}
                                   className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors ${arch.oculto ? 'text-[#8CC63F] hover:bg-[#8CC63F]/10' : 'text-gray-400 hover:bg-gray-100'}`}
                                   title={arch.oculto ? 'Mostrar al usuario' : 'Ocultar al usuario'}>
                                   {arch.oculto ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                                 </button>
-                                <button onClick={() => handleDelete(arch.año, arch.mes, arch.id)}
+                                <button onClick={() => handleDelete(arch)}
                                   className="w-8 h-8 flex items-center justify-center rounded-lg text-red-400 hover:bg-red-50 transition-colors" title="Eliminar">
                                   <Trash2 className="w-4 h-4" />
                                 </button>
@@ -381,7 +387,7 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
           </h3>
 
           <p className="text-sm text-gray-400 mt-1">
-            {formatSize(previewArchivo.tamaño)}
+            {formatSize(previewArchivo.tamanio)}
           </p>
         </div>
 
@@ -411,18 +417,18 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
         {previewArchivo.tipo?.includes('pdf') ? (
 
   <iframe
-    src={URL.createObjectURL(previewArchivo.file)}
+    src={previewArchivo?.url}
+    className="w-full h-[80vh] rounded-2xl"
     title={previewArchivo.nombre}
-    className="w-full h-full bg-white"
   />
 
 ) : previewArchivo.tipo?.includes('image') ? (
 
           <div className="w-full h-full flex items-center justify-center p-6 overflow-auto">
             <img
-              src={URL.createObjectURL(previewArchivo.file)}
+              src={previewArchivo?.url}
               alt={previewArchivo.nombre}
-              className="max-w-full max-h-full object-contain rounded-2xl shadow-lg"
+              className="max-w-full max-h-[80vh] object-contain"
             />
           </div>
 
