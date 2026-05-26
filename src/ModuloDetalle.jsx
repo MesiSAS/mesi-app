@@ -356,7 +356,7 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
                                 )}
                               </div>
                               <p className="text-xs text-gray-400 mt-0.5">
-                                {formatSize(arch.tamanio)} · {new Date(arch.fecha).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                {formatSize(arch.tamano)} · {new Date(arch.fecha).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })}
                               </p>
                             </div>
                             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -410,7 +410,7 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
           </h3>
 
           <p className="text-sm text-gray-400 mt-1">
-            {formatSize(previewArchivo.tamanio)}
+            {formatSize(previewArchivo.tamano)}
           </p>
         </div>
 
