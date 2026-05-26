@@ -10,6 +10,8 @@ const schema = a.schema({
 
       nombre: a.string(),
 
+      url: a.string(),
+
       s3Key: a.string(),
 
       tamano: a.integer(),

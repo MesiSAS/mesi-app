@@ -31,21 +31,20 @@ export const useArchivos = () => {
 
       // Guardar metadata en DynamoDB
       const response = await getClient().models.Archivo.create({
-        empresa,
-        modulo,
-        submodulo: '',
-        nombre: file.name,
-        url: urlResult.url.toString(),
-        s3Key: fileKey,
-        tamano: file.size,
-        tipo: file.type,
-        oculto: false,
-        fecha: new Date().toISOString(),
-        anio,
-        mes,
-      });
+  empresa,
+  modulo,
+  submodulo: '',
+  nombre: file.name,
+  s3Key: fileKey,
+  tamano: file.size,
+  tipo: file.type,
+  oculto: false,
+  fecha: new Date().toISOString(),
+  anio,
+  mes,
+});
 
-      return response.data;
+console.log('CREATE RESPONSE:', response);
 
     } catch (error) {
         console.error('ERROR SUBIENDO ARCHIVO COMPLETO:', JSON.stringify(error, null, 2));
@@ -57,43 +56,77 @@ export const useArchivos = () => {
   // =========================
   // OBTENER ARCHIVOS
   // =========================
-  const getArchivosFiltrados = async (
-    empresa,
-    modulo,
-    anio = '',
-    mes = '',
-    mostrarOcultos = false
-  ) => {
-    try {
+ const getArchivosFiltrados = async (
+  empresa,
+  modulo,
+  anio = '',
+  mes = '',
+  mostrarOcultos = false
+) => {
+  try {
 
-      const response = await getClient().models.Archivo.list();
+    const response = await getClient().models.Archivo.list();
 
-      let archivos = response.data || [];
+    let archivos = (response.data || []).filter(Boolean);
 
-      archivos = archivos.filter((a) => {
+    archivos = archivos.filter((a) => {
 
-        if (a.empresa !== empresa) return false;
+      if (a.empresa !== empresa) return false;
 
-        if (a.modulo !== modulo) return false;
+      if (a.modulo !== modulo) return false;
 
-        if (anio && a.anio !== anio) return false;
+      if (anio && a.anio !== anio) return false;
 
-        if (mes && a.mes !== mes) return false;
+      if (mes && a.mes !== mes) return false;
 
-        if (!mostrarOcultos && a.oculto) return false;
+      if (!mostrarOcultos && a.oculto) return false;
 
-        return true;
-      });
-      console.log('ARCHIVOS:', archivos);
-      return archivos.sort(
-        (a, b) => new Date(b.fecha) - new Date(a.fecha)
-      );
+      return true;
+    });
 
-    } catch (error) {
-      console.error('ERROR OBTENIENDO ARCHIVOS:', error);
-      return [];
-    }
-  };
+    // GENERAR URLS FIRMADAS
+    const archivosConUrl = await Promise.all(
+
+      archivos.map(async (archivo) => {
+
+        try {
+
+          console.log('GENERANDO URL PARA:', archivo.s3Key);
+
+          const result = await getUrl({
+            path: archivo.s3Key,
+          });
+
+          return {
+            ...archivo,
+            url: result.url.toString(),
+          };
+
+        } catch (err) {
+
+          console.error('ERROR GENERANDO URL:', err);
+
+          return {
+            ...archivo,
+            url: null,
+          };
+        }
+      })
+    );
+
+    console.log('ARCHIVOS FINALES:', archivosConUrl);
+
+    return archivosConUrl.sort(
+      (a, b) => new Date(b.fecha) - new Date(a.fecha)
+    );
+
+  } catch (error) {
+
+    console.error('ERROR OBTENIENDO ARCHIVOS:', error);
+
+    return [];
+  }
+};
 
   // =========================
   // ELIMINAR ARCHIVO

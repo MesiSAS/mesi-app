@@ -75,6 +75,13 @@
               "isRequired": false,
               "attributes": []
             },
+            "url": {
+              "name": "url",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "s3Key": {
               "name": "s3Key",
               "isArray": false,
