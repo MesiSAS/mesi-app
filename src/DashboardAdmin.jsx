@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
-import { getEmpresas, getUsuarios, getModulos, createEmpresa, updateEmpresa, deleteEmpresa, createUsuario, updateUsuario, deleteUsuario, createModulo, updateModulo, deleteModulo } from './data/db';
 import { LogOut, Building2, Users, Layers, ChevronRight, Plus, Pencil, Trash2, X, Check, Eye, EyeOff, FileText } from 'lucide-react';
 import EmpresaPortal from './EmpresaPortal';
-import { getEmpresaModulos, toggleModuloEmpresa, addSubmodulo, deleteSubmodulo } from './data/db';
 import { Folder } from 'lucide-react';
+import { useEmpresas } from './hooks/useEmpresas';
+import { useModulos } from './hooks/useModulos';
+import { useUsuarios } from './hooks/useUsuarios';
+import { useEmpresaModulos } from './hooks/useEmpresaModulos';
+import { useSubmodulos } from './hooks/useSubmodulos';
 
 const ICONOS = ['FileText', 'TrendingUp', 'Users', 'ShoppingBag', 'Cpu', 'BarChart2', 'Globe', 'Settings', 'BookOpen', 'Briefcase', 'Scale'];
 
@@ -13,6 +16,8 @@ function ModuloCard({ mod, openModal, handleDelete }) {
   const Icono = ICONOS[mod.icono] || FileText;
 
   return (
+
+    
     <div className="border border-gray-100 rounded-2xl overflow-hidden">
       
       <div className="flex items-center gap-4 p-4 bg-[#F5F5F7]">
@@ -57,7 +62,6 @@ function ModuloCard({ mod, openModal, handleDelete }) {
 
         </div>
       </div>
-
     </div>
   );
 }
@@ -86,16 +90,62 @@ const SelectField = ({ label, children, ...props }) => (
   </div>
 );
 
+// Hooks
+const {
+  getEmpresas,
+  createEmpresa,
+  updateEmpresa,
+  deleteEmpresa,
+} = useEmpresas();
+
+const {
+  getUsuarios,
+  createUsuario,
+  updateUsuario,
+  deleteUsuario,
+} = useUsuarios();
+
 const DashboardAdmin = () => {
+
+  const {
+    modulos,
+    loadModulos,
+    createModulo,
+    updateModulo,
+    deleteModulo,
+  } = useModulos();
+
+  const {
+    empresaModulos,
+    loadEmpresaModulos,
+    toggleModuloEmpresa,
+  } = useEmpresaModulos();
+
+  useEffect(() => {
+
+  loadEmpresas();
+  loadUsuarios();
+  loadModulos();
+  loadEmpresaModulos();
+  loadSubmodulos();
+
+}, []);
+
+const {
+  submodulos,
+  loadSubmodulos,
+  addSubmodulo,
+  deleteSubmodulo,
+} = useSubmodulos();
+
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [tab, setTab] = useState('empresas');
   const [empresaActiva, setEmpresaActiva] = useState(null);
 
   // Data state
-  const [empresas, setEmpresas] = useState(getEmpresas);
-  const [usuarios, setUsuarios] = useState(getUsuarios);
-  const [modulos, setModulos] = useState(getModulos);
+  const [empresas, setEmpresas] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
 
   // Modal state
   const [modal, setModal] = useState(null); // { type: 'empresa'|'usuario'|'modulo', mode: 'create'|'edit', data: {} }
@@ -105,11 +155,20 @@ const DashboardAdmin = () => {
 
   const handleLogout = () => { logout(); navigate('/'); };
 
-  const refresh = () => {
-    setEmpresas(getEmpresas());
-    setUsuarios(getUsuarios());
-    setModulos(getModulos());
+  //Loads
+  const loadEmpresas = async () => {
+      const data = await getEmpresas();
+
+      setEmpresas(Array.isArray(data) ? data : []);
   };
+
+  const loadUsuarios = async () => {
+    const data = await getUsuarios();
+
+    setUsuarios(Array.isArray(data) ? data : []);
+  };
+
+
 
   const openModal = (type, mode, data = {}) => {
     setForm(data);
@@ -119,46 +178,129 @@ const DashboardAdmin = () => {
 
   const closeModal = () => { setModal(null); setForm({}); setFormError(''); };
 
-  const handleSave = () => {
-    setFormError('');
+  const handleSave = async () => {
 
-    if (modal.type === 'empresa') {
-      if (!form.nombre?.trim()) { setFormError('El nombre es obligatorio.'); return; }
-      if (modal.mode === 'create') createEmpresa({ nombre: form.nombre.trim(), logo: form.logo?.trim() || '' });
-      else updateEmpresa(form.id, { nombre: form.nombre.trim(), logo: form.logo?.trim() || '' });
-    }
+      setFormError('');
 
-    if (modal.type === 'usuario') {
-      if (!form.nombre?.trim() || !form.correo?.trim() || !form.empresa) { setFormError('Nombre, correo y empresa son obligatorios.'); return; }
-      if (modal.mode === 'create' && !form.password?.trim()) { setFormError('La contraseña es obligatoria.'); return; }
-      if (modal.mode === 'create') {
-        createUsuario({ nombre: form.nombre.trim(), correo: form.correo.trim(), empresa: form.empresa, tipo: form.tipo || 'user', password: form.password.trim() });
-      } else {
-        const data = { nombre: form.nombre.trim(), correo: form.correo.trim(), empresa: form.empresa, tipo: form.tipo };
-        if (form.password?.trim()) data.password = form.password.trim();
-        updateUsuario(form.id, data);
+      if (modal.type === 'empresa') {
+
+        if (!form.nombre?.trim()) {
+          setFormError('El nombre es obligatorio.');
+          return;
+        }
+
+        if (modal.mode === 'create') {
+
+          await createEmpresa({
+            nombre: form.nombre.trim(),
+            logo: form.logo?.trim() || '',
+          });
+
+        } else {
+
+          await updateEmpresa(form.id, {
+            nombre: form.nombre.trim(),
+            logo: form.logo?.trim() || '',
+          });
+        }
+
+        await loadEmpresas();
       }
-    }
 
-    if (modal.type === 'modulo') {
-      if (!form.nombre?.trim()) { setFormError('El nombre es obligatorio.'); return; }
-      if (modal.mode === 'create') createModulo({ nombre: form.nombre.trim(), icono: form.icono || 'FileText' });
-      else updateModulo(form.id, { nombre: form.nombre.trim(), icono: form.icono || 'FileText' });
-    }
+      if (modal.type === 'usuario') {
+        if (!form.nombre?.trim() || !form.correo?.trim() || !form.empresa) {
+          setFormError('Nombre, correo y empresa son obligatorios.');
+          return;
+        }
 
-    refresh();
+        if (modal.mode === 'create' && !form.password?.trim()) {
+          setFormError('La contraseña es obligatoria.');
+          return;
+        }
+
+        if (modal.mode === 'create') {
+
+          await createUsuario({
+            nombre: form.nombre.trim(),
+            correo: form.correo.trim(),
+            empresa: form.empresa,
+            tipo: form.tipo || 'user',
+            password: form.password.trim()
+          });
+
+        } else {
+
+          const data = {
+            nombre: form.nombre.trim(),
+            correo: form.correo.trim(),
+            empresa: form.empresa,
+            tipo: form.tipo
+          };
+
+          if (form.password?.trim()) {
+            data.password = form.password.trim();
+          }
+
+          await updateUsuario(form.id, data);
+        }
+
+        await loadUsuarios();
+      }
+
+      if (modal.type === 'modulo') {
+        if (!form.nombre?.trim()) {
+          setFormError('El nombre es obligatorio.');
+          return;
+        }
+
+        if (modal.mode === 'create') {
+
+          await createModulo({
+            nombre: form.nombre.trim(),
+            icono: form.icono || 'FileText'
+          });
+
+        } else {
+
+          await updateModulo(form.id, {
+            nombre: form.nombre.trim(),
+            icono: form.icono || 'FileText'
+          });
+        }
+
+        await loadModulos();
+      }
+
     closeModal();
   };
 
-  const handleDelete = (type, id) => {
-    if (!confirm('¿Eliminar este elemento?')) return;
-    if (type === 'empresa') deleteEmpresa(id);
-    if (type === 'usuario') deleteUsuario(id);
-    if (type === 'modulo') deleteModulo(id);
-    refresh();
-  };
+  const handleDelete = async (type, id) => {
 
-  if (empresaActiva) return <EmpresaPortal empresaNombre={empresaActiva} onBack={() => setEmpresaActiva(null)} />;
+      if (!confirm('¿Eliminar este elemento?')) return;
+
+      if (type === 'empresa') {
+
+        await deleteEmpresa(id);
+
+        await loadEmpresas();
+      }
+
+      if (type === 'usuario') {
+
+       await deleteUsuario(id);
+
+       await loadUsuarios();
+      }
+
+      if (type === 'modulo') {
+
+        await deleteModulo(id);
+
+        await loadModulos();
+      }
+    };
+
+  
 
   const tabs = [
     { key: 'empresas', label: 'Empresas', icon: <Building2 className="w-4 h-4" />, count: empresas.length },
@@ -167,7 +309,17 @@ const DashboardAdmin = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7] font-sans">
+    <>
+    {empresaActiva ? (
+
+      <EmpresaPortal
+        empresaNombre={empresaActiva}
+        onBack={() => setEmpresaActiva(null)}
+      />
+
+    ) : (
+
+      <div className="min-h-screen bg-[#F5F5F7] font-sans">
       {/* Navbar */}
       <nav className="bg-[#0A353F] px-8 py-4 flex justify-between items-center">
         <div className="flex items-center gap-2">
@@ -263,7 +415,7 @@ const DashboardAdmin = () => {
               {usuarios.map(u => (
                 <div key={u.id} className="flex items-center gap-4 p-4 bg-[#F5F5F7] rounded-2xl">
                   <div className="w-10 h-10 rounded-xl bg-[#0A353F] flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                    {u.nombre.split(' ').map(n => n[0]).slice(0, 2).join('')}
+                    {u.nombre.split(' ').map((n, i) => n?.[0] || '').slice(0, 2).join('')}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-[#1d1d1f] text-sm">{u.nombre}</p>
@@ -332,18 +484,41 @@ const DashboardAdmin = () => {
 
             {/* Submódulos */}
             <div className="px-4 pb-4 pt-2 space-y-2">
-              {(mod.submodulos || []).map(sub => (
-                <div key={sub.id} className="flex items-center gap-3 px-3 py-2 bg-white rounded-xl border border-gray-100">
+
+              {submodulos
+              .filter(sub => sub.moduloId === mod.id)
+              .map(sub => (
+                <div
+                  key={sub.id}
+                  className="flex items-center gap-3 px-3 py-2 bg-white rounded-xl border border-gray-100"
+                >
                   <Folder className="w-4 h-4 text-[#8CC63F]" />
-                  <span className="flex-1 text-sm text-[#1d1d1f]">{sub.nombre}</span>
-                  <button onClick={() => { deleteSubmodulo(mod.id, sub.id); refresh(); }}
-                    className="w-6 h-6 flex items-center justify-center rounded-lg text-gray-300 hover:text-red-400 transition-colors">
+
+                  <span className="flex-1 text-sm text-[#1d1d1f]">
+                    {sub.nombre}
+                  </span>
+
+                  <button
+                    onClick={async () => {
+
+                      await deleteSubmodulo(sub.id);
+
+                      await loadSubmodulos();
+                    }}
+                    className="w-6 h-6 flex items-center justify-center rounded-lg text-gray-300 hover:text-red-400 transition-colors"
+                  >
                     <X className="w-3 h-3" />
                   </button>
                 </div>
-              ))}
+            ))}
+
               {/* Agregar submódulo */}
-              <SubmoduloInput moduloId={mod.id} onAdd={refresh} />
+              <SubmoduloInput
+                moduloId={mod.id}
+                onAdd={loadSubmodulos}
+                addSubmodulo={addSubmodulo}
+              />
+
             </div>
 
             {/* Activación por empresa */}
@@ -351,14 +526,33 @@ const DashboardAdmin = () => {
               <p className="text-xs text-gray-400 font-medium uppercase mb-2">Activo en empresas</p>
               <div className="flex flex-wrap gap-2">
                 {empresas.map(emp => {
-                  const em = getEmpresaModulos();
-                  const activo = em[emp.nombre]?.[mod.id] !== false;
+                  const relacion = empresaModulos.find(
+                    r =>
+                      r.empresaId === emp.id &&
+                      r.moduloId === mod.id
+                  );
+
+                  const activo = relacion
+                    ? relacion.activo
+                    : true;
+
                   return (
                     <button
-                      key={emp.id}
-                      onClick={() => { toggleModuloEmpresa(emp.nombre, mod.id, !activo); refresh(); }}
+                      key={`${emp.id}-${mod.id}`}
+                      onClick={async () => {
+
+                        await toggleModuloEmpresa(
+                          emp.id,
+                          mod.id,
+                          !activo
+                        );
+
+                        await loadEmpresaModulos();
+                      }}
                       className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${
-                        activo ? 'bg-[#8CC63F] text-white' : 'bg-gray-100 text-gray-400'
+                        activo
+                          ? 'bg-[#8CC63F] text-white'
+                          : 'bg-gray-100 text-gray-400'
                       }`}
                     >
                       {activo ? '✓' : '○'} {emp.nombre}
@@ -504,19 +698,30 @@ const DashboardAdmin = () => {
         </Modal>
       )}
     </div>
+    )}
+    </>
   );
 };
 
-const SubmoduloInput = ({ moduloId, onAdd }) => {
+
+const SubmoduloInput = ({ moduloId, onAdd, addSubmodulo }) => {
+
   const [valor, setValor] = useState('');
-  const handleAdd = () => {
+
+  const handleAdd = async () => {
+
     if (!valor.trim()) return;
-    addSubmodulo(moduloId, valor.trim());
+
+    await addSubmodulo(valor.trim(), moduloId);
+
     setValor('');
+
     onAdd();
   };
+
   return (
     <div className="flex gap-2 mt-1">
+
       <input
         value={valor}
         onChange={e => setValor(e.target.value)}
@@ -524,10 +729,14 @@ const SubmoduloInput = ({ moduloId, onAdd }) => {
         placeholder="Nuevo submódulo..."
         className="flex-1 bg-[#F5F5F7] rounded-xl px-3 py-2 text-sm outline-none text-[#1d1d1f] border border-transparent focus:border-[#8CC63F] transition-colors"
       />
-      <button onClick={handleAdd}
-        className="px-3 py-2 bg-[#0A353F] text-white rounded-xl text-sm font-medium hover:bg-[#0A353F]/90 transition-colors">
+
+      <button
+        onClick={handleAdd}
+        className="px-3 py-2 bg-[#0A353F] text-white rounded-xl text-sm font-medium hover:bg-[#0A353F]/90 transition-colors"
+      >
         <Plus className="w-4 h-4" />
       </button>
+
     </div>
   );
 };

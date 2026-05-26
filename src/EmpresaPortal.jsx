@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
-import { getEmpresas, getModulos } from './data/db';
 import { FileText, TrendingUp, Users, ShoppingBag, Cpu, BarChart2, Globe, Settings, BookOpen, Briefcase, Scale, ArrowLeft, LogOut } from 'lucide-react';
 import ModuloDetalle from './ModuloDetalle';
-import { getModulosActivos } from './data/db';
+import { useEmpresas } from './hooks/useEmpresas';
+import { useModulos } from './hooks/useModulos';
+import { useEmpresaModulos } from './hooks/useEmpresaModulos';
 
 const MODULOS = [
   { title: 'Contabilidad', icon: <FileText className="w-6 h-6" /> },
@@ -21,29 +22,55 @@ const EmpresaPortal = ({ empresaNombre, onBack }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [moduloActivo, setModuloActivo] = useState(null);
+  const { getEmpresas } = useEmpresas();
+  const {modulos, loadModulos} = useModulos();
+  const [empresas, setEmpresas] = useState([]);
+  const {empresaModulos, loadEmpresaModulos } = useEmpresaModulos();
+  const empresaData = empresas.find(
+      e => e.nombre === empresaNombre
+  );
 
-  const empresaData = getEmpresas().find(e => e.nombre === empresaNombre);
-  const modulos = getModulos();
-  const modulosActivos = getModulosActivos(empresaNombre);
+  const modulosActivos = empresaModulos.filter(
+      em => em.empresaId === empresaData?.id && em.activo
+  );
 
   const handleLogout = () => {
     logout();
     navigate('/');
   };
 
-  if (moduloActivo) {
-    return (
+
+  useEffect(() => {
+
+    const loadData = async () => {
+
+      const empresasData = await getEmpresas();
+
+      setEmpresas(empresasData);
+
+      await loadModulos();
+
+      await loadEmpresaModulos();
+    };
+
+    loadData();
+
+  }, []);
+
+  return (
+    <>
+    {moduloActivo ? (
+
       <ModuloDetalle
         empresa={empresaNombre}
         modulo={moduloActivo}
         onBack={() => setModuloActivo(null)}
         isAdmin={user?.tipo === 'admin'}
       />
-    );
-  }
 
-  return (
-    <div className="min-h-screen bg-[#F5F5F7] font-sans">
+    ) : (
+
+      <div className="min-h-screen bg-[#F5F5F7] font-sans">
       {/* Navbar */}
       <nav className="bg-[#0A353F] px-8 py-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
@@ -94,7 +121,7 @@ const EmpresaPortal = ({ empresaNombre, onBack }) => {
   const Icono = ICONOS[mod.icono] || FileText;
 
   const activo = modulosActivos.some(
-    m => m.id === mod.id
+    m => m.moduloId === mod.id
   );
 
   return (
@@ -144,6 +171,8 @@ const EmpresaPortal = ({ empresaNombre, onBack }) => {
         </div>
       </div>
     </div>
+    )}
+    </>
   );
 };
 

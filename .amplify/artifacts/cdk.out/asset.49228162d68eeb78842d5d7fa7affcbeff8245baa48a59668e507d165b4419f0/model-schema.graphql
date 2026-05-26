@@ -1,0 +1,50 @@
+type Archivo @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  empresa: String
+  modulo: String
+  submodulo: String
+  nombre: String
+  s3Key: String
+  tamano: Int
+  tipo: String
+  oculto: Boolean
+  fecha: AWSDateTime
+  anio: String
+  mes: String
+}
+
+type Empresa @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  nombre: String!
+  logo: String
+}
+
+type Modulo @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  nombre: String!
+  icono: String
+  logo: String
+}
+
+type Usuario @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  empresa: String!
+  correo: String!
+  nombre: String!
+  tipo: String!
+  password: String!
+  logo: String
+}
+
+type Submodulo @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  nombre: String!
+  moduloNombre: String!
+}
+
+type EmpresaModulo @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  empresaId: String!
+  moduloId: String!
+  activo: Boolean @default(value: "true")
+}

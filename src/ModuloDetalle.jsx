@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useArchivos } from './hooks/useArchivos';
-import { getModulos } from './data/db';
+import { useModulos } from './hooks/useModulos';
+import { useSubmodulos } from './hooks/useSubmodulos';
 import {
   ArrowLeft, Upload, FileText, Trash2, Download,
   Filter, Calendar, FolderOpen, ChevronDown, ChevronRight,
@@ -68,13 +69,45 @@ const base64ToBlobUrl = (base64, mimeType = 'application/pdf') => {
   }
 };
 
-const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) => {
-  const { saveArchivo, getArchivosFiltrados, deleteArchivo, downloadArchivo, toggleOculto } = useArchivos();
+const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
+  const {
+    saveArchivo,
+    getArchivosFiltrados,
+    deleteArchivo,
+    downloadArchivo,
+    toggleOculto
+  } = useArchivos();
 
-  // Submódulos
-  const moduloData = getModulos().find(m => m.nombre === modulo);
-  const submodulos = moduloData?.submodulos || [];
+  const {
+    modulos,
+    loadModulos
+  } = useModulos();
+
+  const {
+    submodulos,
+    loadSubmodulos
+  } = useSubmodulos();
+
   const [submoduloActivo, setSubmoduloActivo] = useState(null);
+
+  useEffect(() => {
+
+    loadModulos();
+    loadSubmodulos();
+
+  }, []);
+
+  const nombreModuloBase = modulo.includes('__')
+  ? modulo.split('__')[0]
+  : modulo;
+
+  const moduloData = modulos.find(
+    m => m.nombre === nombreModuloBase
+  );
+
+  const submodulosDelModulo = submodulos.filter(
+    s => s.moduloId === moduloData?.id
+  );
 
   // Upload
   const [uploadanio, setUploadanio] = useState(String(new Date().getFullYear()));
@@ -116,7 +149,6 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
   // Si cambia el submódulo, refresca
   const handleSubmodulo = async (nombre) => {
     setSubmoduloActivo(nombre);
-
     const data = await getArchivosFiltrados(
       empresa,
       nombre ? `${modulo}__${nombre}` : modulo,
@@ -127,7 +159,7 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
 
     setArchivos(data || []);
   };
-
+  const nombreVista = submoduloActivo || modulo;
   const toggleGrupo = (key) => setGruposExpandidos(prev => ({ ...prev, [key]: !prev[key] }));
 
   const handleUpload = async (e) => {
@@ -167,40 +199,30 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
 
   const grupos = agruparPorFecha(archivos);
 
-  // Si hay submódulo activo, muestra su detalle
-  if (submoduloActivo) {
-    return (
-      <ModuloDetalle
-        empresa={empresa}
-        modulo={`${modulo}__${submoduloActivo}`}
-        onBack={() => { setSubmoduloActivo(null); refreshArchivos(); }}
-        isAdmin={isAdmin}
-      />
-    );
-  }
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] font-sans">
       {/* Header */}
       <div className="bg-white border-b border-gray-100 px-8 py-4 flex items-center gap-4 sticky top-0 z-10">
-        <button onClick={onBack} className="flex items-center gap-2 text-gray-500 hover:text-[#0A353F] transition-colors text-sm font-medium">
+        <button onClick={() => { if (submoduloActivo) { setSubmoduloActivo(null); refreshArchivos(); } else { onBack();}
+  }} className="flex items-center gap-2 text-gray-500 hover:text-[#0A353F] transition-colors text-sm font-medium">
           <ArrowLeft className="w-4 h-4" /> Volver
         </button>
         <div className="h-4 w-px bg-gray-200" />
-        <h2 className="font-bold text-[#0A353F] text-lg">{modulo.includes('__') ? modulo.split('__')[1] : modulo}</h2>
+        <h2 className="font-bold text-[#0A353F] text-lg">{nombreVista}</h2>
         <span className="text-gray-400 text-sm">· {empresa}</span>
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-10 space-y-8">
 
         {/* Submódulos */}
-        {submodulos.length > 0 && (
+        {submoduloActivo === null && submodulosDelModulo.length > 0 && (
           <div className="bg-white rounded-3xl p-8 shadow-sm">
             <h3 className="text-lg font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
               <Folder className="w-5 h-5 text-[#8CC63F]" /> Submódulos
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {submodulos.map(sub => (
+              {submodulosDelModulo.map(sub => (
                 <button
                   key={sub.id}
                   onClick={() => handleSubmodulo(sub.nombre)}
@@ -209,6 +231,7 @@ const ModuloDetalle = ({ empresa, modulo, submodulo = null, onBack, isAdmin }) =
                   <Folder className="w-5 h-5 text-[#8CC63F] flex-shrink-0" />
                   <span className="font-medium text-[#1d1d1f] text-sm">{sub.nombre}</span>
                 </button>
+                
               ))}
             </div>
           </div>
