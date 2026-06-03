@@ -1,31 +1,37 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { generateClient } from 'aws-amplify/data';
 import outputs from '../../amplify_outputs.json';
 
 
 export const useEmpresaModulos = () => {
 
-  const client = generateClient({
+  const client = useMemo(() => generateClient({
     config: outputs,
-  });
+  }), []);
 
   const [empresaModulos, setEmpresaModulos] = useState([]);
 
-  const loadEmpresaModulos = async () => {
+  const loadEmpresaModulos = useCallback(async () => {
 
     try {
 
       const response = await client.models.EmpresaModulo.list();
 
-      setEmpresaModulos(response.data || []);
+      const data = response.data || [];
+
+      setEmpresaModulos(data);
+
+      return data;
 
     } catch (error) {
 
       console.error('ERROR CARGANDO EMPRESA MODULOS:', error);
 
       setEmpresaModulos([]);
+
+      return [];
     }
-  };
+  }, [client]);
 
   const toggleModuloEmpresa = async (
     empresaId,

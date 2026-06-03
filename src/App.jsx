@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
+import { useUsuarios } from './hooks/useUsuarios';
 import { 
   Menu, X, ChevronRight, Calculator, FileText, Cpu, ShoppingBag,
   Users, ArrowRight, Target, ShieldCheck,
   Scale
 } from 'lucide-react';
-import { findUser } from './data/db';
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,6 +16,7 @@ const App = () => {
   const [loginError, setLoginError] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { getUsuarios } = useUsuarios();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -39,16 +40,29 @@ const App = () => {
     { title: "Legal", desc: "Asesoría Jurídica.", icon: <Scale className="w-8 h-8" /> }
   ];
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
   e.preventDefault();
-  const found = findUser(loginData.email, loginData.password);
-  if (found) {
-    login(found);
-    setIsLoginOpen(false);
-    setLoginError('');
-    navigate(found.tipo === 'admin' ? '/admin' : `/dashboard/${encodeURIComponent(found.empresa)}`);
-  } else {
-    setLoginError('Correo o contraseña incorrectos.');
+  setLoginError('');
+
+  try {
+    const usuarios = await getUsuarios();
+    const found = usuarios.find(
+      usuario =>
+        usuario.correo === loginData.email &&
+        usuario.password === loginData.password
+    );
+
+    if (found) {
+      login(found);
+      setIsLoginOpen(false);
+      setLoginError('');
+      navigate(found.tipo === 'admin' ? '/admin' : `/dashboard/${encodeURIComponent(found.empresa)}`);
+    } else {
+      setLoginError('Correo o contraseña incorrectos.');
+    }
+  } catch (error) {
+    console.error('ERROR INICIANDO SESION:', error);
+    setLoginError('No se pudo validar el usuario.');
   }
 };
 

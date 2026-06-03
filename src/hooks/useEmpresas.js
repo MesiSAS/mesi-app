@@ -1,14 +1,14 @@
+import { useCallback, useMemo } from 'react';
 import { generateClient } from 'aws-amplify/data';
 import outputs from '../../amplify_outputs.json';
 
-const getClient = () => generateClient();
-
 
 export const useEmpresas = () => {
-  const client = generateClient({
+  const client = useMemo(() => generateClient({
     config: outputs,
-    });    
-  const getEmpresas = async () => {
+    }), []);
+
+  const getEmpresas = useCallback(async () => {
         try {
 
             const response = await client.models.Empresa.list();
@@ -21,7 +21,7 @@ export const useEmpresas = () => {
 
             return [];
         }
-    };
+    }, [client]);
 
   const createEmpresa = async (data) => {
 

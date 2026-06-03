@@ -1,30 +1,36 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { generateClient } from 'aws-amplify/data';
 import outputs from '../../amplify_outputs.json';
 
 export const useModulos = () => {
 
-  const client = generateClient({
+  const client = useMemo(() => generateClient({
     config: outputs,
-  });
+  }), []);
 
   const [modulos, setModulos] = useState([]);
 
-  const loadModulos = async () => {
+  const loadModulos = useCallback(async () => {
 
     try {
 
       const response = await client.models.Modulo.list();
 
-      setModulos(response.data || []);
+      const data = response.data || [];
+
+      setModulos(data);
+
+      return data;
 
     } catch (error) {
 
       console.error('ERROR CARGANDO MODULOS:', error);
 
       setModulos([]);
+
+      return [];
     }
-  };
+  }, [client]);
 
   const createModulo = async (data) => {
 

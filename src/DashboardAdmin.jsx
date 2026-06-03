@@ -90,22 +90,21 @@ const SelectField = ({ label, children, ...props }) => (
   </div>
 );
 
-// Hooks
-const {
-  getEmpresas,
-  createEmpresa,
-  updateEmpresa,
-  deleteEmpresa,
-} = useEmpresas();
-
-const {
-  getUsuarios,
-  createUsuario,
-  updateUsuario,
-  deleteUsuario,
-} = useUsuarios();
-
 const DashboardAdmin = () => {
+
+  const {
+    getEmpresas,
+    createEmpresa,
+    updateEmpresa,
+    deleteEmpresa,
+  } = useEmpresas();
+
+  const {
+    getUsuarios,
+    createUsuario,
+    updateUsuario,
+    deleteUsuario,
+  } = useUsuarios();
 
   const {
     modulos,
@@ -121,22 +120,12 @@ const DashboardAdmin = () => {
     toggleModuloEmpresa,
   } = useEmpresaModulos();
 
-  useEffect(() => {
-
-  loadEmpresas();
-  loadUsuarios();
-  loadModulos();
-  loadEmpresaModulos();
-  loadSubmodulos();
-
-}, []);
-
-const {
-  submodulos,
-  loadSubmodulos,
-  addSubmodulo,
-  deleteSubmodulo,
-} = useSubmodulos();
+  const {
+    submodulos,
+    loadSubmodulos,
+    addSubmodulo,
+    deleteSubmodulo,
+  } = useSubmodulos();
 
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -167,6 +156,16 @@ const {
 
     setUsuarios(Array.isArray(data) ? data : []);
   };
+
+  useEffect(() => {
+
+    loadEmpresas();
+    loadUsuarios();
+    loadModulos();
+    loadEmpresaModulos();
+    loadSubmodulos();
+
+  }, []);
 
 
 
@@ -415,7 +414,7 @@ const {
               {usuarios.map(u => (
                 <div key={u.id} className="flex items-center gap-4 p-4 bg-[#F5F5F7] rounded-2xl">
                   <div className="w-10 h-10 rounded-xl bg-[#0A353F] flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                    {u.nombre.split(' ').map((n, i) => n?.[0] || '').slice(0, 2).join('')}
+                    {u.nombre.split(' ').map(n => n?.[0] || '').slice(0, 2).join('')}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-[#1d1d1f] text-sm">{u.nombre}</p>

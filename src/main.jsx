@@ -8,8 +8,6 @@ import outputs from '../amplify_outputs.json';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './ProtectedRoute';
 
-import { initDB } from './data/db';
-
 import './index.css';
 
 import App from './App.jsx';
@@ -19,8 +17,6 @@ import DashboardAdmin from './DashboardAdmin.jsx';
 Amplify.configure(outputs, {
   ssr: false,
 });
-
-initDB();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

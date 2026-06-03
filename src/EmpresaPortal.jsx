@@ -7,14 +7,6 @@ import { useEmpresas } from './hooks/useEmpresas';
 import { useModulos } from './hooks/useModulos';
 import { useEmpresaModulos } from './hooks/useEmpresaModulos';
 
-const MODULOS = [
-  { title: 'Contabilidad', icon: <FileText className="w-6 h-6" /> },
-  { title: 'Finanzas', icon: <TrendingUp className="w-6 h-6" /> },
-  { title: 'Talento Humano', icon: <Users className="w-6 h-6" /> },
-  { title: 'Compras', icon: <ShoppingBag className="w-6 h-6" /> },
-  { title: 'Tecnología', icon: <Cpu className="w-6 h-6" /> },
-  { title: 'Legal', icon: <Scale className="w-6 h-6" /> },
-];
 
 const ICONOS = { FileText, TrendingUp, Users, ShoppingBag, Cpu, BarChart2, Globe, Settings, BookOpen, Briefcase, Scale,  ArrowLeft, LogOut };
 
