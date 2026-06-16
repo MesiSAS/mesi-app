@@ -1,4 +1,20 @@
-import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
+import { type ClientSchema, a, defineData, defineFunction } from '@aws-amplify/backend';
+import 'dotenv/config';
+
+// Los IDs de modelo se leen del .env del proyecto (con fallback por si no esta definido).
+export const BEDROCK_CHAT_MODEL_ID = process.env.BEDROCK_CHAT_MODEL_ID ?? 'us.anthropic.claude-haiku-4-5-20251001-v1:0';
+export const BEDROCK_EMBEDDING_MODEL_ID = process.env.BEDROCK_EMBEDDING_MODEL_ID ?? 'amazon.titan-embed-text-v2:0';
+
+export const chatAssistant = defineFunction({
+  entry: '../functions/chat-assistant/handler.ts',
+  name: 'chat-assistant',
+  timeoutSeconds: 60,
+  memoryMB: 1024,
+  environment: {
+    BEDROCK_CHAT_MODEL_ID,
+    BEDROCK_EMBEDDING_MODEL_ID,
+  },
+});
 
 const schema = a.schema({
 
@@ -83,7 +99,76 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.publicApiKey()]), 
 
-});
+  ArchivoEmbedding: a
+    .model({
+      archivoId: a.string().required(),
+      empresa: a.string().required(),
+      modulo: a.string().required(),
+      submodulo: a.string(),
+      s3Key: a.string(),
+      nombreArchivo: a.string(),
+      chunkIndex: a.integer().required(),
+      texto: a.string().required(),
+      embedding: a.float().array(),
+      oculto: a.boolean().default(false),
+      fecha: a.datetime(),
+    })
+    .authorization((allow) => [
+      allow.publicApiKey(),
+     
+    ]),
+
+  ChatMessage: a
+    .model({
+      userId: a.string().required(),
+      empresa: a.string().required(),
+      role: a.string().required(),
+      content: a.string().required(),
+      sources: a.string(),
+      createdAt: a.datetime(),
+    })
+    .authorization((allow) => [
+      allow.publicApiKey(),
+      
+    ]),
+
+  ChatSource: a.customType({
+    archivoId: a.string(),
+    nombreArchivo: a.string(),
+    modulo: a.string(),
+    submodulo: a.string(),
+    score: a.float(),
+  }),
+
+  ChatAction: a.customType({
+    type: a.string(),
+    moduloNombre: a.string(),
+    archivoId: a.string(),
+    nombreArchivo: a.string(),
+    label: a.string(),
+  }),
+
+  ChatAssistantResponse: a.customType({
+    answer: a.string(),
+    sources: a.ref('ChatSource').array(),
+    action: a.ref('ChatAction'),
+  }),
+
+  chatAssistant: a
+    .mutation()
+    .arguments({
+      userId: a.string().required(),
+      message: a.string().required(),
+      empresa: a.string(),
+      modulo: a.string(),
+      moduloActivo: a.string(),
+    })
+    .returns(a.ref('ChatAssistantResponse'))
+    .authorization((allow) => [allow.publicApiKey()])
+    .handler(a.handler.function(chatAssistant)),
+
+})
+.authorization((allow) => [allow.resource(chatAssistant)]);
 
 export type Schema = ClientSchema<typeof schema>;
 

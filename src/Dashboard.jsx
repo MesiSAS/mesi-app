@@ -17,6 +17,7 @@ import ModuloDetalle from './ModuloDetalle';
 import { useEmpresas } from './hooks/useEmpresas';
 import { useModulos } from './hooks/useModulos';
 import { useEmpresaModulos } from './hooks/useEmpresaModulos';
+import AiAssistantChat from './components/AiAssistantChat';
 
 const ICONOS = { FileText, TrendingUp, Users, ShoppingBag, Cpu };
 
@@ -91,6 +92,15 @@ const Dashboard = () => {
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+
+  const handleAssistantNavigate = (action) => {
+    if (!action) return;
+    if (action.type === 'open_module' && action.moduloNombre) {
+      setModuloActivo(action.moduloNombre);
+    } else if (action.type === 'open_file' && action.moduloNombre) {
+      setModuloActivo(action.moduloNombre);
+    }
   };
 
   const handleChangePassword = async (e) => {
@@ -278,6 +288,15 @@ const Dashboard = () => {
             </form>
           </div>
         </div>
+      )}
+
+      {user && (
+        <AiAssistantChat
+          user={user}
+          empresa={user.empresa}
+          moduloActivo={moduloActivo}
+          onNavigate={handleAssistantNavigate}
+        />
       )}
     </div>
   );

@@ -192,9 +192,22 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
     refreshArchivos();
   };
 
-  const handleToggleOculto = (anio, mes, id) => {
-    toggleOculto(empresa, contexto, anio, mes, id);
-    refreshArchivos();
+  const handleToggleOculto = async (anio, mes, id) => {
+    // Optimista: voltear el estado local de inmediato para que la animacion
+    // ocurra al instante al hacer clic, sin esperar al backend.
+    setArchivos(prev =>
+      prev.map(a => (a.id === id ? { ...a, oculto: !a.oculto } : a))
+    );
+
+    try {
+      await toggleOculto(empresa, contexto, anio, mes, id);
+    } catch (error) {
+      console.error('ERROR TOGGLE OCULTO:', error);
+      // Revertir si el backend falla.
+      setArchivos(prev =>
+        prev.map(a => (a.id === id ? { ...a, oculto: !a.oculto } : a))
+      );
+    }
   };
 
   const grupos = agruparPorFecha(archivos);

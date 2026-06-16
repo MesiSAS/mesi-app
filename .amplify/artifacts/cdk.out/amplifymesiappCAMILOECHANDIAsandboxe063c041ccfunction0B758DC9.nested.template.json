@@ -1,0 +1,559 @@
+{
+ "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"AmplifySandbox\",\"createdWith\":\"1.18.0\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+ "Resources": {
+  "chatassistantlambdaServiceRole765B308A": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "chat-assistant"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/chat-assistant-lambda/ServiceRole/Resource"
+   }
+  },
+  "chatassistantlambdaServiceRoleDefaultPolicy7DF44DD6": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "bedrock:InvokeModel",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:aws:bedrock:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":inference-profile/us.anthropic.claude-haiku-4-5-20251001-v1:0"
+          ]
+         ]
+        },
+        "arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0",
+        "arn:aws:bedrock:us-east-2::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0",
+        "arn:aws:bedrock:us-west-2::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0",
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:aws:bedrock:",
+           {
+            "Ref": "AWS::Region"
+           },
+           "::foundation-model/amazon.titan-embed-text-v2:0"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "ssm:GetParameters",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ssm:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":parameter/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_GRAPHQL_ENDPOINT"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ssm:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":parameter/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ssm:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":parameter/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ssm:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":parameter/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_DEFAULT_NAME"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "chatassistantlambdaServiceRoleDefaultPolicy7DF44DD6",
+    "Roles": [
+     {
+      "Ref": "chatassistantlambdaServiceRole765B308A"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/chat-assistant-lambda/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "chatassistantlambda17DD3042": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "x86_64"
+    ],
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "47cd96e5c57689a027090fd1a1f6099be78b6164968c097fc4f8c7ac01c9ae40.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "BEDROCK_CHAT_MODEL_ID": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+      "BEDROCK_EMBEDDING_MODEL_ID": "amazon.titan-embed-text-v2:0",
+      "AMPLIFY_SSM_ENV_CONFIG": "{\"AMPLIFY_DATA_GRAPHQL_ENDPOINT\":{\"path\":\"/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_GRAPHQL_ENDPOINT\"},\"AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME\":{\"path\":\"/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME\"},\"AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY\":{\"path\":\"/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY\"},\"AMPLIFY_DATA_DEFAULT_NAME\":{\"path\":\"/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_DEFAULT_NAME\"}}",
+      "AMPLIFY_DATA_GRAPHQL_ENDPOINT": "<value will be resolved during runtime>",
+      "AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME": "<value will be resolved during runtime>",
+      "AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY": "<value will be resolved during runtime>",
+      "AMPLIFY_DATA_DEFAULT_NAME": "<value will be resolved during runtime>"
+     }
+    },
+    "EphemeralStorage": {
+     "Size": 512
+    },
+    "Handler": "index.handler",
+    "MemorySize": 1024,
+    "Role": {
+     "Fn::GetAtt": [
+      "chatassistantlambdaServiceRole765B308A",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "chat-assistant"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ],
+    "Timeout": 60
+   },
+   "DependsOn": [
+    "chatassistantlambdaServiceRoleDefaultPolicy7DF44DD6",
+    "chatassistantlambdaServiceRole765B308A"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/chat-assistant-lambda/Resource",
+    "aws:asset:path": "asset.47cd96e5c57689a027090fd1a1f6099be78b6164968c097fc4f8c7ac01c9ae40",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zWNzQqDMBCEn8X7usWf9l4LPUrRB5A1WSUaE+jGShHfvaj09M3A8E2K6fWGSUSLxEqPsTUtriVLYF0HUiPQIs1qaWo1Nc5rHgTLA8/ZqWC8A0MTrpW3DI/OHXx5a9R3r2faQLKGRDgI3neAZFjMauRQkDCcenx07i/d4NjVgXrj+g32Zxzk8klzTHJMokGMid+zC2ZirE7+AFCb9TzMAAAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-3"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-4"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "AWS::Region"
+      },
+      "us-west-2"
+     ]
+    }
+   ]
+  }
+ },
+ "Outputs": {
+  "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BArn": {
+   "Value": {
+    "Fn::GetAtt": [
+     "chatassistantlambda17DD3042",
+     "Arn"
+    ]
+   }
+  },
+  "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambdaServiceRoleE9EE5AC3Ref": {
+   "Value": {
+    "Ref": "chatassistantlambdaServiceRole765B308A"
+   }
+  },
+  "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BRef": {
+   "Value": {
+    "Ref": "chatassistantlambda17DD3042"
+   }
+  }
+ }
+}

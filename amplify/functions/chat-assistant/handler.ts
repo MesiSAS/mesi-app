@@ -1,0 +1,362 @@
+import { Amplify } from 'aws-amplify';
+import { generateClient } from 'aws-amplify/data';
+import { getAmplifyDataClientConfig } from '@aws-amplify/backend/function/runtime';
+
+type DataClientEnv = Parameters<typeof getAmplifyDataClientConfig>[0];
+import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
+import { env } from '$amplify/env/chat-assistant';
+import type { Schema } from '../../data/resource';
+
+type ChatSource = {
+  archivoId?: string | null;
+  nombreArchivo?: string | null;
+  modulo?: string | null;
+  submodulo?: string | null;
+  score?: number | null;
+};
+
+type ChatAction = {
+  type: string;
+  moduloNombre?: string | null;
+  archivoId?: string | null;
+  nombreArchivo?: string | null;
+  label?: string | null;
+};
+
+type ScoredChunk = {
+  archivoId: string;
+  nombreArchivo?: string | null;
+  modulo?: string | null;
+  submodulo?: string | null;
+  texto: string;
+  score: number;
+};
+
+const textDecoder = new TextDecoder();
+const bedrock = new BedrockRuntimeClient({ region: env.AWS_REGION });
+
+// `allow.resource(chatAssistant)` en el schema inyecta AMPLIFY_DATA_DEFAULT_NAME en runtime.
+// El cast evita el deadlock de bootstrap: el tipo del env se regenera al final de la sintesis,
+// pero el chequeo de tipos corre antes con el archivo de env aun sin esa variable.
+const { resourceConfig, libraryOptions } = await getAmplifyDataClientConfig(
+  env as unknown as DataClientEnv
+);
+Amplify.configure(resourceConfig, libraryOptions);
+
+const client = generateClient<Schema>();
+
+const parseJson = <T>(bytes?: Uint8Array): T => {
+  if (!bytes) return {} as T;
+  return JSON.parse(textDecoder.decode(bytes)) as T;
+};
+
+const cosineSimilarity = (a: number[], b: number[]) => {
+  if (!a.length || a.length !== b.length) return 0;
+
+  let dot = 0;
+  let aMagnitude = 0;
+  let bMagnitude = 0;
+
+  for (let index = 0; index < a.length; index += 1) {
+    dot += a[index] * b[index];
+    aMagnitude += a[index] * a[index];
+    bMagnitude += b[index] * b[index];
+  }
+
+  if (!aMagnitude || !bMagnitude) return 0;
+
+  return dot / (Math.sqrt(aMagnitude) * Math.sqrt(bMagnitude));
+};
+
+const embed = async (text: string) => {
+  const response = await bedrock.send(new InvokeModelCommand({
+    modelId: env.BEDROCK_EMBEDDING_MODEL_ID,
+    contentType: 'application/json',
+    accept: 'application/json',
+    body: JSON.stringify({
+      inputText: text.slice(0, 8000),
+    }),
+  }));
+
+  const payload = parseJson<{ embedding?: number[] }>(response.body);
+
+  return payload.embedding || [];
+};
+
+const complete = async (system: string, userMessage: string) => {
+  const response = await bedrock.send(new InvokeModelCommand({
+    modelId: env.BEDROCK_CHAT_MODEL_ID,
+    contentType: 'application/json',
+    accept: 'application/json',
+    body: JSON.stringify({
+      anthropic_version: 'bedrock-2023-05-31',
+      max_tokens: 1200,
+      temperature: 0.2,
+      system,
+      messages: [
+        {
+          role: 'user',
+          content: [{ type: 'text', text: userMessage }],
+        },
+      ],
+    }),
+  }));
+
+  const payload = parseJson<{ content?: Array<{ text?: string }> }>(response.body);
+
+  return payload.content?.map(item => item.text || '').join('\n').trim() || '';
+};
+
+const uniqueSources = (chunks: ScoredChunk[]): ChatSource[] => {
+  const byArchivo = new Map<string, ChatSource>();
+
+  chunks.forEach((chunk) => {
+    if (!byArchivo.has(chunk.archivoId)) {
+      byArchivo.set(chunk.archivoId, {
+        archivoId: chunk.archivoId,
+        nombreArchivo: chunk.nombreArchivo,
+        modulo: chunk.modulo,
+        submodulo: chunk.submodulo,
+        score: chunk.score,
+      });
+    }
+  });
+
+  return Array.from(byArchivo.values()).slice(0, 5);
+};
+
+const extractAction = (raw: string): { answer: string; action: ChatAction | null } => {
+  const match = raw.match(/```json\s*([\s\S]*?)```/i) || raw.match(/(\{[\s\S]*"type"[\s\S]*\})/);
+
+  if (!match) {
+    return { answer: raw.trim(), action: null };
+  }
+
+  let action: ChatAction | null = null;
+
+  try {
+    const parsed = JSON.parse(match[1].trim());
+    if (parsed && typeof parsed.type === 'string') {
+      action = parsed as ChatAction;
+    }
+  } catch {
+    action = null;
+  }
+
+  const answer = raw.replace(match[0], '').trim();
+
+  return { answer: answer || raw.trim(), action };
+};
+
+export const handler: Schema['chatAssistant']['functionHandler'] = async (event) => {
+ try {
+  const { userId, message, empresa, modulo, moduloActivo } = event.arguments;
+  const cleanMessage = message.trim();
+
+  if (!cleanMessage) {
+    return {
+      answer: 'Escribeme una pregunta para poder ayudarte.',
+      sources: [],
+    };
+  }
+
+  const userResponse = await client.models.Usuario.get({ id: userId });
+  const user = userResponse.data;
+
+  if (!user) {
+    throw new Error('Usuario no autorizado.');
+  }
+
+  const empresaAutorizada = user.tipo === 'admin' && empresa
+    ? empresa
+    : user.empresa;
+
+  const empresasResponse = await client.models.Empresa.list();
+  const empresaData = (empresasResponse.data || []).find(
+    item => item?.nombre === empresaAutorizada
+  );
+
+  if (!empresaData) {
+    throw new Error('Empresa no autorizada.');
+  }
+
+  const [modulosResponse, relacionesResponse, archivosResponse, embeddingsResponse] = await Promise.all([
+    client.models.Modulo.list(),
+    client.models.EmpresaModulo.list(),
+    client.models.Archivo.list(),
+    client.models.ArchivoEmbedding.list(),
+  ]);
+
+  const relacionesActivas = (relacionesResponse.data || []).filter(
+    relacion =>
+      relacion?.empresaId === empresaData.id &&
+      relacion.activo
+  );
+
+  const modulosActivos = new Set(
+    (modulosResponse.data || [])
+      .filter(moduloData =>
+        relacionesActivas.some(relacion => relacion.moduloId === moduloData?.id)
+      )
+      .map(moduloData => moduloData?.nombre)
+      .filter(Boolean)
+  );
+
+  const archivosPermitidos = (archivosResponse.data || []).filter((archivo) => {
+    if (!archivo) return false;
+    if (archivo.empresa !== empresaAutorizada) return false;
+    if (archivo.oculto && user.tipo !== 'admin') return false;
+
+    const nombreModulo = archivo.modulo?.includes('__')
+      ? archivo.modulo.split('__')[0]
+      : archivo.modulo;
+
+    if (!nombreModulo || !modulosActivos.has(nombreModulo)) return false;
+    if (modulo && nombreModulo !== modulo) return false;
+
+    return true;
+  });
+
+  const archivosPermitidosPorId = new Map(
+    archivosPermitidos.map(archivo => [archivo.id, archivo])
+  );
+
+  const queryEmbedding = await embed(cleanMessage);
+  const chunks = (embeddingsResponse.data || [])
+    .filter((chunk) => {
+      if (!chunk) return false;
+      if (!archivosPermitidosPorId.has(chunk.archivoId)) return false;
+      if (chunk.oculto && user.tipo !== 'admin') return false;
+      return Array.isArray(chunk.embedding) && chunk.embedding.length > 0;
+    })
+    .map((chunk) => ({
+      archivoId: chunk.archivoId,
+      nombreArchivo: chunk.nombreArchivo,
+      modulo: chunk.modulo,
+      submodulo: chunk.submodulo,
+      texto: chunk.texto,
+      score: cosineSimilarity(
+        queryEmbedding,
+        (chunk.embedding || []).filter((value): value is number => typeof value === 'number')
+      ),
+    }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 8);
+
+  const archivosResumen = archivosPermitidos
+    .slice(0, 30)
+    .map(archivo => `- ${archivo.nombre} (${archivo.modulo}, ${archivo.anio || 'sin ano'}-${archivo.mes || 'sin mes'})`)
+    .join('\n');
+
+  const contextoChunks = chunks.length
+    ? chunks.map((chunk, index) => [
+      `[Fuente ${index + 1}] ${chunk.nombreArchivo || 'Archivo'} | ${chunk.modulo || 'Modulo'}${chunk.submodulo ? ` / ${chunk.submodulo}` : ''}`,
+      chunk.texto,
+    ].join('\n')).join('\n\n')
+    : 'No hay chunks indexados para responder sobre contenido interno de archivos.';
+
+  const modulosDisponiblesLista = Array.from(modulosActivos).join(', ') || 'ninguno';
+
+  const system = [
+    'Eres el asistente IA de la plataforma Mesi.',
+    'Conoces la plataforma: empresas cliente ven modulos activos y documentos; admins gestionan empresas, usuarios, modulos, submodulos y archivos.',
+    'Nunca reveles informacion de empresas, modulos o archivos no autorizados para el usuario actual.',
+    'Responde solo con la informacion del contexto autorizado. Si falta indexacion o evidencia, dilo claramente.',
+    'Cuando uses contenido de archivos, menciona los nombres de archivo fuente.',
+    '',
+    'NAVEGACION: puedes ayudar al usuario a moverse por la plataforma.',
+    'Si el usuario pide abrir o ir a un modulo, o pide ver un archivo concreto, ademas de tu respuesta en texto agrega al FINAL un bloque JSON con la accion sugerida.',
+    'Formato del bloque (usa ```json ... ```):',
+    'Para abrir un modulo: {"type":"open_module","moduloNombre":"<nombre exacto de un modulo disponible>","label":"Ir a <nombre>"}',
+    'Para abrir un archivo: {"type":"open_file","archivoId":"<id exacto del archivo>","nombreArchivo":"<nombre>","label":"Abrir <nombre>"}',
+    'Solo usa moduloNombre que aparezca en la lista de modulos disponibles, y archivoId que aparezca en la lista de archivos visibles.',
+    'Si la peticion no implica navegar, NO agregues ningun bloque JSON.',
+  ].join('\n');
+
+  const archivosResumenConId = archivosPermitidos
+    .slice(0, 30)
+    .map(archivo => `- id=${archivo.id} | ${archivo.nombre} (${archivo.modulo}, ${archivo.anio || 'sin ano'}-${archivo.mes || 'sin mes'})`)
+    .join('\n');
+
+  const prompt = [
+    `Usuario: ${user.nombre} (${user.tipo})`,
+    `Empresa autorizada: ${empresaAutorizada}`,
+    `Modulos disponibles: ${modulosDisponiblesLista}`,
+    moduloActivo ? `El usuario esta viendo actualmente el modulo: ${moduloActivo}` : 'El usuario esta en el panel principal (sin modulo abierto).',
+    '',
+    'Archivos visibles para este usuario:',
+    archivosResumenConId || 'No hay archivos visibles.',
+    '',
+    'Contenido recuperado por embeddings:',
+    contextoChunks,
+    '',
+    'Pregunta del usuario:',
+    cleanMessage,
+  ].join('\n');
+
+  const rawAnswer = await complete(system, prompt);
+  const { answer, action: rawAction } = extractAction(rawAnswer);
+  const sources = uniqueSources(chunks);
+
+  let action: ChatAction | null = null;
+
+  if (rawAction?.type === 'open_module') {
+    const nombre = rawAction.moduloNombre;
+    if (nombre && modulosActivos.has(nombre)) {
+      action = { type: 'open_module', moduloNombre: nombre, label: rawAction.label || `Ir a ${nombre}` };
+    }
+  } else if (rawAction?.type === 'open_file') {
+    const archivo = rawAction.archivoId ? archivosPermitidosPorId.get(rawAction.archivoId) : undefined;
+    if (archivo) {
+      const nombreModulo = archivo.modulo?.includes('__')
+        ? archivo.modulo.split('__')[0]
+        : archivo.modulo;
+      action = {
+        type: 'open_file',
+        archivoId: archivo.id,
+        nombreArchivo: archivo.nombre,
+        moduloNombre: nombreModulo,
+        label: rawAction.label || `Abrir ${archivo.nombre}`,
+      };
+    }
+  }
+
+  await Promise.all([
+    client.models.ChatMessage.create({
+      userId,
+      empresa: empresaAutorizada,
+      role: 'user',
+      content: cleanMessage,
+      createdAt: new Date().toISOString(),
+    }),
+    client.models.ChatMessage.create({
+      userId,
+      empresa: empresaAutorizada,
+      role: 'assistant',
+      content: answer,
+      sources: JSON.stringify(sources),
+      createdAt: new Date().toISOString(),
+    }),
+  ]);
+
+  return {
+    answer,
+    sources,
+    action,
+  };
+ } catch (error) {
+    // DEBUG: exponer el error real para diagnostico. Quitar cuando este resuelto.
+    const err = error as { name?: string; message?: string; stack?: string };
+    console.error('chatAssistant error:', JSON.stringify({
+      name: err?.name,
+      message: err?.message,
+      stack: err?.stack,
+    }, null, 2));
+
+    return {
+      answer: `⚠️ DEBUG ERROR\nname: ${err?.name || 'desconocido'}\nmessage: ${err?.message || String(error)}\nchatModel: ${env.BEDROCK_CHAT_MODEL_ID}\nembedModel: ${env.BEDROCK_EMBEDDING_MODEL_ID}`,
+      sources: [],
+      action: null,
+    };
+  }
+};

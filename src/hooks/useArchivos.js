@@ -186,6 +186,7 @@ console.log('CREATE RESPONSE:', response);
 
     } catch (error) {
       console.error('ERROR TOGGLE OCULTO:', error);
+      throw error;
     }
   };
 

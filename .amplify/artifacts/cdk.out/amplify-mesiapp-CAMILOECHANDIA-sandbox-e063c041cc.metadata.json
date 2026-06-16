@@ -4,7 +4,7 @@
       "type": "aws:cdk:creationStack",
       "data": [
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:7:1)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:13:17)",
         "...node internals, @aws-amplify/backend-deployer, @aws-cdk\\toolkit-lib..."
       ]
     },
@@ -33,7 +33,7 @@
         "...<anonymous> in @aws-amplify\\backend-output-storage...",
         "Array.forEach (:)",
         "...@aws-amplify\\backend-output-storage, defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:7:1)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:13:17)",
         "...node internals, @aws-amplify/backend-deployer, @aws-cdk\\toolkit-lib..."
       ]
     }
@@ -49,7 +49,7 @@
         "...<anonymous> in @aws-amplify\\backend-output-storage...",
         "Array.forEach (:)",
         "...@aws-amplify\\backend-output-storage, defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:7:1)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:13:17)",
         "...node internals, @aws-amplify/backend-deployer, @aws-cdk\\toolkit-lib..."
       ]
     }
@@ -61,7 +61,7 @@
         "...<anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:7:1)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:13:17)",
         "...node internals..."
       ]
     }
@@ -388,8 +388,33 @@
         "...<anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:7:1)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:13:17)",
         "...node internals..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\backend...",
+        "Array.map (:)",
+        "...@aws-amplify\\backend-data, @aws-amplify\\backend..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/definedFunctions": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "definedFunctions"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\backend-output-storage...",
+        "Array.forEach (:)",
+        "...@aws-amplify\\backend-output-storage, @aws-amplify\\backend-function, <anonymous> in @aws-amplify\\backend...",
+        "Array.map (:)"
       ]
     }
   ],
@@ -505,7 +530,7 @@
         "...<anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:7:1)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:13:17)",
         "...node internals..."
       ]
     }
@@ -654,7 +679,7 @@
         "...aws-cdk-lib, <anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:7:1)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:13:17)",
         "...node internals..."
       ]
     }
@@ -805,6 +830,32 @@
       ]
     }
   ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BArn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BArn"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambdaServiceRoleE9EE5AC3Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambdaServiceRoleE9EE5AC3Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId": [
     {
       "type": "aws:cdk:logicalId",
@@ -868,8 +919,61 @@
         "...aws-cdk-lib, <anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:7:1)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:13:17)",
         "...node internals..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BArn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BArn"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals, @aws-amplify/backend-deployer...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambdaServiceRoleE9EE5AC3Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambdaServiceRoleE9EE5AC3Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals, @aws-amplify/backend-deployer...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BRef": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BRef"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals, @aws-amplify/backend-deployer...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function.NestedStack/function.NestedStackResource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "function1351588B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\backend...",
+        "Array.map (:)",
+        "...@aws-amplify\\backend-data, @aws-amplify\\backend..."
       ]
     }
   ],
@@ -916,7 +1020,7 @@
         "...aws-cdk-lib, <anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:7:1)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:13:17)",
         "...node internals..."
       ]
     }
@@ -958,7 +1062,7 @@
         "...@aws-amplify\\auth-construct, @aws-amplify\\backend-auth, <anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:7:1)"
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:13:17)"
       ]
     }
   ],
@@ -973,7 +1077,7 @@
         "...@aws-amplify\\auth-construct, @aws-amplify\\backend-auth, <anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:7:1)"
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:13:17)"
       ]
     }
   ],
@@ -1082,6 +1186,39 @@
         "...<anonymous> in @aws-amplify\\graphql-api-construct...",
         "Map.forEach (:)",
         "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
       ]
     }
   ],
@@ -1204,6 +1341,20 @@
       ]
     }
   ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/GraphqlAccessPolicy1/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GraphqlAccessPolicy11EF5618C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\backend-data...",
+        "Array.forEach (:)",
+        "...@aws-amplify\\backend-data, @aws-amplify\\backend..."
+      ]
+    }
+  ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/CDKMetadata/Default": [
     {
       "type": "aws:cdk:logicalId",
@@ -1218,6 +1369,46 @@
     }
   ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/CDKMetadata/Condition": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadataAvailable"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/chat-assistant-lambda/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "chatassistantlambda17DD3042"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend-function, <anonymous> in @aws-amplify\\backend...",
+        "Array.map (:)",
+        "...@aws-amplify\\backend-data..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/CDKMetadata/Condition": [
     {
       "type": "aws:cdk:logicalId",
       "data": "CDKMetadataAvailable"
@@ -3934,6 +4125,965 @@
       ]
     }
   ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/DynamoDBModelTableReadIOPS": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBModelTableReadIOPS"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/DynamoDBModelTableWriteIOPS": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBModelTableWriteIOPS"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/DynamoDBBillingMode": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBBillingMode"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/DynamoDBEnablePointInTimeRecovery": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBEnablePointInTimeRecovery"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/DynamoDBEnableServerSideEncryption": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBEnableServerSideEncryption"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/HasEnvironmentParameter": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "HasEnvironmentParameter"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/ShouldUsePayPerRequestBilling": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ShouldUsePayPerRequestBilling"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/ShouldUsePointInTimeRecovery": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ShouldUsePointInTimeRecovery"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/ArchivoEmbeddingTable": [
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "ArchivoEmbedding"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/CustomTableArchivoEmbeddingTable": [
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "ArchivoEmbedding"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/GetAttArchivoEmbeddingTableStreamArn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GetAttArchivoEmbeddingTableStreamArn"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/GetAttArchivoEmbeddingTableName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GetAttArchivoEmbeddingTableName"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/ArchivoEmbeddingIAMRole": [
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "ArchivoEmbeddingIAMRole"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/ArchivoEmbeddingDataSource": [
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "ArchivoEmbeddingTable"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/queryGetArchivoEmbeddingResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GetArchivoEmbeddingResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Query.getArchivoEmbedding"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/queryListArchivoEmbeddingsResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ListArchivoEmbeddingResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Query.listArchivoEmbeddings"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/mutationCreateArchivoEmbeddingResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CreateArchivoEmbeddingResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Mutation.createArchivoEmbedding"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/mutationUpdateArchivoEmbeddingResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "UpdateArchivoEmbeddingResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Mutation.updateArchivoEmbedding"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/mutationDeleteArchivoEmbeddingResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DeleteArchivoEmbeddingResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Mutation.deleteArchivoEmbedding"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/subscriptionOnCreateArchivoEmbeddingResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononCreateArchivoEmbeddingResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Subscription.onCreateArchivoEmbedding"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/subscriptionOnUpdateArchivoEmbeddingResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononUpdateArchivoEmbeddingResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Subscription.onUpdateArchivoEmbedding"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/subscriptionOnDeleteArchivoEmbeddingResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononDeleteArchivoEmbeddingResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Subscription.onDeleteArchivoEmbedding"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceD24837ADOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent430A1464Arn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceD24837ADOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerTableMa3EBAD889"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals, @aws-amplify/backend-deployer...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals, @aws-amplify/backend-deployer...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding.NestedStack/ArchivoEmbedding.NestedStackResource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "amplifyDataArchivoEmbeddingNestedStackArchivoEmbeddingNestedStackResource43074B9D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/DynamoDBModelTableReadIOPS": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBModelTableReadIOPS"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/DynamoDBModelTableWriteIOPS": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBModelTableWriteIOPS"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/DynamoDBBillingMode": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBBillingMode"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/DynamoDBEnablePointInTimeRecovery": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBEnablePointInTimeRecovery"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/DynamoDBEnableServerSideEncryption": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBEnableServerSideEncryption"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/HasEnvironmentParameter": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "HasEnvironmentParameter"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/ShouldUsePayPerRequestBilling": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ShouldUsePayPerRequestBilling"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/ShouldUsePointInTimeRecovery": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ShouldUsePointInTimeRecovery"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/ChatMessageTable": [
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "ChatMessage"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/CustomTableChatMessageTable": [
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "ChatMessage"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/GetAttChatMessageTableStreamArn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GetAttChatMessageTableStreamArn"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/GetAttChatMessageTableName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GetAttChatMessageTableName"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/ChatMessageIAMRole": [
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "ChatMessageIAMRole"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/ChatMessageDataSource": [
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "ChatMessageTable"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/queryGetChatMessageResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GetChatMessageResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Query.getChatMessage"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/queryListChatMessagesResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ListChatMessageResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Query.listChatMessages"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/mutationCreateChatMessageResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CreateChatMessageResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Mutation.createChatMessage"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/mutationUpdateChatMessageResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "UpdateChatMessageResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Mutation.updateChatMessage"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/mutationDeleteChatMessageResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DeleteChatMessageResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Mutation.deleteChatMessage"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/subscriptionOnCreateChatMessageResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononCreateChatMessageResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Subscription.onCreateChatMessage"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/subscriptionOnUpdateChatMessageResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononUpdateChatMessageResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Subscription.onUpdateChatMessage"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/subscriptionOnDeleteChatMessageResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononDeleteChatMessageResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Subscription.onDeleteChatMessage"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceD24837ADOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent430A1464Arn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceD24837ADOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerTableMa3EBAD889"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals, @aws-amplify/backend-deployer...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals, @aws-amplify/backend-deployer...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage.NestedStack/ChatMessage.NestedStackResource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "amplifyDataChatMessageNestedStackChatMessageNestedStackResource7249C71F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/HasEnvironmentParameter": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "HasEnvironmentParameter"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, <anonymous> in @aws-amplify\\backend...",
+        "Array.forEach (:)",
+        "...@aws-amplify\\backend..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/FnChatAssistantLambdaDataSource": [
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "FnChatAssistantLambdaDataSource"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/mutationChatAssistantResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationchatAssistantResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Mutation.chatAssistant"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BArn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BArn"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals, @aws-amplify/backend-deployer...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals, @aws-amplify/backend-deployer...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack.NestedStack/FunctionDirectiveStack.NestedStackResource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "amplifyDataFunctionDirectiveStackNestedStackFunctionDirectiveStackNestedStackResource1246A302"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiB/ServiceRole/Resource": [
     {
       "type": "aws:cdk:logicalId",
@@ -4005,6 +5155,19 @@
       ]
     }
   ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/chat-assistant-lambda/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "chatassistantlambdaServiceRole765B308A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend-function, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/storage/mesiStorage/Bucket/Resource": [
     {
       "type": "aws:cdk:logicalId",
@@ -4033,8 +5196,9 @@
     {
       "type": "aws:cdk:creationStack",
       "data": [
-        "...aws-cdk-lib, @aws-amplify\\graphql-api-construct...",
-        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
       ]
     },
     {
@@ -7157,6 +8321,1116 @@
       ]
     }
   ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/ArchivoEmbeddingIAMRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ArchivoEmbeddingIAMRole671B6A8A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "ArchivoEmbeddingIAMRole"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/ArchivoEmbeddingDataSource/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ArchivoEmbeddingDataSource"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "ArchivoEmbeddingTable"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/QuerygetArchivoEmbeddingauth0Function/QuerygetArchivoEmbeddingauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QuerygetArchivoEmbeddingauth0FunctionQuerygetArchivoEmbeddingauth0FunctionAppSyncFunction116F539E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QuerygetArchivoEmbeddingauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/QuerygetArchivoEmbeddingpostAuth0Function/QuerygetArchivoEmbeddingpostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QuerygetArchivoEmbeddingpostAuth0FunctionQuerygetArchivoEmbeddingpostAuth0FunctionAppSyncFunction7D5154DA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QuerygetArchivoEmbeddingpostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/QueryGetArchivoEmbeddingDataResolverFn/QueryGetArchivoEmbeddingDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QueryGetArchivoEmbeddingDataResolverFnQueryGetArchivoEmbeddingDataResolverFnAppSyncFunction25584AD5"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QueryGetArchivoEmbeddingDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/QuerylistArchivoEmbeddingsauth0Function/QuerylistArchivoEmbeddingsauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QuerylistArchivoEmbeddingsauth0FunctionQuerylistArchivoEmbeddingsauth0FunctionAppSyncFunctionE8D617F1"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QuerylistArchivoEmbeddingsauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/QuerylistArchivoEmbeddingspostAuth0Function/QuerylistArchivoEmbeddingspostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QuerylistArchivoEmbeddingspostAuth0FunctionQuerylistArchivoEmbeddingspostAuth0FunctionAppSyncFunction8A2E972F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QuerylistArchivoEmbeddingspostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/QueryListArchivoEmbeddingsDataResolverFn/QueryListArchivoEmbeddingsDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QueryListArchivoEmbeddingsDataResolverFnQueryListArchivoEmbeddingsDataResolverFnAppSyncFunctionC10C58AB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QueryListArchivoEmbeddingsDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/MutationcreateArchivoEmbeddinginit0Function/MutationcreateArchivoEmbeddinginit0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationcreateArchivoEmbeddinginit0FunctionMutationcreateArchivoEmbeddinginit0FunctionAppSyncFunction2E79B364"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationcreateArchivoEmbeddinginit0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/MutationcreateArchivoEmbeddinginit1Function/MutationcreateArchivoEmbeddinginit1Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationcreateArchivoEmbeddinginit1FunctionMutationcreateArchivoEmbeddinginit1FunctionAppSyncFunction05407B63"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationcreateArchivoEmbeddinginit1Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/MutationcreateArchivoEmbeddingauth0Function/MutationcreateArchivoEmbeddingauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationcreateArchivoEmbeddingauth0FunctionMutationcreateArchivoEmbeddingauth0FunctionAppSyncFunctionAB37451D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationcreateArchivoEmbeddingauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/MutationcreateArchivoEmbeddingpostAuth0Function/MutationcreateArchivoEmbeddingpostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationcreateArchivoEmbeddingpostAuth0FunctionMutationcreateArchivoEmbeddingpostAuth0FunctionAppSyncFunction7735C42B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationcreateArchivoEmbeddingpostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/MutationCreateArchivoEmbeddingDataResolverFn/MutationCreateArchivoEmbeddingDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationCreateArchivoEmbeddingDataResolverFnMutationCreateArchivoEmbeddingDataResolverFnAppSyncFunctionD8F4A298"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationCreateArchivoEmbeddingDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/MutationupdateArchivoEmbeddinginit0Function/MutationupdateArchivoEmbeddinginit0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationupdateArchivoEmbeddinginit0FunctionMutationupdateArchivoEmbeddinginit0FunctionAppSyncFunction8C1CF68E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationupdateArchivoEmbeddinginit0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/MutationupdateArchivoEmbeddingauth0Function/MutationupdateArchivoEmbeddingauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationupdateArchivoEmbeddingauth0FunctionMutationupdateArchivoEmbeddingauth0FunctionAppSyncFunctionC96FE18E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationupdateArchivoEmbeddingauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/MutationupdateArchivoEmbeddingpostAuth0Function/MutationupdateArchivoEmbeddingpostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationupdateArchivoEmbeddingpostAuth0FunctionMutationupdateArchivoEmbeddingpostAuth0FunctionAppSyncFunction865A8225"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationupdateArchivoEmbeddingpostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/MutationUpdateArchivoEmbeddingDataResolverFn/MutationUpdateArchivoEmbeddingDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationUpdateArchivoEmbeddingDataResolverFnMutationUpdateArchivoEmbeddingDataResolverFnAppSyncFunctionA08FFB9D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationUpdateArchivoEmbeddingDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/MutationdeleteArchivoEmbeddingauth0Function/MutationdeleteArchivoEmbeddingauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationdeleteArchivoEmbeddingauth0FunctionMutationdeleteArchivoEmbeddingauth0FunctionAppSyncFunctionD55FF170"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationdeleteArchivoEmbeddingauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/MutationdeleteArchivoEmbeddingpostAuth0Function/MutationdeleteArchivoEmbeddingpostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationdeleteArchivoEmbeddingpostAuth0FunctionMutationdeleteArchivoEmbeddingpostAuth0FunctionAppSyncFunction37E9844B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationdeleteArchivoEmbeddingpostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/MutationDeleteArchivoEmbeddingDataResolverFn/MutationDeleteArchivoEmbeddingDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationDeleteArchivoEmbeddingDataResolverFnMutationDeleteArchivoEmbeddingDataResolverFnAppSyncFunction72978F5B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationDeleteArchivoEmbeddingDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/SubscriptiononCreateArchivoEmbeddingauth0Function/SubscriptiononCreateArchivoEmbeddingauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononCreateArchivoEmbeddingauth0FunctionSubscriptiononCreateArchivoEmbeddingauth0FunctionAppSyncFunction88097412"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononCreateArchivoEmbeddingauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/SubscriptiononCreateArchivoEmbeddingpostAuth0Function/SubscriptiononCreateArchivoEmbeddingpostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononCreateArchivoEmbeddingpostAuth0FunctionSubscriptiononCreateArchivoEmbeddingpostAuth0FunctionAppSyncFunction5BD049A1"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononCreateArchivoEmbeddingpostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/SubscriptionOnCreateArchivoEmbeddingDataResolverFn/SubscriptionOnCreateArchivoEmbeddingDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptionOnCreateArchivoEmbeddingDataResolverFnSubscriptionOnCreateArchivoEmbeddingDataResolverFnAppSyncFunctionA679B7F3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptionOnCreateArchivoEmbeddingDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/SubscriptiononUpdateArchivoEmbeddingauth0Function/SubscriptiononUpdateArchivoEmbeddingauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononUpdateArchivoEmbeddingauth0FunctionSubscriptiononUpdateArchivoEmbeddingauth0FunctionAppSyncFunction4D6BB54D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononUpdateArchivoEmbeddingauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/SubscriptiononUpdateArchivoEmbeddingpostAuth0Function/SubscriptiononUpdateArchivoEmbeddingpostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononUpdateArchivoEmbeddingpostAuth0FunctionSubscriptiononUpdateArchivoEmbeddingpostAuth0FunctionAppSyncFunction46734D75"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononUpdateArchivoEmbeddingpostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/SubscriptionOnUpdateArchivoEmbeddingDataResolverFn/SubscriptionOnUpdateArchivoEmbeddingDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptionOnUpdateArchivoEmbeddingDataResolverFnSubscriptionOnUpdateArchivoEmbeddingDataResolverFnAppSyncFunction537928DC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptionOnUpdateArchivoEmbeddingDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/SubscriptiononDeleteArchivoEmbeddingauth0Function/SubscriptiononDeleteArchivoEmbeddingauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononDeleteArchivoEmbeddingauth0FunctionSubscriptiononDeleteArchivoEmbeddingauth0FunctionAppSyncFunctionA9CA25CB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononDeleteArchivoEmbeddingauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/SubscriptiononDeleteArchivoEmbeddingpostAuth0Function/SubscriptiononDeleteArchivoEmbeddingpostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononDeleteArchivoEmbeddingpostAuth0FunctionSubscriptiononDeleteArchivoEmbeddingpostAuth0FunctionAppSyncFunction7CDDB75A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononDeleteArchivoEmbeddingpostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/SubscriptionOnDeleteArchivoEmbeddingDataResolverFn/SubscriptionOnDeleteArchivoEmbeddingDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptionOnDeleteArchivoEmbeddingDataResolverFnSubscriptionOnDeleteArchivoEmbeddingDataResolverFnAppSyncFunctionBAB69625"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptionOnDeleteArchivoEmbeddingDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/CDKMetadata/Condition": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadataAvailable"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/ChatMessageIAMRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ChatMessageIAMRole61E8A273"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "ChatMessageIAMRole"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/ChatMessageDataSource/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ChatMessageDataSource"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "ChatMessageTable"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/QuerygetChatMessageauth0Function/QuerygetChatMessageauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QuerygetChatMessageauth0FunctionQuerygetChatMessageauth0FunctionAppSyncFunction90215021"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QuerygetChatMessageauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/QuerygetChatMessagepostAuth0Function/QuerygetChatMessagepostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QuerygetChatMessagepostAuth0FunctionQuerygetChatMessagepostAuth0FunctionAppSyncFunction711228DE"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QuerygetChatMessagepostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/QueryGetChatMessageDataResolverFn/QueryGetChatMessageDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QueryGetChatMessageDataResolverFnQueryGetChatMessageDataResolverFnAppSyncFunction4B096578"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QueryGetChatMessageDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/QuerylistChatMessagesauth0Function/QuerylistChatMessagesauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QuerylistChatMessagesauth0FunctionQuerylistChatMessagesauth0FunctionAppSyncFunction39A96FAA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QuerylistChatMessagesauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/QuerylistChatMessagespostAuth0Function/QuerylistChatMessagespostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QuerylistChatMessagespostAuth0FunctionQuerylistChatMessagespostAuth0FunctionAppSyncFunctionBAE99C12"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QuerylistChatMessagespostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/QueryListChatMessagesDataResolverFn/QueryListChatMessagesDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QueryListChatMessagesDataResolverFnQueryListChatMessagesDataResolverFnAppSyncFunction2ACAA66C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QueryListChatMessagesDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/MutationcreateChatMessageinit0Function/MutationcreateChatMessageinit0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationcreateChatMessageinit0FunctionMutationcreateChatMessageinit0FunctionAppSyncFunction749B3552"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationcreateChatMessageinit0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/MutationcreateChatMessageauth0Function/MutationcreateChatMessageauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationcreateChatMessageauth0FunctionMutationcreateChatMessageauth0FunctionAppSyncFunction11D2D0E9"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationcreateChatMessageauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/MutationcreateChatMessagepostAuth0Function/MutationcreateChatMessagepostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationcreateChatMessagepostAuth0FunctionMutationcreateChatMessagepostAuth0FunctionAppSyncFunction62468E01"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationcreateChatMessagepostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/MutationCreateChatMessageDataResolverFn/MutationCreateChatMessageDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationCreateChatMessageDataResolverFnMutationCreateChatMessageDataResolverFnAppSyncFunctionE4C85569"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationCreateChatMessageDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/MutationupdateChatMessageinit0Function/MutationupdateChatMessageinit0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationupdateChatMessageinit0FunctionMutationupdateChatMessageinit0FunctionAppSyncFunction5F70F075"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationupdateChatMessageinit0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/MutationupdateChatMessageauth0Function/MutationupdateChatMessageauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationupdateChatMessageauth0FunctionMutationupdateChatMessageauth0FunctionAppSyncFunctionF14F6A24"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationupdateChatMessageauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/MutationupdateChatMessagepostAuth0Function/MutationupdateChatMessagepostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationupdateChatMessagepostAuth0FunctionMutationupdateChatMessagepostAuth0FunctionAppSyncFunctionD32AE7EA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationupdateChatMessagepostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/MutationUpdateChatMessageDataResolverFn/MutationUpdateChatMessageDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationUpdateChatMessageDataResolverFnMutationUpdateChatMessageDataResolverFnAppSyncFunction54A2D34D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationUpdateChatMessageDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/MutationdeleteChatMessageauth0Function/MutationdeleteChatMessageauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationdeleteChatMessageauth0FunctionMutationdeleteChatMessageauth0FunctionAppSyncFunction7D2853F1"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationdeleteChatMessageauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/MutationdeleteChatMessagepostAuth0Function/MutationdeleteChatMessagepostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationdeleteChatMessagepostAuth0FunctionMutationdeleteChatMessagepostAuth0FunctionAppSyncFunctionF2EA4CD9"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationdeleteChatMessagepostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/MutationDeleteChatMessageDataResolverFn/MutationDeleteChatMessageDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationDeleteChatMessageDataResolverFnMutationDeleteChatMessageDataResolverFnAppSyncFunction269527DB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationDeleteChatMessageDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/SubscriptiononCreateChatMessageauth0Function/SubscriptiononCreateChatMessageauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononCreateChatMessageauth0FunctionSubscriptiononCreateChatMessageauth0FunctionAppSyncFunction6D224BBA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononCreateChatMessageauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/SubscriptiononCreateChatMessagepostAuth0Function/SubscriptiononCreateChatMessagepostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononCreateChatMessagepostAuth0FunctionSubscriptiononCreateChatMessagepostAuth0FunctionAppSyncFunction9785E248"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononCreateChatMessagepostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/SubscriptionOnCreateChatMessageDataResolverFn/SubscriptionOnCreateChatMessageDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptionOnCreateChatMessageDataResolverFnSubscriptionOnCreateChatMessageDataResolverFnAppSyncFunctionCB92DB03"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptionOnCreateChatMessageDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/SubscriptiononUpdateChatMessageauth0Function/SubscriptiononUpdateChatMessageauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononUpdateChatMessageauth0FunctionSubscriptiononUpdateChatMessageauth0FunctionAppSyncFunctionF1DB3A92"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononUpdateChatMessageauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/SubscriptiononUpdateChatMessagepostAuth0Function/SubscriptiononUpdateChatMessagepostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononUpdateChatMessagepostAuth0FunctionSubscriptiononUpdateChatMessagepostAuth0FunctionAppSyncFunctionD3124B5B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononUpdateChatMessagepostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/SubscriptionOnUpdateChatMessageDataResolverFn/SubscriptionOnUpdateChatMessageDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptionOnUpdateChatMessageDataResolverFnSubscriptionOnUpdateChatMessageDataResolverFnAppSyncFunction30A80368"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptionOnUpdateChatMessageDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/SubscriptiononDeleteChatMessageauth0Function/SubscriptiononDeleteChatMessageauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononDeleteChatMessageauth0FunctionSubscriptiononDeleteChatMessageauth0FunctionAppSyncFunction77463113"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononDeleteChatMessageauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/SubscriptiononDeleteChatMessagepostAuth0Function/SubscriptiononDeleteChatMessagepostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononDeleteChatMessagepostAuth0FunctionSubscriptiononDeleteChatMessagepostAuth0FunctionAppSyncFunctionC0E7DA25"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononDeleteChatMessagepostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/SubscriptionOnDeleteChatMessageDataResolverFn/SubscriptionOnDeleteChatMessageDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptionOnDeleteChatMessageDataResolverFnSubscriptionOnDeleteChatMessageDataResolverFnAppSyncFunction2AD49112"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptionOnDeleteChatMessageDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/CDKMetadata/Condition": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadataAvailable"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/FnChatAssistantLambdaDataSource/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "FnChatAssistantLambdaDataSource"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "FnChatAssistantLambdaDataSource"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/InvokeFnChatAssistantLambdaDataSource/InvokeFnChatAssistantLambdaDataSource.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "InvokeFnChatAssistantLambdaDataSourceInvokeFnChatAssistantLambdaDataSourceAppSyncFunction930DD1DA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "InvokeFnChatAssistantLambdaDataSource"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/MutationChatAssistantAuthFN/MutationChatAssistantAuthFN.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationChatAssistantAuthFNMutationChatAssistantAuthFNAppSyncFunction1AACDFBB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationChatAssistantAuthFN"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/CDKMetadata/Condition": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadataAvailable"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsBucket/Resource": [
     {
       "type": "aws:cdk:logicalId",
@@ -7186,6 +9460,20 @@
       "data": [
         "...aws-cdk-lib...",
         "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/chat-assistant-lambda/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "chatassistantlambdaServiceRoleDefaultPolicy7DF44DD6"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...NodejsFunction.addToRolePolicy in aws-cdk-lib...",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:38:40)",
+        "...node internals, @aws-amplify/backend-deployer..."
       ]
     }
   ],
@@ -7390,6 +9678,57 @@
       "data": "EmpresaModulo"
     }
   ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ArchivoEmbedding/ArchivoEmbeddingTable/Default/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ArchivoEmbeddingTable"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "ArchivoEmbedding"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/ChatMessage/ChatMessageTable/Default/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ChatMessageTable"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "ChatMessage"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/FnChatAssistantLambdaDataSource/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "FnChatAssistantLambdaDataSourceServiceRoleF9DB8C62"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)"
+      ]
+    }
+  ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsBucket/Policy/Resource": [
     {
       "type": "aws:cdk:logicalId",
@@ -7457,6 +9796,19 @@
       "type": "aws:cdk:creationStack",
       "data": [
         "...aws-cdk-lib, @aws-amplify\\graphql-api-construct...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/FnChatAssistantLambdaDataSource/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "FnChatAssistantLambdaDataSourceServiceRoleDefaultPolicy38B5540A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
         "(no user code in 10 frames, use --stack-trace-limit to capture more)"
       ]
     }

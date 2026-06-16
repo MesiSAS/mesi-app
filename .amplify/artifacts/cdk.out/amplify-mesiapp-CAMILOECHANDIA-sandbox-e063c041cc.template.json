@@ -34,6 +34,12 @@
     "groups"
    ]
   },
+  "AWS::Amplify::Function": {
+   "version": "1",
+   "stackOutputs": [
+    "definedFunctions"
+   ]
+  },
   "AWS::Amplify::GraphQL": {
    "version": "1",
    "stackOutputs": [
@@ -148,6 +154,23 @@
   },
   "groups": {
    "Value": "[]"
+  },
+  "definedFunctions": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "[\"",
+      {
+       "Fn::GetAtt": [
+        "function1351588B",
+        "Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BRef"
+       ]
+      },
+      "\"]"
+     ]
+    ]
+   }
   },
   "awsAppsyncApiId": {
    "Value": {
@@ -326,6 +349,18 @@
        "auth179371D7",
        "Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
       ]
+     },
+     "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BArn": {
+      "Fn::GetAtt": [
+       "function1351588B",
+       "Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BArn"
+      ]
+     },
+     "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambdaServiceRoleE9EE5AC3Ref": {
+      "Fn::GetAtt": [
+       "function1351588B",
+       "Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambdaServiceRoleE9EE5AC3Ref"
+      ]
      }
     },
     "Tags": [
@@ -354,7 +389,7 @@
        {
         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
        },
-       "/38d8b78fcaf57e560d7d67ef2441b2aebdaf9538de8051ce24396dd49047bc33.json"
+       "/89aa9c3e8d8ee621ffbd14214f464534c26a3e367d39da77293bd7c7cddb3d1d.json"
       ]
      ]
     }
@@ -364,6 +399,48 @@
    "Metadata": {
     "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data.NestedStack/data.NestedStackResource",
     "aws:asset:path": "amplifymesiappCAMILOECHANDIAsandboxe063c041ccdata0F2D7C49.nested.template.json",
+    "aws:asset:property": "TemplateURL"
+   }
+  },
+  "function1351588B": {
+   "Type": "AWS::CloudFormation::Stack",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ],
+    "TemplateURL": {
+     "Fn::Join": [
+      "",
+      [
+       "https://s3.",
+       {
+        "Ref": "AWS::Region"
+       },
+       ".",
+       {
+        "Ref": "AWS::URLSuffix"
+       },
+       "/",
+       {
+        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+       },
+       "/aeae2ac2bcc107f0b998f5f0044a3437e87e677ef2e2d887895a8ce85c876b01.json"
+      ]
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function.NestedStack/function.NestedStackResource",
+    "aws:asset:path": "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunction0B758DC9.nested.template.json",
     "aws:asset:property": "TemplateURL"
    }
   },
