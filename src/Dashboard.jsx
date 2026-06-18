@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import {
   LogOut,
@@ -17,7 +17,6 @@ import ModuloDetalle from './ModuloDetalle';
 import { useEmpresas } from './hooks/useEmpresas';
 import { useModulos } from './hooks/useModulos';
 import { useEmpresaModulos } from './hooks/useEmpresaModulos';
-import AiAssistantChat from './components/AiAssistantChat';
 
 const ICONOS = { FileText, TrendingUp, Users, ShoppingBag, Cpu };
 
@@ -31,7 +30,16 @@ const Dashboard = () => {
   const [empresaData, setEmpresaData] = useState(null);
   const [modulos, setModulos] = useState([]);
   const [modulosActivos, setModulosActivos] = useState([]);
-  const [moduloActivo, setModuloActivo] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // El modulo activo vive en la URL (?modulo=...) para que el historial del
+  // navegador (botones atras/adelante) controle la navegacion de forma nativa.
+  const moduloActivo = searchParams.get('modulo');
+
+  // Abrir un modulo agrega una entrada al historial -> habilita el boton "atras".
+  const abrirModulo = (nombre) => setSearchParams({ modulo: nombre });
+  // Cerrar usa navigate(-1) para comportarse identico al boton atras del navegador.
+  const cerrarModulo = () => navigate(-1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -94,15 +102,6 @@ const Dashboard = () => {
     navigate('/');
   };
 
-  const handleAssistantNavigate = (action) => {
-    if (!action) return;
-    if (action.type === 'open_module' && action.moduloNombre) {
-      setModuloActivo(action.moduloNombre);
-    } else if (action.type === 'open_file' && action.moduloNombre) {
-      setModuloActivo(action.moduloNombre);
-    }
-  };
-
   const handleChangePassword = async (e) => {
     e.preventDefault();
     setPwError('');
@@ -141,7 +140,7 @@ const Dashboard = () => {
       <ModuloDetalle
         empresa={user?.empresa}
         modulo={moduloActivo}
-        onBack={() => setModuloActivo(null)}
+        onBack={cerrarModulo}
         isAdmin={false}
       />
     );
@@ -219,7 +218,7 @@ const Dashboard = () => {
               return (
                 <div
                   key={modulo.id}
-                  onClick={() => setModuloActivo(modulo.nombre)}
+                  onClick={() => abrirModulo(modulo.nombre)}
                   className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-md transition-all cursor-pointer group border border-transparent hover:border-[#8CC63F]/30"
                 >
                   <div className="flex items-center justify-between mb-6">
@@ -290,14 +289,6 @@ const Dashboard = () => {
         </div>
       )}
 
-      {user && (
-        <AiAssistantChat
-          user={user}
-          empresa={user.empresa}
-          moduloActivo={moduloActivo}
-          onNavigate={handleAssistantNavigate}
-        />
-      )}
     </div>
   );
 };

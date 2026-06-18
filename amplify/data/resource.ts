@@ -16,6 +16,16 @@ export const chatAssistant = defineFunction({
   },
 });
 
+export const indexArchivo = defineFunction({
+  entry: '../functions/index-archivo/handler.ts',
+  name: 'index-archivo',
+  timeoutSeconds: 300,
+  memoryMB: 2048,
+  environment: {
+    BEDROCK_EMBEDDING_MODEL_ID,
+  },
+});
+
 const schema = a.schema({
 
   Archivo: a
@@ -129,8 +139,17 @@ const schema = a.schema({
     })
     .authorization((allow) => [
       allow.publicApiKey(),
-      
+
     ]),
+
+  // Perfil/memoria destilada por usuario: la IA va resumiendo lo aprendido.
+  PerfilUsuario: a
+    .model({
+      userId: a.string().required(),
+      resumen: a.string(),
+      actualizado: a.datetime(),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
 
   ChatSource: a.customType({
     archivoId: a.string(),
@@ -167,8 +186,27 @@ const schema = a.schema({
     .authorization((allow) => [allow.publicApiKey()])
     .handler(a.handler.function(chatAssistant)),
 
+  IndexResponse: a.customType({
+    indexados: a.integer(),
+    archivos: a.integer(),
+    mensaje: a.string(),
+  }),
+
+  indexArchivo: a
+    .mutation()
+    .arguments({
+      // Si se omite archivoId, se hace backfill de todos los archivos.
+      archivoId: a.string(),
+    })
+    .returns(a.ref('IndexResponse'))
+    .authorization((allow) => [allow.publicApiKey()])
+    .handler(a.handler.function(indexArchivo)),
+
 })
-.authorization((allow) => [allow.resource(chatAssistant)]);
+.authorization((allow) => [
+  allow.resource(chatAssistant),
+  allow.resource(indexArchivo),
+]);
 
 export type Schema = ClientSchema<typeof schema>;
 

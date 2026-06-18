@@ -627,16 +627,24 @@
    ]
   }
  },
- "Parameters": {
-  "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref": {
-   "Type": "String"
-  }
- },
  "Outputs": {
+  "amplifymesiappCAMILOECHANDIAsandboxe063c041ccstoragemesiStorageBucket7ABBC0E6Arn": {
+   "Value": {
+    "Fn::GetAtt": [
+     "mesiStorageBucket9ECE19C6",
+     "Arn"
+    ]
+   }
+  },
   "amplifymesiappCAMILOECHANDIAsandboxe063c041ccstoragemesiStorageBucket7ABBC0E6Ref": {
    "Value": {
     "Ref": "mesiStorageBucket9ECE19C6"
    }
+  }
+ },
+ "Parameters": {
+  "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref": {
+   "Type": "String"
   }
  }
 }

@@ -4,6 +4,7 @@ import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { auth } from './auth/resource';
 import {
   chatAssistant,
+  indexArchivo,
   data,
   BEDROCK_CHAT_MODEL_ID,
   BEDROCK_EMBEDDING_MODEL_ID,
@@ -14,6 +15,7 @@ const backend = defineBackend({
   auth,
   data,
   chatAssistant,
+  indexArchivo,
   storage,
 });
 
@@ -35,12 +37,30 @@ const chatModelResources = isInferenceProfile
     ]
   : [`arn:aws:bedrock:${backend.stack.region}::foundation-model/${chatFoundationModel}`];
 
+const embeddingModelArn = `arn:aws:bedrock:${backend.stack.region}::foundation-model/${BEDROCK_EMBEDDING_MODEL_ID}`;
+
 backend.chatAssistant.resources.lambda.addToRolePolicy(
   new PolicyStatement({
     actions: ['bedrock:InvokeModel'],
     resources: [
       ...chatModelResources,
-      `arn:aws:bedrock:${backend.stack.region}::foundation-model/${BEDROCK_EMBEDDING_MODEL_ID}`,
+      embeddingModelArn,
     ],
   })
+);
+
+// La funcion de indexacion necesita: invocar el modelo de embeddings y leer
+// los archivos desde el bucket de almacenamiento.
+backend.indexArchivo.resources.lambda.addToRolePolicy(
+  new PolicyStatement({
+    actions: ['bedrock:InvokeModel'],
+    resources: [embeddingModelArn],
+  })
+);
+
+backend.storage.resources.bucket.grantRead(backend.indexArchivo.resources.lambda);
+
+backend.indexArchivo.addEnvironment(
+  'BUCKET_NAME',
+  backend.storage.resources.bucket.bucketName
 );

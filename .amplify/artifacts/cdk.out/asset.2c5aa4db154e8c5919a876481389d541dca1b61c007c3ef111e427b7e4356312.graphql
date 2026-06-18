@@ -1,0 +1,981 @@
+type Archivo @aws_iam @aws_api_key {
+  empresa: String
+  modulo: String
+  submodulo: String
+  nombre: String
+  url: String
+  s3Key: String
+  tamano: Int
+  tipo: String
+  oculto: Boolean
+  fecha: AWSDateTime
+  anio: String
+  mes: String
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Empresa @aws_iam @aws_api_key {
+  nombre: String!
+  logo: String
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Modulo @aws_iam @aws_api_key {
+  nombre: String!
+  icono: String
+  logo: String
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Usuario @aws_iam @aws_api_key {
+  empresa: String!
+  correo: String!
+  nombre: String!
+  tipo: String!
+  password: String!
+  logo: String
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Submodulo @aws_iam @aws_api_key {
+  nombre: String!
+  moduloId: String!
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type EmpresaModulo @aws_iam @aws_api_key {
+  empresaId: String!
+  moduloId: String!
+  activo: Boolean
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ArchivoEmbedding @aws_iam @aws_api_key {
+  archivoId: String!
+  empresa: String!
+  modulo: String!
+  submodulo: String
+  s3Key: String
+  nombreArchivo: String
+  chunkIndex: Int!
+  texto: String!
+  embedding: [Float]
+  oculto: Boolean
+  fecha: AWSDateTime
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ChatMessage @aws_iam @aws_api_key {
+  userId: String!
+  empresa: String!
+  role: String!
+  content: String!
+  sources: String
+  createdAt: AWSDateTime
+  id: ID!
+  updatedAt: AWSDateTime!
+}
+
+type PerfilUsuario @aws_iam @aws_api_key {
+  userId: String!
+  resumen: String
+  actualizado: AWSDateTime
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ChatSource @aws_api_key @aws_iam {
+  archivoId: String
+  nombreArchivo: String
+  modulo: String
+  submodulo: String
+  score: Float
+}
+
+type ChatAction @aws_api_key @aws_iam {
+  type: String
+  moduloNombre: String
+  archivoId: String
+  nombreArchivo: String
+  label: String
+}
+
+type ChatAssistantResponse @aws_api_key @aws_iam {
+  answer: String
+  sources: [ChatSource]
+  action: ChatAction
+}
+
+type IndexResponse @aws_api_key @aws_iam {
+  indexados: Int
+  archivos: Int
+  mensaje: String
+}
+
+type Mutation @aws_iam {
+  createArchivo(input: CreateArchivoInput!, condition: ModelArchivoConditionInput): Archivo @aws_api_key @aws_iam
+  updateArchivo(input: UpdateArchivoInput!, condition: ModelArchivoConditionInput): Archivo @aws_api_key @aws_iam
+  deleteArchivo(input: DeleteArchivoInput!, condition: ModelArchivoConditionInput): Archivo @aws_api_key @aws_iam
+  createEmpresa(input: CreateEmpresaInput!, condition: ModelEmpresaConditionInput): Empresa @aws_api_key @aws_iam
+  updateEmpresa(input: UpdateEmpresaInput!, condition: ModelEmpresaConditionInput): Empresa @aws_api_key @aws_iam
+  deleteEmpresa(input: DeleteEmpresaInput!, condition: ModelEmpresaConditionInput): Empresa @aws_api_key @aws_iam
+  createModulo(input: CreateModuloInput!, condition: ModelModuloConditionInput): Modulo @aws_api_key @aws_iam
+  updateModulo(input: UpdateModuloInput!, condition: ModelModuloConditionInput): Modulo @aws_api_key @aws_iam
+  deleteModulo(input: DeleteModuloInput!, condition: ModelModuloConditionInput): Modulo @aws_api_key @aws_iam
+  createUsuario(input: CreateUsuarioInput!, condition: ModelUsuarioConditionInput): Usuario @aws_api_key @aws_iam
+  updateUsuario(input: UpdateUsuarioInput!, condition: ModelUsuarioConditionInput): Usuario @aws_api_key @aws_iam
+  deleteUsuario(input: DeleteUsuarioInput!, condition: ModelUsuarioConditionInput): Usuario @aws_api_key @aws_iam
+  createSubmodulo(input: CreateSubmoduloInput!, condition: ModelSubmoduloConditionInput): Submodulo @aws_api_key @aws_iam
+  updateSubmodulo(input: UpdateSubmoduloInput!, condition: ModelSubmoduloConditionInput): Submodulo @aws_api_key @aws_iam
+  deleteSubmodulo(input: DeleteSubmoduloInput!, condition: ModelSubmoduloConditionInput): Submodulo @aws_api_key @aws_iam
+  createEmpresaModulo(input: CreateEmpresaModuloInput!, condition: ModelEmpresaModuloConditionInput): EmpresaModulo @aws_api_key @aws_iam
+  updateEmpresaModulo(input: UpdateEmpresaModuloInput!, condition: ModelEmpresaModuloConditionInput): EmpresaModulo @aws_api_key @aws_iam
+  deleteEmpresaModulo(input: DeleteEmpresaModuloInput!, condition: ModelEmpresaModuloConditionInput): EmpresaModulo @aws_api_key @aws_iam
+  createArchivoEmbedding(input: CreateArchivoEmbeddingInput!, condition: ModelArchivoEmbeddingConditionInput): ArchivoEmbedding @aws_api_key @aws_iam
+  updateArchivoEmbedding(input: UpdateArchivoEmbeddingInput!, condition: ModelArchivoEmbeddingConditionInput): ArchivoEmbedding @aws_api_key @aws_iam
+  deleteArchivoEmbedding(input: DeleteArchivoEmbeddingInput!, condition: ModelArchivoEmbeddingConditionInput): ArchivoEmbedding @aws_api_key @aws_iam
+  createChatMessage(input: CreateChatMessageInput!, condition: ModelChatMessageConditionInput): ChatMessage @aws_api_key @aws_iam
+  updateChatMessage(input: UpdateChatMessageInput!, condition: ModelChatMessageConditionInput): ChatMessage @aws_api_key @aws_iam
+  deleteChatMessage(input: DeleteChatMessageInput!, condition: ModelChatMessageConditionInput): ChatMessage @aws_api_key @aws_iam
+  createPerfilUsuario(input: CreatePerfilUsuarioInput!, condition: ModelPerfilUsuarioConditionInput): PerfilUsuario @aws_api_key @aws_iam
+  updatePerfilUsuario(input: UpdatePerfilUsuarioInput!, condition: ModelPerfilUsuarioConditionInput): PerfilUsuario @aws_api_key @aws_iam
+  deletePerfilUsuario(input: DeletePerfilUsuarioInput!, condition: ModelPerfilUsuarioConditionInput): PerfilUsuario @aws_api_key @aws_iam
+  chatAssistant(userId: String!, message: String!, empresa: String, modulo: String, moduloActivo: String): ChatAssistantResponse @aws_iam @aws_api_key
+  indexArchivo(archivoId: String): IndexResponse @aws_iam @aws_api_key
+}
+
+input AmplifyAIConversationTurnErrorInput {
+  errorType: String!
+  message: String!
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelArchivoConnection @aws_api_key @aws_iam {
+  items: [Archivo]!
+  nextToken: String
+}
+
+input ModelArchivoFilterInput {
+  empresa: ModelStringInput
+  modulo: ModelStringInput
+  submodulo: ModelStringInput
+  nombre: ModelStringInput
+  url: ModelStringInput
+  s3Key: ModelStringInput
+  tamano: ModelIntInput
+  tipo: ModelStringInput
+  oculto: ModelBooleanInput
+  fecha: ModelStringInput
+  anio: ModelStringInput
+  mes: ModelStringInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelArchivoFilterInput]
+  or: [ModelArchivoFilterInput]
+  not: ModelArchivoFilterInput
+}
+
+type Query {
+  getArchivo(id: ID!): Archivo @aws_api_key @aws_iam
+  listArchivos(filter: ModelArchivoFilterInput, limit: Int, nextToken: String): ModelArchivoConnection @aws_api_key @aws_iam
+  getEmpresa(id: ID!): Empresa @aws_api_key @aws_iam
+  listEmpresas(filter: ModelEmpresaFilterInput, limit: Int, nextToken: String): ModelEmpresaConnection @aws_api_key @aws_iam
+  getModulo(id: ID!): Modulo @aws_api_key @aws_iam
+  listModulos(filter: ModelModuloFilterInput, limit: Int, nextToken: String): ModelModuloConnection @aws_api_key @aws_iam
+  getUsuario(id: ID!): Usuario @aws_api_key @aws_iam
+  listUsuarios(filter: ModelUsuarioFilterInput, limit: Int, nextToken: String): ModelUsuarioConnection @aws_api_key @aws_iam
+  getSubmodulo(id: ID!): Submodulo @aws_api_key @aws_iam
+  listSubmodulos(filter: ModelSubmoduloFilterInput, limit: Int, nextToken: String): ModelSubmoduloConnection @aws_api_key @aws_iam
+  getEmpresaModulo(id: ID!): EmpresaModulo @aws_api_key @aws_iam
+  listEmpresaModulos(filter: ModelEmpresaModuloFilterInput, limit: Int, nextToken: String): ModelEmpresaModuloConnection @aws_api_key @aws_iam
+  getArchivoEmbedding(id: ID!): ArchivoEmbedding @aws_api_key @aws_iam
+  listArchivoEmbeddings(filter: ModelArchivoEmbeddingFilterInput, limit: Int, nextToken: String): ModelArchivoEmbeddingConnection @aws_api_key @aws_iam
+  getChatMessage(id: ID!): ChatMessage @aws_api_key @aws_iam
+  listChatMessages(filter: ModelChatMessageFilterInput, limit: Int, nextToken: String): ModelChatMessageConnection @aws_api_key @aws_iam
+  getPerfilUsuario(id: ID!): PerfilUsuario @aws_api_key @aws_iam
+  listPerfilUsuarios(filter: ModelPerfilUsuarioFilterInput, limit: Int, nextToken: String): ModelPerfilUsuarioConnection @aws_api_key @aws_iam
+}
+
+input ModelArchivoConditionInput {
+  empresa: ModelStringInput
+  modulo: ModelStringInput
+  submodulo: ModelStringInput
+  nombre: ModelStringInput
+  url: ModelStringInput
+  s3Key: ModelStringInput
+  tamano: ModelIntInput
+  tipo: ModelStringInput
+  oculto: ModelBooleanInput
+  fecha: ModelStringInput
+  anio: ModelStringInput
+  mes: ModelStringInput
+  and: [ModelArchivoConditionInput]
+  or: [ModelArchivoConditionInput]
+  not: ModelArchivoConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreateArchivoInput {
+  empresa: String
+  modulo: String
+  submodulo: String
+  nombre: String
+  url: String
+  s3Key: String
+  tamano: Int
+  tipo: String
+  oculto: Boolean
+  fecha: AWSDateTime
+  anio: String
+  mes: String
+  id: ID
+}
+
+input UpdateArchivoInput {
+  empresa: String
+  modulo: String
+  submodulo: String
+  nombre: String
+  url: String
+  s3Key: String
+  tamano: Int
+  tipo: String
+  oculto: Boolean
+  fecha: AWSDateTime
+  anio: String
+  mes: String
+  id: ID!
+}
+
+input DeleteArchivoInput {
+  id: ID!
+}
+
+input ModelSubscriptionArchivoFilterInput {
+  empresa: ModelSubscriptionStringInput
+  modulo: ModelSubscriptionStringInput
+  submodulo: ModelSubscriptionStringInput
+  nombre: ModelSubscriptionStringInput
+  url: ModelSubscriptionStringInput
+  s3Key: ModelSubscriptionStringInput
+  tamano: ModelSubscriptionIntInput
+  tipo: ModelSubscriptionStringInput
+  oculto: ModelSubscriptionBooleanInput
+  fecha: ModelSubscriptionStringInput
+  anio: ModelSubscriptionStringInput
+  mes: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionArchivoFilterInput]
+  or: [ModelSubscriptionArchivoFilterInput]
+}
+
+type Subscription {
+  onCreateArchivo(filter: ModelSubscriptionArchivoFilterInput): Archivo @aws_subscribe(mutations: ["createArchivo"]) @aws_api_key @aws_iam
+  onUpdateArchivo(filter: ModelSubscriptionArchivoFilterInput): Archivo @aws_subscribe(mutations: ["updateArchivo"]) @aws_api_key @aws_iam
+  onDeleteArchivo(filter: ModelSubscriptionArchivoFilterInput): Archivo @aws_subscribe(mutations: ["deleteArchivo"]) @aws_api_key @aws_iam
+  onCreateEmpresa(filter: ModelSubscriptionEmpresaFilterInput): Empresa @aws_subscribe(mutations: ["createEmpresa"]) @aws_api_key @aws_iam
+  onUpdateEmpresa(filter: ModelSubscriptionEmpresaFilterInput): Empresa @aws_subscribe(mutations: ["updateEmpresa"]) @aws_api_key @aws_iam
+  onDeleteEmpresa(filter: ModelSubscriptionEmpresaFilterInput): Empresa @aws_subscribe(mutations: ["deleteEmpresa"]) @aws_api_key @aws_iam
+  onCreateModulo(filter: ModelSubscriptionModuloFilterInput): Modulo @aws_subscribe(mutations: ["createModulo"]) @aws_api_key @aws_iam
+  onUpdateModulo(filter: ModelSubscriptionModuloFilterInput): Modulo @aws_subscribe(mutations: ["updateModulo"]) @aws_api_key @aws_iam
+  onDeleteModulo(filter: ModelSubscriptionModuloFilterInput): Modulo @aws_subscribe(mutations: ["deleteModulo"]) @aws_api_key @aws_iam
+  onCreateUsuario(filter: ModelSubscriptionUsuarioFilterInput): Usuario @aws_subscribe(mutations: ["createUsuario"]) @aws_api_key @aws_iam
+  onUpdateUsuario(filter: ModelSubscriptionUsuarioFilterInput): Usuario @aws_subscribe(mutations: ["updateUsuario"]) @aws_api_key @aws_iam
+  onDeleteUsuario(filter: ModelSubscriptionUsuarioFilterInput): Usuario @aws_subscribe(mutations: ["deleteUsuario"]) @aws_api_key @aws_iam
+  onCreateSubmodulo(filter: ModelSubscriptionSubmoduloFilterInput): Submodulo @aws_subscribe(mutations: ["createSubmodulo"]) @aws_api_key @aws_iam
+  onUpdateSubmodulo(filter: ModelSubscriptionSubmoduloFilterInput): Submodulo @aws_subscribe(mutations: ["updateSubmodulo"]) @aws_api_key @aws_iam
+  onDeleteSubmodulo(filter: ModelSubscriptionSubmoduloFilterInput): Submodulo @aws_subscribe(mutations: ["deleteSubmodulo"]) @aws_api_key @aws_iam
+  onCreateEmpresaModulo(filter: ModelSubscriptionEmpresaModuloFilterInput): EmpresaModulo @aws_subscribe(mutations: ["createEmpresaModulo"]) @aws_api_key @aws_iam
+  onUpdateEmpresaModulo(filter: ModelSubscriptionEmpresaModuloFilterInput): EmpresaModulo @aws_subscribe(mutations: ["updateEmpresaModulo"]) @aws_api_key @aws_iam
+  onDeleteEmpresaModulo(filter: ModelSubscriptionEmpresaModuloFilterInput): EmpresaModulo @aws_subscribe(mutations: ["deleteEmpresaModulo"]) @aws_api_key @aws_iam
+  onCreateArchivoEmbedding(filter: ModelSubscriptionArchivoEmbeddingFilterInput): ArchivoEmbedding @aws_subscribe(mutations: ["createArchivoEmbedding"]) @aws_api_key @aws_iam
+  onUpdateArchivoEmbedding(filter: ModelSubscriptionArchivoEmbeddingFilterInput): ArchivoEmbedding @aws_subscribe(mutations: ["updateArchivoEmbedding"]) @aws_api_key @aws_iam
+  onDeleteArchivoEmbedding(filter: ModelSubscriptionArchivoEmbeddingFilterInput): ArchivoEmbedding @aws_subscribe(mutations: ["deleteArchivoEmbedding"]) @aws_api_key @aws_iam
+  onCreateChatMessage(filter: ModelSubscriptionChatMessageFilterInput): ChatMessage @aws_subscribe(mutations: ["createChatMessage"]) @aws_api_key @aws_iam
+  onUpdateChatMessage(filter: ModelSubscriptionChatMessageFilterInput): ChatMessage @aws_subscribe(mutations: ["updateChatMessage"]) @aws_api_key @aws_iam
+  onDeleteChatMessage(filter: ModelSubscriptionChatMessageFilterInput): ChatMessage @aws_subscribe(mutations: ["deleteChatMessage"]) @aws_api_key @aws_iam
+  onCreatePerfilUsuario(filter: ModelSubscriptionPerfilUsuarioFilterInput): PerfilUsuario @aws_subscribe(mutations: ["createPerfilUsuario"]) @aws_api_key @aws_iam
+  onUpdatePerfilUsuario(filter: ModelSubscriptionPerfilUsuarioFilterInput): PerfilUsuario @aws_subscribe(mutations: ["updatePerfilUsuario"]) @aws_api_key @aws_iam
+  onDeletePerfilUsuario(filter: ModelSubscriptionPerfilUsuarioFilterInput): PerfilUsuario @aws_subscribe(mutations: ["deletePerfilUsuario"]) @aws_api_key @aws_iam
+}
+
+type ModelEmpresaConnection @aws_api_key @aws_iam {
+  items: [Empresa]!
+  nextToken: String
+}
+
+input ModelEmpresaFilterInput {
+  nombre: ModelStringInput
+  logo: ModelStringInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelEmpresaFilterInput]
+  or: [ModelEmpresaFilterInput]
+  not: ModelEmpresaFilterInput
+}
+
+input ModelEmpresaConditionInput {
+  nombre: ModelStringInput
+  logo: ModelStringInput
+  and: [ModelEmpresaConditionInput]
+  or: [ModelEmpresaConditionInput]
+  not: ModelEmpresaConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreateEmpresaInput {
+  nombre: String!
+  logo: String
+  id: ID
+}
+
+input UpdateEmpresaInput {
+  nombre: String
+  logo: String
+  id: ID!
+}
+
+input DeleteEmpresaInput {
+  id: ID!
+}
+
+input ModelSubscriptionEmpresaFilterInput {
+  nombre: ModelSubscriptionStringInput
+  logo: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionEmpresaFilterInput]
+  or: [ModelSubscriptionEmpresaFilterInput]
+}
+
+type ModelModuloConnection @aws_api_key @aws_iam {
+  items: [Modulo]!
+  nextToken: String
+}
+
+input ModelModuloFilterInput {
+  nombre: ModelStringInput
+  icono: ModelStringInput
+  logo: ModelStringInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelModuloFilterInput]
+  or: [ModelModuloFilterInput]
+  not: ModelModuloFilterInput
+}
+
+input ModelModuloConditionInput {
+  nombre: ModelStringInput
+  icono: ModelStringInput
+  logo: ModelStringInput
+  and: [ModelModuloConditionInput]
+  or: [ModelModuloConditionInput]
+  not: ModelModuloConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreateModuloInput {
+  nombre: String!
+  icono: String
+  logo: String
+  id: ID
+}
+
+input UpdateModuloInput {
+  nombre: String
+  icono: String
+  logo: String
+  id: ID!
+}
+
+input DeleteModuloInput {
+  id: ID!
+}
+
+input ModelSubscriptionModuloFilterInput {
+  nombre: ModelSubscriptionStringInput
+  icono: ModelSubscriptionStringInput
+  logo: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionModuloFilterInput]
+  or: [ModelSubscriptionModuloFilterInput]
+}
+
+type ModelUsuarioConnection @aws_api_key @aws_iam {
+  items: [Usuario]!
+  nextToken: String
+}
+
+input ModelUsuarioFilterInput {
+  empresa: ModelStringInput
+  correo: ModelStringInput
+  nombre: ModelStringInput
+  tipo: ModelStringInput
+  password: ModelStringInput
+  logo: ModelStringInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelUsuarioFilterInput]
+  or: [ModelUsuarioFilterInput]
+  not: ModelUsuarioFilterInput
+}
+
+input ModelUsuarioConditionInput {
+  empresa: ModelStringInput
+  correo: ModelStringInput
+  nombre: ModelStringInput
+  tipo: ModelStringInput
+  password: ModelStringInput
+  logo: ModelStringInput
+  and: [ModelUsuarioConditionInput]
+  or: [ModelUsuarioConditionInput]
+  not: ModelUsuarioConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreateUsuarioInput {
+  empresa: String!
+  correo: String!
+  nombre: String!
+  tipo: String!
+  password: String!
+  logo: String
+  id: ID
+}
+
+input UpdateUsuarioInput {
+  empresa: String
+  correo: String
+  nombre: String
+  tipo: String
+  password: String
+  logo: String
+  id: ID!
+}
+
+input DeleteUsuarioInput {
+  id: ID!
+}
+
+input ModelSubscriptionUsuarioFilterInput {
+  empresa: ModelSubscriptionStringInput
+  correo: ModelSubscriptionStringInput
+  nombre: ModelSubscriptionStringInput
+  tipo: ModelSubscriptionStringInput
+  password: ModelSubscriptionStringInput
+  logo: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionUsuarioFilterInput]
+  or: [ModelSubscriptionUsuarioFilterInput]
+}
+
+type ModelSubmoduloConnection @aws_api_key @aws_iam {
+  items: [Submodulo]!
+  nextToken: String
+}
+
+input ModelSubmoduloFilterInput {
+  nombre: ModelStringInput
+  moduloId: ModelStringInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelSubmoduloFilterInput]
+  or: [ModelSubmoduloFilterInput]
+  not: ModelSubmoduloFilterInput
+}
+
+input ModelSubmoduloConditionInput {
+  nombre: ModelStringInput
+  moduloId: ModelStringInput
+  and: [ModelSubmoduloConditionInput]
+  or: [ModelSubmoduloConditionInput]
+  not: ModelSubmoduloConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreateSubmoduloInput {
+  nombre: String!
+  moduloId: String!
+  id: ID
+}
+
+input UpdateSubmoduloInput {
+  nombre: String
+  moduloId: String
+  id: ID!
+}
+
+input DeleteSubmoduloInput {
+  id: ID!
+}
+
+input ModelSubscriptionSubmoduloFilterInput {
+  nombre: ModelSubscriptionStringInput
+  moduloId: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionSubmoduloFilterInput]
+  or: [ModelSubscriptionSubmoduloFilterInput]
+}
+
+type ModelEmpresaModuloConnection @aws_api_key @aws_iam {
+  items: [EmpresaModulo]!
+  nextToken: String
+}
+
+input ModelEmpresaModuloFilterInput {
+  empresaId: ModelStringInput
+  moduloId: ModelStringInput
+  activo: ModelBooleanInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelEmpresaModuloFilterInput]
+  or: [ModelEmpresaModuloFilterInput]
+  not: ModelEmpresaModuloFilterInput
+}
+
+input ModelEmpresaModuloConditionInput {
+  empresaId: ModelStringInput
+  moduloId: ModelStringInput
+  activo: ModelBooleanInput
+  and: [ModelEmpresaModuloConditionInput]
+  or: [ModelEmpresaModuloConditionInput]
+  not: ModelEmpresaModuloConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreateEmpresaModuloInput {
+  empresaId: String!
+  moduloId: String!
+  activo: Boolean
+  id: ID
+}
+
+input UpdateEmpresaModuloInput {
+  empresaId: String
+  moduloId: String
+  activo: Boolean
+  id: ID!
+}
+
+input DeleteEmpresaModuloInput {
+  id: ID!
+}
+
+input ModelSubscriptionEmpresaModuloFilterInput {
+  empresaId: ModelSubscriptionStringInput
+  moduloId: ModelSubscriptionStringInput
+  activo: ModelSubscriptionBooleanInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionEmpresaModuloFilterInput]
+  or: [ModelSubscriptionEmpresaModuloFilterInput]
+}
+
+type ModelArchivoEmbeddingConnection @aws_api_key @aws_iam {
+  items: [ArchivoEmbedding]!
+  nextToken: String
+}
+
+input ModelArchivoEmbeddingFilterInput {
+  archivoId: ModelStringInput
+  empresa: ModelStringInput
+  modulo: ModelStringInput
+  submodulo: ModelStringInput
+  s3Key: ModelStringInput
+  nombreArchivo: ModelStringInput
+  chunkIndex: ModelIntInput
+  texto: ModelStringInput
+  embedding: ModelFloatInput
+  oculto: ModelBooleanInput
+  fecha: ModelStringInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelArchivoEmbeddingFilterInput]
+  or: [ModelArchivoEmbeddingFilterInput]
+  not: ModelArchivoEmbeddingFilterInput
+}
+
+input ModelArchivoEmbeddingConditionInput {
+  archivoId: ModelStringInput
+  empresa: ModelStringInput
+  modulo: ModelStringInput
+  submodulo: ModelStringInput
+  s3Key: ModelStringInput
+  nombreArchivo: ModelStringInput
+  chunkIndex: ModelIntInput
+  texto: ModelStringInput
+  embedding: ModelFloatInput
+  oculto: ModelBooleanInput
+  fecha: ModelStringInput
+  and: [ModelArchivoEmbeddingConditionInput]
+  or: [ModelArchivoEmbeddingConditionInput]
+  not: ModelArchivoEmbeddingConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreateArchivoEmbeddingInput {
+  archivoId: String!
+  empresa: String!
+  modulo: String!
+  submodulo: String
+  s3Key: String
+  nombreArchivo: String
+  chunkIndex: Int!
+  texto: String!
+  embedding: [Float]
+  oculto: Boolean
+  fecha: AWSDateTime
+  id: ID
+}
+
+input UpdateArchivoEmbeddingInput {
+  archivoId: String
+  empresa: String
+  modulo: String
+  submodulo: String
+  s3Key: String
+  nombreArchivo: String
+  chunkIndex: Int
+  texto: String
+  embedding: [Float]
+  oculto: Boolean
+  fecha: AWSDateTime
+  id: ID!
+}
+
+input DeleteArchivoEmbeddingInput {
+  id: ID!
+}
+
+input ModelSubscriptionArchivoEmbeddingFilterInput {
+  archivoId: ModelSubscriptionStringInput
+  empresa: ModelSubscriptionStringInput
+  modulo: ModelSubscriptionStringInput
+  submodulo: ModelSubscriptionStringInput
+  s3Key: ModelSubscriptionStringInput
+  nombreArchivo: ModelSubscriptionStringInput
+  chunkIndex: ModelSubscriptionIntInput
+  texto: ModelSubscriptionStringInput
+  embedding: ModelSubscriptionFloatInput
+  oculto: ModelSubscriptionBooleanInput
+  fecha: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionArchivoEmbeddingFilterInput]
+  or: [ModelSubscriptionArchivoEmbeddingFilterInput]
+}
+
+type ModelChatMessageConnection @aws_api_key @aws_iam {
+  items: [ChatMessage]!
+  nextToken: String
+}
+
+input ModelChatMessageFilterInput {
+  userId: ModelStringInput
+  empresa: ModelStringInput
+  role: ModelStringInput
+  content: ModelStringInput
+  sources: ModelStringInput
+  createdAt: ModelStringInput
+  id: ModelIDInput
+  updatedAt: ModelStringInput
+  and: [ModelChatMessageFilterInput]
+  or: [ModelChatMessageFilterInput]
+  not: ModelChatMessageFilterInput
+}
+
+input ModelChatMessageConditionInput {
+  userId: ModelStringInput
+  empresa: ModelStringInput
+  role: ModelStringInput
+  content: ModelStringInput
+  sources: ModelStringInput
+  createdAt: ModelStringInput
+  and: [ModelChatMessageConditionInput]
+  or: [ModelChatMessageConditionInput]
+  not: ModelChatMessageConditionInput
+  updatedAt: ModelStringInput
+}
+
+input CreateChatMessageInput {
+  userId: String!
+  empresa: String!
+  role: String!
+  content: String!
+  sources: String
+  createdAt: AWSDateTime
+  id: ID
+}
+
+input UpdateChatMessageInput {
+  userId: String
+  empresa: String
+  role: String
+  content: String
+  sources: String
+  createdAt: AWSDateTime
+  id: ID!
+}
+
+input DeleteChatMessageInput {
+  id: ID!
+}
+
+input ModelSubscriptionChatMessageFilterInput {
+  userId: ModelSubscriptionStringInput
+  empresa: ModelSubscriptionStringInput
+  role: ModelSubscriptionStringInput
+  content: ModelSubscriptionStringInput
+  sources: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionChatMessageFilterInput]
+  or: [ModelSubscriptionChatMessageFilterInput]
+}
+
+type ModelPerfilUsuarioConnection @aws_api_key @aws_iam {
+  items: [PerfilUsuario]!
+  nextToken: String
+}
+
+input ModelPerfilUsuarioFilterInput {
+  userId: ModelStringInput
+  resumen: ModelStringInput
+  actualizado: ModelStringInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelPerfilUsuarioFilterInput]
+  or: [ModelPerfilUsuarioFilterInput]
+  not: ModelPerfilUsuarioFilterInput
+}
+
+input ModelPerfilUsuarioConditionInput {
+  userId: ModelStringInput
+  resumen: ModelStringInput
+  actualizado: ModelStringInput
+  and: [ModelPerfilUsuarioConditionInput]
+  or: [ModelPerfilUsuarioConditionInput]
+  not: ModelPerfilUsuarioConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreatePerfilUsuarioInput {
+  userId: String!
+  resumen: String
+  actualizado: AWSDateTime
+  id: ID
+}
+
+input UpdatePerfilUsuarioInput {
+  userId: String
+  resumen: String
+  actualizado: AWSDateTime
+  id: ID!
+}
+
+input DeletePerfilUsuarioInput {
+  id: ID!
+}
+
+input ModelSubscriptionPerfilUsuarioFilterInput {
+  userId: ModelSubscriptionStringInput
+  resumen: ModelSubscriptionStringInput
+  actualizado: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionPerfilUsuarioFilterInput]
+  or: [ModelSubscriptionPerfilUsuarioFilterInput]
+}

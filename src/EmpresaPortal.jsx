@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { FileText, TrendingUp, Users, ShoppingBag, Cpu, BarChart2, Globe, Settings, BookOpen, Briefcase, Scale, ArrowLeft, LogOut } from 'lucide-react';
 import ModuloDetalle from './ModuloDetalle';
@@ -13,7 +13,16 @@ const ICONOS = { FileText, TrendingUp, Users, ShoppingBag, Cpu, BarChart2, Globe
 const EmpresaPortal = ({ empresaNombre, onBack }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [moduloActivo, setModuloActivo] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // El modulo activo vive en la URL (?modulo=...), preservando el param empresa.
+  const moduloActivo = searchParams.get('modulo');
+  const abrirModulo = (nombre) => {
+    const next = new URLSearchParams(searchParams);
+    next.set('modulo', nombre);
+    setSearchParams(next);
+  };
+  const cerrarModulo = () => navigate(-1);
   const { getEmpresas } = useEmpresas();
   const {modulos, loadModulos} = useModulos();
   const [empresas, setEmpresas] = useState([]);
@@ -56,7 +65,7 @@ const EmpresaPortal = ({ empresaNombre, onBack }) => {
       <ModuloDetalle
         empresa={empresaNombre}
         modulo={moduloActivo}
-        onBack={() => setModuloActivo(null)}
+        onBack={cerrarModulo}
         isAdmin={user?.tipo === 'admin'}
       />
 
@@ -119,7 +128,7 @@ const EmpresaPortal = ({ empresaNombre, onBack }) => {
   return (
     <div
       key={mod.id}
-      onClick={() => activo && setModuloActivo(mod.nombre)}
+      onClick={() => activo && abrirModulo(mod.nombre)}
       className={`bg-white rounded-3xl p-8 shadow-sm transition-all border ${
         activo
           ? 'cursor-pointer hover:shadow-md border-transparent hover:border-[#8CC63F]/30 group'

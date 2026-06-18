@@ -167,6 +167,13 @@
         "Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BRef"
        ]
       },
+      "\",\"",
+      {
+       "Fn::GetAtt": [
+        "function1351588B",
+        "Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionindexarchivolambda81886849Ref"
+       ]
+      },
       "\"]"
      ]
     ]
@@ -356,10 +363,22 @@
        "Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BArn"
       ]
      },
+     "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionindexarchivolambda81886849Arn": {
+      "Fn::GetAtt": [
+       "function1351588B",
+       "Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionindexarchivolambda81886849Arn"
+      ]
+     },
      "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambdaServiceRoleE9EE5AC3Ref": {
       "Fn::GetAtt": [
        "function1351588B",
        "Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambdaServiceRoleE9EE5AC3Ref"
+      ]
+     },
+     "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionindexarchivolambdaServiceRole85A1A61FRef": {
+      "Fn::GetAtt": [
+       "function1351588B",
+       "Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionindexarchivolambdaServiceRole85A1A61FRef"
       ]
      }
     },
@@ -389,7 +408,7 @@
        {
         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
        },
-       "/89aa9c3e8d8ee621ffbd14214f464534c26a3e367d39da77293bd7c7cddb3d1d.json"
+       "/62d8d2c161bdc396987e39a1599b678ddda151d521323d177d3aaccba59bcaff.json"
       ]
      ]
     }
@@ -405,6 +424,20 @@
   "function1351588B": {
    "Type": "AWS::CloudFormation::Stack",
    "Properties": {
+    "Parameters": {
+     "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccstorageNestedStackstorageNestedStackResource3353B50FOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccstoragemesiStorageBucket7ABBC0E6Arn": {
+      "Fn::GetAtt": [
+       "storage0EC3F24A",
+       "Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccstoragemesiStorageBucket7ABBC0E6Arn"
+      ]
+     },
+     "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccstorageNestedStackstorageNestedStackResource3353B50FOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccstoragemesiStorageBucket7ABBC0E6Ref": {
+      "Fn::GetAtt": [
+       "storage0EC3F24A",
+       "Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccstoragemesiStorageBucket7ABBC0E6Ref"
+      ]
+     }
+    },
     "Tags": [
      {
       "Key": "amplify:deployment-type",
@@ -431,7 +464,7 @@
        {
         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
        },
-       "/aeae2ac2bcc107f0b998f5f0044a3437e87e677ef2e2d887895a8ce85c876b01.json"
+       "/17dc71b1f10d5b15ad3d51ac9e1515be17495bb1e1833dc740d15af73c675586.json"
       ]
      ]
     }
@@ -481,7 +514,7 @@
        {
         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
        },
-       "/6a7f569ea3e0956f839ebf27938a53a1d70c1f41cfa1b35510ec7cad77af4ba8.json"
+       "/c97cbadc4c0983121964ccf75299448f2f9e111eafb21acaf061fe57dd9af4f9.json"
       ]
      ]
     }

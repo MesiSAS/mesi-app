@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
-import { LogOut, Building2, Users, Layers, ChevronRight, Plus, Pencil, Trash2, X, Check, Eye, EyeOff, FileText } from 'lucide-react';
+import { LogOut, Building2, Users, Layers, ChevronRight, Plus, Pencil, Trash2, X, Check, Eye, EyeOff, FileText, Database } from 'lucide-react';
 import EmpresaPortal from './EmpresaPortal';
 import { Folder } from 'lucide-react';
+import { useArchivos } from './hooks/useArchivos';
 import { useEmpresas } from './hooks/useEmpresas';
 import { useModulos } from './hooks/useModulos';
 import { useUsuarios } from './hooks/useUsuarios';
@@ -130,7 +131,13 @@ const DashboardAdmin = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [tab, setTab] = useState('empresas');
-  const [empresaActiva, setEmpresaActiva] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // La empresa activa (vista de portal admin) vive en la URL (?empresa=...)
+  // para que el historial del navegador controle la navegacion.
+  const empresaActiva = searchParams.get('empresa');
+  const abrirEmpresa = (nombre) => setSearchParams({ empresa: nombre });
+  const cerrarEmpresa = () => navigate(-1);
 
   // Data state
   const [empresas, setEmpresas] = useState([]);
@@ -143,6 +150,31 @@ const DashboardAdmin = () => {
   const [formError, setFormError] = useState('');
 
   const handleLogout = () => { logout(); navigate('/'); };
+
+  const { reindexarTodos } = useArchivos();
+  const [indexando, setIndexando] = useState(false);
+  const [indexMsg, setIndexMsg] = useState('');
+
+  const handleReindexar = async () => {
+    if (indexando) return;
+    if (!confirm('Esto generara los embeddings de TODOS los archivos cargados. Puede tardar varios minutos. Continuar?')) return;
+    setIndexando(true);
+    setIndexMsg('Indexando archivos... no cierres esta pestana.');
+    try {
+      const res = await reindexarTodos((hecho, total) => {
+        setIndexMsg(`Indexando ${hecho}/${total} archivos...`);
+      });
+      setIndexMsg(
+        `Listo: ${res.archivos} archivos, ${res.conTexto} con texto, ${res.indexados} fragmentos guardados.` +
+        (res.fallos ? ` (${res.fallos} fallidos. 1er error: ${res.primerError})` : '')
+      );
+    } catch (err) {
+      console.error('ERROR REINDEXANDO:', err);
+      setIndexMsg(`Error al indexar: ${err?.message || err}`);
+    } finally {
+      setIndexando(false);
+    }
+  };
 
   //Loads
   const loadEmpresas = async () => {
@@ -313,7 +345,7 @@ const DashboardAdmin = () => {
 
       <EmpresaPortal
         empresaNombre={empresaActiva}
-        onBack={() => setEmpresaActiva(null)}
+        onBack={cerrarEmpresa}
       />
 
     ) : (
@@ -327,6 +359,14 @@ const DashboardAdmin = () => {
           <span className="text-white/50 text-xs ml-2 font-medium uppercase tracking-wider">Admin</span>
         </div>
         <div className="flex items-center gap-4">
+          <button
+            onClick={handleReindexar}
+            disabled={indexando}
+            title="Generar embeddings de los archivos existentes"
+            className="flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors disabled:opacity-50"
+          >
+            <Database className="w-4 h-4" /> {indexando ? 'Indexando...' : 'Indexar archivos'}
+          </button>
           <span className="text-sm text-white/70"><strong className="text-white">{user?.nombre}</strong></span>
           <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors">
             <LogOut className="w-4 h-4" /> Salir
@@ -337,6 +377,19 @@ const DashboardAdmin = () => {
       <div className="max-w-5xl mx-auto px-4 py-10">
         <h1 className="text-3xl font-bold text-[#1d1d1f] mb-2">Panel de Administración</h1>
         <p className="text-gray-500 mb-8">Gestiona empresas, usuarios y módulos de Mesi.</p>
+        <div className="bg-white rounded-3xl p-6 shadow-sm mt-8">
+  <h2 className="text-xl font-bold text-[#1d1d1f] mb-6" >Panel de Reportes</h2>
+
+</div>
+  <div className="w-full rounded-2xl overflow-hidden" style={{ paddingBottom: '56.25%', position: 'relative', height: 0 }}>
+    <iframe
+      title="Data HR - PowerBI - 12022026 - V1"
+      src="https://app.powerbi.com/reportEmbed?reportId=1ef9e7e4-fdbd-4051-a893-1eeeaa1dbc80&autoAuth=true&ctid=06d757d5-8b3d-41bb-b39a-22a519f7140d"
+      frameBorder="0"
+      allowFullScreen={true}
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', paddingBottom: 30 }}
+    />
+  </div>
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
@@ -349,19 +402,9 @@ const DashboardAdmin = () => {
             </div>
           ))}
         </div>
+      
 
-        <div className="bg-white rounded-3xl p-6 shadow-sm mt-8">
-  <h2 className="text-xl font-bold text-[#1d1d1f] mb-6">Panel de Reportes</h2>
-  <div className="w-full rounded-2xl overflow-hidden" style={{ paddingBottom: '56.25%', position: 'relative', height: 0 }}>
-    <iframe
-      title="Data HR - PowerBI - 12022026 - V1"
-      src="https://app.powerbi.com/reportEmbed?reportId=1ef9e7e4-fdbd-4051-a893-1eeeaa1dbc80&autoAuth=true&ctid=06d757d5-8b3d-41bb-b39a-22a519f7140d"
-      frameBorder="0"
-      allowFullScreen={true}
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-    />
-  </div>
-</div>
+
 
         {/* Tab: Empresas */}
         {tab === 'empresas' && (
@@ -381,7 +424,7 @@ const DashboardAdmin = () => {
                     <p className="font-bold text-[#1d1d1f]">{emp.nombre}</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button onClick={() => setEmpresaActiva(emp.nombre)}
+                    <button onClick={() => abrirEmpresa(emp.nombre)}
                       className="flex items-center gap-1 text-xs text-[#0071e3] hover:underline font-medium px-2 py-1">
                       Ver portal <ChevronRight className="w-3 h-3" />
                     </button>
@@ -697,6 +740,12 @@ const DashboardAdmin = () => {
         </Modal>
       )}
     </div>
+    )}
+    {indexMsg && (
+      <div className="fixed bottom-6 left-6 z-50 max-w-sm bg-[#0A353F] text-white text-sm px-4 py-3 rounded-xl shadow-xl">
+        {indexMsg}
+        <button onClick={() => setIndexMsg('')} className="ml-3 text-white/60 hover:text-white">×</button>
+      </div>
     )}
     </>
   );

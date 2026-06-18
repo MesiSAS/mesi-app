@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Bot, Send, X, MessageCircle, FileText, ArrowRight } from 'lucide-react';
 import { useAiAssistant } from '../hooks/useAiAssistant';
 
@@ -30,7 +30,7 @@ const getApodo = (nombreCompleto) => {
 };
 
 const AiAssistantChat = ({ user, empresa, modulo, moduloActivo, onNavigate }) => {
-  const { askAssistant } = useAiAssistant();
+  const { askAssistant, getHistorial } = useAiAssistant();
   const [open, setOpen] = useState(true);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -41,6 +41,20 @@ const AiAssistantChat = ({ user, empresa, modulo, moduloActivo, onNavigate }) =>
       sources: [],
     },
   ]);
+
+  // Carga el historial persistido una vez al montar (memoria entre sesiones).
+  useEffect(() => {
+    if (!user?.id) return;
+    let activo = true;
+    getHistorial(user.id)
+      .then((historial) => {
+        if (activo && historial.length) {
+          setMessages((prev) => [...prev, ...historial]);
+        }
+      })
+      .catch((err) => console.error('ERROR CARGANDO HISTORIAL:', err));
+    return () => { activo = false; };
+  }, [user?.id]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

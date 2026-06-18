@@ -46,6 +46,16 @@ export const useArchivos = () => {
 
 console.log('CREATE RESPONSE:', response);
 
+      // Indexacion automatica: generar embeddings del nuevo archivo en segundo
+      // plano (no bloquea la subida). El backend extrae el texto y lo vectoriza.
+      const nuevoId = response?.data?.id;
+      if (nuevoId) {
+        getClient()
+          .mutations.indexArchivo({ archivoId: nuevoId })
+          .then((res) => console.log('INDEX RESPONSE:', res?.data))
+          .catch((err) => console.error('ERROR INDEXANDO ARCHIVO:', err));
+      }
+
     } catch (error) {
         console.error('ERROR SUBIENDO ARCHIVO COMPLETO:', JSON.stringify(error, null, 2));
         console.error(error);
@@ -190,11 +200,54 @@ console.log('CREATE RESPONSE:', response);
     }
   };
 
+  // =========================
+  // RE-INDEXAR TODO (backfill)
+  // =========================
+  // Genera embeddings para todos los archivos ya cargados. Se usa una sola vez
+  // (o cuando se quiera reconstruir el indice). Omitir archivoId = backfill.
+  // Backfill archivo por archivo: cada llamada individual cabe en el limite de
+  // 30s del resolver de AppSync (un backfill monolitico se pasa y se corta).
+  const reindexarTodos = async (onProgress) => {
+    const lista = await getClient().models.Archivo.list({ limit: 1000 });
+    if (lista.errors?.length) {
+      throw new Error(lista.errors.map((e) => e.message).join('; '));
+    }
+
+    const archivos = (lista.data || []).filter(Boolean);
+    let indexados = 0;
+    let conTexto = 0;
+    let fallos = 0;
+    let primerError = '';
+
+    for (let i = 0; i < archivos.length; i += 1) {
+      try {
+        const res = await getClient().mutations.indexArchivo({ archivoId: archivos[i].id });
+        if (res?.errors?.length) {
+          fallos += 1;
+          if (!primerError) primerError = res.errors.map((e) => e.message).join('; ');
+          console.error('INDEX ERROR', archivos[i].nombre, res.errors);
+        } else {
+          const n = res?.data?.indexados || 0;
+          indexados += n;
+          if (n > 0) conTexto += 1;
+        }
+      } catch (err) {
+        fallos += 1;
+        if (!primerError) primerError = err?.message || String(err);
+        console.error('INDEX EXCEPTION', archivos[i].nombre, err);
+      }
+      onProgress?.(i + 1, archivos.length);
+    }
+
+    return { archivos: archivos.length, conTexto, indexados, fallos, primerError };
+  };
+
   return {
     saveArchivo,
     getArchivosFiltrados,
     deleteArchivo,
     downloadArchivo,
     toggleOculto,
+    reindexarTodos,
   };
 };

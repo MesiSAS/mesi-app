@@ -83,22 +83,35 @@ const embed = async (text: string) => {
   return payload.embedding || [];
 };
 
-const complete = async (system: string, userMessage: string) => {
+type HistMsg = { role: 'user' | 'assistant'; content: string };
+
+const complete = async (
+  system: string,
+  userMessage: string,
+  history: HistMsg[] = [],
+  maxTokens = 1200
+) => {
+  const messages = [
+    ...history.map((m) => ({
+      role: m.role,
+      content: [{ type: 'text', text: m.content }],
+    })),
+    {
+      role: 'user' as const,
+      content: [{ type: 'text', text: userMessage }],
+    },
+  ];
+
   const response = await bedrock.send(new InvokeModelCommand({
     modelId: env.BEDROCK_CHAT_MODEL_ID,
     contentType: 'application/json',
     accept: 'application/json',
     body: JSON.stringify({
       anthropic_version: 'bedrock-2023-05-31',
-      max_tokens: 1200,
+      max_tokens: maxTokens,
       temperature: 0.2,
       system,
-      messages: [
-        {
-          role: 'user',
-          content: [{ type: 'text', text: userMessage }],
-        },
-      ],
+      messages,
     }),
   }));
 
@@ -166,6 +179,27 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
   if (!user) {
     throw new Error('Usuario no autorizado.');
   }
+
+  // ----- Memoria por usuario: historial reciente + perfil destilado -----
+  const [historialResponse, perfilResponse] = await Promise.all([
+    client.models.ChatMessage.list({
+      filter: { userId: { eq: userId } },
+      limit: 200,
+    }),
+    client.models.PerfilUsuario.list({
+      filter: { userId: { eq: userId } },
+      limit: 1,
+    }),
+  ]);
+
+  const historial: HistMsg[] = (historialResponse.data || [])
+    .filter((m): m is NonNullable<typeof m> => !!m && (m.role === 'user' || m.role === 'assistant'))
+    .sort((a, b) => new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime())
+    .slice(-10)
+    .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content }));
+
+  const perfilExistente = perfilResponse.data?.[0] || null;
+  const perfilResumen = perfilExistente?.resumen || '';
 
   const empresaAutorizada = user.tipo === 'admin' && empresa
     ? empresa
@@ -271,6 +305,9 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
     'Para abrir un archivo: {"type":"open_file","archivoId":"<id exacto del archivo>","nombreArchivo":"<nombre>","label":"Abrir <nombre>"}',
     'Solo usa moduloNombre que aparezca en la lista de modulos disponibles, y archivoId que aparezca en la lista de archivos visibles.',
     'Si la peticion no implica navegar, NO agregues ningun bloque JSON.',
+    ...(perfilResumen
+      ? ['', 'LO QUE SABES DE ESTE USUARIO (memoria de sesiones previas):', perfilResumen]
+      : []),
   ].join('\n');
 
   const archivosResumenConId = archivosPermitidos
@@ -294,7 +331,7 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
     cleanMessage,
   ].join('\n');
 
-  const rawAnswer = await complete(system, prompt);
+  const rawAnswer = await complete(system, prompt, historial);
   const { answer, action: rawAction } = extractAction(rawAnswer);
   const sources = uniqueSources(chunks);
 
@@ -338,6 +375,46 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
       createdAt: new Date().toISOString(),
     }),
   ]);
+
+  // ----- Actualizar el perfil/memoria del usuario (aprendizaje incremental) -----
+  try {
+    const sysPerfil = [
+      'Eres un sistema que mantiene un perfil breve de un usuario de la plataforma Mesi.',
+      'Devuelve UNICAMENTE el perfil actualizado en texto plano (max 120 palabras), sin preambulos.',
+      'Incluye: rol, empresa, intereses, modulos/temas que consulta con frecuencia y preferencias de trato.',
+      'Integra lo nuevo con lo anterior; no repitas ni inventes datos no evidenciados.',
+    ].join('\n');
+
+    const promptPerfil = [
+      `Perfil actual:\n${perfilResumen || '(vacio)'}`,
+      '',
+      `Usuario: ${user.nombre} (${user.tipo}) - empresa ${empresaAutorizada}`,
+      `Ultima pregunta: ${cleanMessage}`,
+      `Ultima respuesta: ${answer.slice(0, 500)}`,
+      '',
+      'Perfil actualizado:',
+    ].join('\n');
+
+    const nuevoResumen = await complete(sysPerfil, promptPerfil, [], 300);
+
+    if (nuevoResumen) {
+      if (perfilExistente) {
+        await client.models.PerfilUsuario.update({
+          id: perfilExistente.id,
+          resumen: nuevoResumen,
+          actualizado: new Date().toISOString(),
+        });
+      } else {
+        await client.models.PerfilUsuario.create({
+          userId,
+          resumen: nuevoResumen,
+          actualizado: new Date().toISOString(),
+        });
+      }
+    }
+  } catch (perfilError) {
+    console.error('No se pudo actualizar el perfil del usuario:', perfilError);
+  }
 
   return {
     answer,

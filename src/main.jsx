@@ -7,6 +7,7 @@ import outputs from '../amplify_outputs.json';
 
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './ProtectedRoute';
+import GlobalAssistant from './components/GlobalAssistant';
 
 import './index.css';
 
@@ -43,6 +44,7 @@ createRoot(document.getElementById('root')).render(
             }
           />
         </Routes>
+        <GlobalAssistant />
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>
