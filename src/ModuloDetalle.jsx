@@ -41,8 +41,11 @@ const agruparPorFecha = (archivos) => {
   });
 
   return Object.values(grupos).sort((a, b) => {
-    if (b.anio !== a.anio) return b.anio.localeCompare(a.anio);
-    return b.mes.localeCompare(a.mes);
+    // Null-safe: archivos sin anio/mes no deben romper el ordenamiento.
+    const anioA = String(a.anio || '');
+    const anioB = String(b.anio || '');
+    if (anioB !== anioA) return anioB.localeCompare(anioA);
+    return String(b.mes || '').localeCompare(String(a.mes || ''));
   });
 };
 
@@ -166,13 +169,28 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
     if (!uploadMes) { setUploadError('Selecciona el mes antes de subir.'); return; }
-    setUploading(true); setUploadError('');
-    try {
-      for (const file of files) await saveArchivo(empresa, contexto, uploadanio, uploadMes, file);
-      setUploadSuccess(`${files.length} archivo(s) subido(s).`);
+    setUploading(true); setUploadError(''); setUploadSuccess('');
+    let exitosos = 0;
+    const fallidos = [];
+    for (const file of files) {
+      try {
+        await saveArchivo(empresa, contexto, uploadanio, uploadMes, file);
+        exitosos += 1;
+      } catch (err) {
+        console.error('FALLO SUBIENDO', file.name, err);
+        fallidos.push(`${file.name}: ${err?.message || err}`);
+      }
+    }
+
+    if (exitosos) {
+      setUploadSuccess(`${exitosos} de ${files.length} archivo(s) subido(s).`);
       setTimeout(() => setUploadSuccess(''), 4000);
-      refreshArchivos();
-    } catch { setUploadError('Error al subir. El archivo puede ser demasiado grande (+5MB).'); }
+    }
+    if (fallidos.length) {
+      setUploadError(`No se subieron ${fallidos.length}: ${fallidos[0]}`);
+    }
+
+    await refreshArchivos();
     setUploading(false);
     fileRef.current.value = '';
   };
@@ -258,7 +276,7 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
             </h3>
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
-                <label className="text-xs text-gray-500 font-medium uppercase block mb-2">anio</label>
+                <label className="text-xs text-gray-500 font-medium uppercase block mb-2">Año</label>
                 <select value={uploadanio} onChange={e => setUploadanio(e.target.value)}
                   className="w-full bg-[#F5F5F7] rounded-xl px-4 py-3 outline-none text-[#1d1d1f] font-medium text-sm">
                   {anioS.map(a => <option key={a} value={a}>{a}</option>)}
@@ -293,7 +311,7 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 items-end">
             <div>
-              <label className="text-xs text-gray-500 font-medium uppercase block mb-2">anio</label>
+              <label className="text-xs text-gray-500 font-medium uppercase block mb-2">Año</label>
               <select value={filtroanio} onChange={e => setFiltroanio(e.target.value)}
                 className="w-full bg-[#F5F5F7] rounded-xl px-4 py-3 outline-none text-[#1d1d1f] font-medium text-sm">
                 <option value="">Todos</option>

@@ -46,6 +46,16 @@ export const useArchivos = () => {
 
 console.log('CREATE RESPONSE:', response);
 
+      // AppSync no lanza excepcion ante errores: vienen en response.errors con
+      // data=null. Si no validamos esto, el archivo queda en S3 sin registro y
+      // el front canta exito falso. Lanzamos para que la UI muestre el fallo.
+      if (response?.errors?.length) {
+        throw new Error(response.errors.map((e) => e.message).join('; '));
+      }
+      if (!response?.data?.id) {
+        throw new Error('No se creo el registro del archivo (respuesta vacia).');
+      }
+
       // Indexacion automatica: generar embeddings del nuevo archivo en segundo
       // plano (no bloquea la subida). El backend extrae el texto y lo vectoriza.
       const nuevoId = response?.data?.id;

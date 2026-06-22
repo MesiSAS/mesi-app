@@ -8,6 +8,7 @@ import outputs from '../amplify_outputs.json';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './ProtectedRoute';
 import GlobalAssistant from './components/GlobalAssistant';
+import ErrorBoundary from './components/ErrorBoundary';
 
 import './index.css';
 
@@ -22,6 +23,7 @@ Amplify.configure(outputs, {
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
+      <ErrorBoundary>
       <AuthProvider>
         <Routes>
           <Route path="/" element={<App />} />
@@ -46,6 +48,7 @@ createRoot(document.getElementById('root')).render(
         </Routes>
         <GlobalAssistant />
       </AuthProvider>
+      </ErrorBoundary>
     </BrowserRouter>
   </StrictMode>
 );
