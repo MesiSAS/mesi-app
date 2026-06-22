@@ -201,16 +201,21 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
   const perfilExistente = perfilResponse.data?.[0] || null;
   const perfilResumen = perfilExistente?.resumen || '';
 
-  const empresaAutorizada = user.tipo === 'admin' && empresa
-    ? empresa
-    : user.empresa;
+  const esAdmin = user.tipo === 'admin';
+
+  // Aislamiento: usuarios no-admin SIEMPRE quedan atados a su propia empresa
+  // (ignoramos cualquier 'empresa' que venga del cliente, por seguridad).
+  // Admin: la empresa indicada, o TODAS si no se indica ninguna.
+  const empresaAutorizada = esAdmin ? (empresa || null) : user.empresa;
+  const verTodo = esAdmin && !empresaAutorizada;
 
   const empresasResponse = await client.models.Empresa.list();
-  const empresaData = (empresasResponse.data || []).find(
-    item => item?.nombre === empresaAutorizada
-  );
+  const empresaData = empresaAutorizada
+    ? (empresasResponse.data || []).find(item => item?.nombre === empresaAutorizada)
+    : null;
 
-  if (!empresaData) {
+  // Solo los no-admin requieren una empresa valida. El admin puede ver todo.
+  if (!esAdmin && !empresaData) {
     throw new Error('Empresa no autorizada.');
   }
 
@@ -223,14 +228,17 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
 
   const relacionesActivas = (relacionesResponse.data || []).filter(
     relacion =>
-      relacion?.empresaId === empresaData.id &&
-      relacion.activo
+      empresaData
+        ? relacion?.empresaId === empresaData.id && relacion.activo
+        : false
   );
 
   const modulosActivos = new Set(
     (modulosResponse.data || [])
       .filter(moduloData =>
-        relacionesActivas.some(relacion => relacion.moduloId === moduloData?.id)
+        verTodo
+          ? true // admin viendo todo: todos los modulos disponibles
+          : relacionesActivas.some(relacion => relacion.moduloId === moduloData?.id)
       )
       .map(moduloData => moduloData?.nombre)
       .filter(Boolean)
@@ -238,14 +246,17 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
 
   const archivosPermitidos = (archivosResponse.data || []).filter((archivo) => {
     if (!archivo) return false;
-    if (archivo.empresa !== empresaAutorizada) return false;
-    if (archivo.oculto && user.tipo !== 'admin') return false;
+    // Aislamiento por empresa (no aplica cuando admin ve todo).
+    if (empresaAutorizada && archivo.empresa !== empresaAutorizada) return false;
+    // Los archivos ocultos solo los ve un admin.
+    if (archivo.oculto && !esAdmin) return false;
 
     const nombreModulo = archivo.modulo?.includes('__')
       ? archivo.modulo.split('__')[0]
       : archivo.modulo;
 
-    if (!nombreModulo || !modulosActivos.has(nombreModulo)) return false;
+    if (!nombreModulo) return false;
+    if (!verTodo && !modulosActivos.has(nombreModulo)) return false;
     if (modulo && nombreModulo !== modulo) return false;
 
     return true;
@@ -292,21 +303,27 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
   const modulosDisponiblesLista = Array.from(modulosActivos).join(', ') || 'ninguno';
 
   const system = [
-    'Eres el asistente IA de la plataforma Mesi.',
-    'Conoces la plataforma: empresas cliente ven modulos activos y documentos; admins gestionan empresas, usuarios, modulos, submodulos y archivos.',
-    'Nunca reveles informacion de empresas, modulos o archivos no autorizados para el usuario actual.',
-    'Responde solo con la informacion del contexto autorizado. Si falta indexacion o evidencia, dilo claramente.',
-    'Cuando uses contenido de archivos, menciona los nombres de archivo fuente.',
+    'Eres el asistente IA de la plataforma Mesi, un portal donde las empresas consultan sus documentos.',
     '',
-    'NAVEGACION: puedes ayudar al usuario a moverse por la plataforma.',
-    'Si el usuario pide abrir o ir a un modulo, o pide ver un archivo concreto, ademas de tu respuesta en texto agrega al FINAL un bloque JSON con la accion sugerida.',
-    'Formato del bloque (usa ```json ... ```):',
+    'ESTILO DE RESPUESTA (muy importante):',
+    '- Responde de forma BREVE y directa: 1 a 3 frases cuando sea posible. Maximo un parrafo corto.',
+    '- Tono gerencial y claro, para personas de negocio. Nada tecnico.',
+    '- PROHIBIDO mencionar detalles tecnicos: nada de base de datos, embeddings, JSON, chunks, indexacion, IDs, rutas, claves, formatos de archivo ni como esta guardada la informacion.',
+    '- Habla del CONTENIDO y su utilidad para el negocio, no de como esta almacenado.',
+    '- No saludes ni uses el nombre/apodo del usuario en cada mensaje; saluda solo al inicio de la conversacion si corresponde.',
+    '- Si te apoyas en un documento, puedes mencionar su nombre de forma natural (ej: "segun el informe de ventas"), sin tecnicismos.',
+    '',
+    'REGLAS:',
+    '- Responde solo con la informacion autorizada para este usuario. Si no hay informacion suficiente, dilo en una frase sencilla.',
+    '- Nunca reveles datos de empresas, modulos o archivos que no correspondan al usuario.',
+    '',
+    'NAVEGACION (uso interno, nunca lo expliques al usuario):',
+    'Si el usuario pide abrir/ir a un modulo o ver un archivo, agrega al FINAL un bloque ```json con la accion. El sistema lo convierte en un boton; el usuario NO ve el JSON.',
     'Para abrir un modulo: {"type":"open_module","moduloNombre":"<nombre exacto de un modulo disponible>","label":"Ir a <nombre>"}',
     'Para abrir un archivo: {"type":"open_file","archivoId":"<id exacto del archivo>","nombreArchivo":"<nombre>","label":"Abrir <nombre>"}',
-    'Solo usa moduloNombre que aparezca en la lista de modulos disponibles, y archivoId que aparezca en la lista de archivos visibles.',
-    'Si la peticion no implica navegar, NO agregues ningun bloque JSON.',
+    'Usa solo moduloNombre de la lista disponible y archivoId de la lista visible. Si no implica navegar, no agregues bloque.',
     ...(perfilResumen
-      ? ['', 'LO QUE SABES DE ESTE USUARIO (memoria de sesiones previas):', perfilResumen]
+      ? ['', 'CONTEXTO DEL USUARIO (uso interno, no lo recites):', perfilResumen]
       : []),
   ].join('\n');
 
@@ -317,7 +334,7 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
 
   const prompt = [
     `Usuario: ${user.nombre} (${user.tipo})`,
-    `Empresa autorizada: ${empresaAutorizada}`,
+    `Empresa autorizada: ${empresaAutorizada || 'TODAS (acceso de administrador)'}`,
     `Modulos disponibles: ${modulosDisponiblesLista}`,
     moduloActivo ? `El usuario esta viendo actualmente el modulo: ${moduloActivo}` : 'El usuario esta en el panel principal (sin modulo abierto).',
     '',
@@ -331,7 +348,7 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
     cleanMessage,
   ].join('\n');
 
-  const rawAnswer = await complete(system, prompt, historial);
+  const rawAnswer = await complete(system, prompt, historial, 500);
   const { answer, action: rawAction } = extractAction(rawAnswer);
   const sources = uniqueSources(chunks);
 
@@ -358,17 +375,21 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
     }
   }
 
+  // ChatMessage.empresa es requerido; para admin sin empresa usamos su propia
+  // empresa (o 'admin') como etiqueta de almacenamiento.
+  const empresaParaGuardar = empresaAutorizada || user.empresa || 'admin';
+
   await Promise.all([
     client.models.ChatMessage.create({
       userId,
-      empresa: empresaAutorizada,
+      empresa: empresaParaGuardar,
       role: 'user',
       content: cleanMessage,
       createdAt: new Date().toISOString(),
     }),
     client.models.ChatMessage.create({
       userId,
-      empresa: empresaAutorizada,
+      empresa: empresaParaGuardar,
       role: 'assistant',
       content: answer,
       sources: JSON.stringify(sources),
@@ -388,7 +409,7 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
     const promptPerfil = [
       `Perfil actual:\n${perfilResumen || '(vacio)'}`,
       '',
-      `Usuario: ${user.nombre} (${user.tipo}) - empresa ${empresaAutorizada}`,
+      `Usuario: ${user.nombre} (${user.tipo}) - empresa ${empresaAutorizada || 'todas (admin)'}`,
       `Ultima pregunta: ${cleanMessage}`,
       `Ultima respuesta: ${answer.slice(0, 500)}`,
       '',
