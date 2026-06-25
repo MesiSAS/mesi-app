@@ -85,24 +85,48 @@ console.log('CREATE RESPONSE:', response);
 ) => {
   try {
 
-    const response = await getClient().models.Archivo.list();
+    // El list() de AppSync devuelve max ~100 por pagina. Si no paginamos, los
+    // archivos que quedan fuera de la primera pagina nunca se muestran aunque
+    // esten en la BD. Recorremos todas las paginas con nextToken.
+    let todos = [];
+    let nextToken = null;
+    let pagina = 0;
+    do {
+      const response = await getClient().models.Archivo.list({
+        limit: 1000,
+        nextToken,
+      });
 
-    let archivos = (response.data || []).filter(Boolean);
+      if (response.errors?.length) {
+        console.error('ERROR LISTANDO ARCHIVOS (BD):', response.errors);
+      }
 
-    archivos = archivos.filter((a) => {
+      todos = todos.concat((response.data || []).filter(Boolean));
+      nextToken = response.nextToken || null;
+      pagina += 1;
+    } while (nextToken && pagina < 50);
 
-      if (a.empresa !== empresa) return false;
+    console.log(`[ARCHIVOS] BD: ${todos.length} registros totales | filtro -> empresa="${empresa}" modulo="${modulo}" anio="${anio}" mes="${mes}" mostrarOcultos=${mostrarOcultos}`);
 
-      if (a.modulo !== modulo) return false;
+    // Diagnostico: contamos por que se descarta cada archivo.
+    const descartes = { empresa: 0, modulo: 0, anio: 0, mes: 0, oculto: 0 };
 
-      if (anio && a.anio !== anio) return false;
+    let archivos = todos.filter((a) => {
 
-      if (mes && a.mes !== mes) return false;
+      if (a.empresa !== empresa) { descartes.empresa += 1; return false; }
 
-      if (!mostrarOcultos && a.oculto) return false;
+      if (a.modulo !== modulo) { descartes.modulo += 1; return false; }
+
+      if (anio && a.anio !== anio) { descartes.anio += 1; return false; }
+
+      if (mes && a.mes !== mes) { descartes.mes += 1; return false; }
+
+      if (!mostrarOcultos && a.oculto) { descartes.oculto += 1; return false; }
 
       return true;
     });
+
+    console.log(`[ARCHIVOS] Coinciden: ${archivos.length}. Descartados por:`, descartes);
 
     // GENERAR URLS FIRMADAS
     const archivosConUrl = await Promise.all(
