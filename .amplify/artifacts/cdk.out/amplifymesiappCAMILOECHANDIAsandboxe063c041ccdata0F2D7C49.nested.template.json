@@ -53,7 +53,7 @@
      ]
     },
     "DefinitionS3Location": {
-     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2c5aa4db154e8c5919a876481389d541dca1b61c007c3ef111e427b7e4356312.graphql"
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6418c89c8633bd424b3d1b215c257c969f18db8cc1a73249733421d749d27b6c.graphql"
     }
    },
    "UpdateReplacePolicy": "Delete",
@@ -71,7 +71,7 @@
       "ApiId"
      ]
     },
-    "Expires": 1784758436
+    "Expires": 1785688578
    },
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
@@ -988,6 +988,99 @@
     "aws:asset:property": "TemplateURL"
    }
   },
+  "amplifyDataAlertaEntregasNestedStackAlertaEntregasNestedStackResourceC9551CFB": {
+   "Type": "AWS::CloudFormation::Stack",
+   "Properties": {
+    "Parameters": {
+     "DynamoDBModelTableReadIOPS": {
+      "Ref": "DynamoDBModelTableReadIOPS"
+     },
+     "DynamoDBModelTableWriteIOPS": {
+      "Ref": "DynamoDBModelTableWriteIOPS"
+     },
+     "DynamoDBBillingMode": {
+      "Ref": "DynamoDBBillingMode"
+     },
+     "DynamoDBEnablePointInTimeRecovery": {
+      "Ref": "DynamoDBEnablePointInTimeRecovery"
+     },
+     "DynamoDBEnableServerSideEncryption": {
+      "Ref": "DynamoDBEnableServerSideEncryption"
+     },
+     "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceD24837ADOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerTableMa3EBAD889": {
+      "Fn::GetAtt": [
+       "amplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource86290833",
+       "Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent430A1464Arn"
+      ]
+     },
+     "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId": {
+      "Fn::GetAtt": [
+       "amplifyDataGraphQLAPI42A6FA33",
+       "ApiId"
+      ]
+     },
+     "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name": {
+      "Fn::GetAtt": [
+       "amplifyDataGraphQLAPINONEDS684BF699",
+       "Name"
+      ]
+     },
+     "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref": {
+      "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref"
+     },
+     "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref": {
+      "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref"
+     },
+     "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref": {
+      "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
+     }
+    },
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "amplifyData"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ],
+    "TemplateURL": {
+     "Fn::Join": [
+      "",
+      [
+       "https://s3.",
+       {
+        "Ref": "AWS::Region"
+       },
+       ".",
+       {
+        "Ref": "AWS::URLSuffix"
+       },
+       "/",
+       {
+        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+       },
+       "/134b5ab532b3fc791bcc65813b3671ca6e3eccb8cc0238cb2523cc527e3a7d2c.json"
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "amplifyDataGraphQLAPITransformerSchemaFF50A789"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas.NestedStack/AlertaEntregas.NestedStackResource",
+    "aws:asset:path": "amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAlertaEntregas6CEBA0FF.nested.template.json",
+    "aws:asset:property": "TemplateURL"
+   }
+  },
   "amplifyDataFunctionDirectiveStackNestedStackFunctionDirectiveStackNestedStackResource1246A302": {
    "Type": "AWS::CloudFormation::Stack",
    "Properties": {
@@ -1012,6 +1105,9 @@
      },
      "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionindexarchivolambda81886849Arn": {
       "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionindexarchivolambda81886849Arn"
+     },
+     "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaAE765651Arn": {
+      "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaAE765651Arn"
      },
      "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name": {
       "Fn::GetAtt": [
@@ -1050,7 +1146,7 @@
        {
         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
        },
-       "/2adc193188f7a79c62307ae35f499f344fac471168d154102d6cf5242abef991.json"
+       "/196d1d6028ac8894257f1b1d417b46c79c5c8cc1a9633a53e2eec55c897d49f9.json"
       ]
      ]
     }
@@ -1239,7 +1335,7 @@
      }
     ],
     "SourceObjectKeys": [
-     "81088c3c1e5b66c08df763ac9c6d12e96b7dbc89cdf8e7405d90d8d3ed96a6f5.zip"
+     "74e3f3222f66f17b7d689e2eecacdc1c79d8bffe49c1e42b72d3fe4281b55113.zip"
     ],
     "SourceMarkers": [
      {}
@@ -1744,7 +1840,7 @@
      }
     ],
     "SourceObjectKeys": [
-     "f57e3b868706e9029cd29e3575b148595bc3e4009c4f56bf38dce053f33a5279.zip"
+     "9ebf0b7b2782c52d469460dab6c918a6bccaa3a2b7c34e408eefb4c7dd3326c9.zip"
     ],
     "SourceMarkers": [
      {}
@@ -2011,6 +2107,180 @@
     "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/GraphqlAccessPolicy2/Resource"
    }
   },
+  "GraphqlAccessPolicy3BD16E2F4": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "appsync:GraphQL",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "amplifyDataGraphQLAPI42A6FA33",
+             "Arn"
+            ]
+           },
+           "/types/Query/*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "amplifyDataGraphQLAPI42A6FA33",
+             "Arn"
+            ]
+           },
+           "/types/Mutation/*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "amplifyDataGraphQLAPI42A6FA33",
+             "Arn"
+            ]
+           },
+           "/types/Subscription/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:GetObject",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "modelIntrospectionSchemaBucketF566B665",
+            "Arn"
+           ]
+          },
+          "/modelIntrospectionSchema.json"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "GraphqlAccessPolicy3BD16E2F4",
+    "Roles": [
+     {
+      "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionalertaentregaslambdaServiceRole7E9A0BEFRef"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/GraphqlAccessPolicy3/Resource"
+   }
+  },
+  "GraphqlAccessPolicy4F8621382": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "appsync:GraphQL",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "amplifyDataGraphQLAPI42A6FA33",
+             "Arn"
+            ]
+           },
+           "/types/Query/*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "amplifyDataGraphQLAPI42A6FA33",
+             "Arn"
+            ]
+           },
+           "/types/Mutation/*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "amplifyDataGraphQLAPI42A6FA33",
+             "Arn"
+            ]
+           },
+           "/types/Subscription/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:GetObject",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "modelIntrospectionSchemaBucketF566B665",
+            "Arn"
+           ]
+          },
+          "/modelIntrospectionSchema.json"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "GraphqlAccessPolicy4F8621382",
+    "Roles": [
+     {
+      "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaServiceRole3651750ERef"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/GraphqlAccessPolicy4/Resource"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
@@ -2078,10 +2348,19 @@
   "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionindexarchivolambda81886849Arn": {
    "Type": "String"
   },
+  "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaAE765651Arn": {
+   "Type": "String"
+  },
   "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambdaServiceRoleE9EE5AC3Ref": {
    "Type": "String"
   },
   "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionindexarchivolambdaServiceRole85A1A61FRef": {
+   "Type": "String"
+  },
+  "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionalertaentregaslambdaServiceRole7E9A0BEFRef": {
+   "Type": "String"
+  },
+  "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaServiceRole3651750ERef": {
    "Type": "String"
   }
  },

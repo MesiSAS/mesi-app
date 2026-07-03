@@ -60,10 +60,17 @@ console.log('CREATE RESPONSE:', response);
       // plano (no bloquea la subida). El backend extrae el texto y lo vectoriza.
       const nuevoId = response?.data?.id;
       if (nuevoId) {
+        console.log('[INDEX] Solicitando embeddings para', file.name, 'id=', nuevoId);
         getClient()
           .mutations.indexArchivo({ archivoId: nuevoId })
-          .then((res) => console.log('INDEX RESPONSE:', res?.data))
-          .catch((err) => console.error('ERROR INDEXANDO ARCHIVO:', err));
+          .then((res) => {
+            if (res?.errors?.length) {
+              console.error('[INDEX] ERROR (GraphQL) para', file.name, res.errors);
+            } else {
+              console.log('[INDEX] OK para', file.name, '->', res?.data?.mensaje || res?.data);
+            }
+          })
+          .catch((err) => console.error('[INDEX] EXCEPCION para', file.name, err));
       }
 
     } catch (error) {
@@ -173,6 +180,27 @@ console.log('CREATE RESPONSE:', response);
 };
 
   // =========================
+  // TODOS LOS ARCHIVOS (metadatos, paginado)
+  // =========================
+  // Para vistas de control/agregacion (ej. verificador de entregas). No genera
+  // URLs firmadas: solo trae los metadatos de todas las paginas.
+  const getAllArchivos = async () => {
+    let todos = [];
+    let nextToken = null;
+    let pagina = 0;
+    do {
+      const response = await getClient().models.Archivo.list({ limit: 1000, nextToken });
+      if (response.errors?.length) {
+        console.error('ERROR LISTANDO TODOS LOS ARCHIVOS:', response.errors);
+      }
+      todos = todos.concat((response.data || []).filter(Boolean));
+      nextToken = response.nextToken || null;
+      pagina += 1;
+    } while (nextToken && pagina < 50);
+    return todos;
+  };
+
+  // =========================
   // ELIMINAR ARCHIVO
   // =========================
   const deleteArchivo = async (
@@ -279,6 +307,7 @@ console.log('CREATE RESPONSE:', response);
   return {
     saveArchivo,
     getArchivosFiltrados,
+    getAllArchivos,
     deleteArchivo,
     downloadArchivo,
     toggleOculto,

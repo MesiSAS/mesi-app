@@ -50,6 +50,27 @@ const parseJson = <T>(bytes?: Uint8Array): T => {
   return JSON.parse(textDecoder.decode(bytes)) as T;
 };
 
+// list() de AppSync devuelve ~100 por pagina. Sin paginar, el chat "no ve"
+// archivos/embeddings que existen en la BD. Este helper recorre todas las paginas.
+const listAll = async <T>(
+  listFn: (args: { limit?: number; nextToken?: string | null }) => Promise<{ data?: (T | null)[]; nextToken?: string | null; errors?: { message: string }[] }>,
+  label: string
+): Promise<T[]> => {
+  let todos: T[] = [];
+  let nextToken: string | null | undefined = null;
+  let pagina = 0;
+  do {
+    const res = await listFn({ limit: 1000, nextToken });
+    if (res.errors?.length) {
+      console.error(`ERROR LISTANDO ${label}:`, JSON.stringify(res.errors));
+    }
+    todos = todos.concat((res.data || []).filter((x): x is T => !!x));
+    nextToken = res.nextToken;
+    pagina += 1;
+  } while (nextToken && pagina < 50);
+  return todos;
+};
+
 const cosineSimilarity = (a: number[], b: number[]) => {
   if (!a.length || a.length !== b.length) return 0;
 
@@ -209,9 +230,12 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
   const empresaAutorizada = esAdmin ? (empresa || null) : user.empresa;
   const verTodo = esAdmin && !empresaAutorizada;
 
-  const empresasResponse = await client.models.Empresa.list();
+  const empresasData = await listAll(
+    (args) => client.models.Empresa.list(args),
+    'Empresa'
+  );
   const empresaData = empresaAutorizada
-    ? (empresasResponse.data || []).find(item => item?.nombre === empresaAutorizada)
+    ? empresasData.find(item => item?.nombre === empresaAutorizada)
     : null;
 
   // Solo los no-admin requieren una empresa valida. El admin puede ver todo.
@@ -219,14 +243,16 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
     throw new Error('Empresa no autorizada.');
   }
 
-  const [modulosResponse, relacionesResponse, archivosResponse, embeddingsResponse] = await Promise.all([
-    client.models.Modulo.list(),
-    client.models.EmpresaModulo.list(),
-    client.models.Archivo.list(),
-    client.models.ArchivoEmbedding.list(),
+  const [modulosData, relacionesData, archivosData, embeddingsData] = await Promise.all([
+    listAll((args) => client.models.Modulo.list(args), 'Modulo'),
+    listAll((args) => client.models.EmpresaModulo.list(args), 'EmpresaModulo'),
+    listAll((args) => client.models.Archivo.list(args), 'Archivo'),
+    listAll((args) => client.models.ArchivoEmbedding.list(args), 'ArchivoEmbedding'),
   ]);
 
-  const relacionesActivas = (relacionesResponse.data || []).filter(
+  console.log(`[CHAT] BD -> archivos:${archivosData.length} embeddings:${embeddingsData.length} modulos:${modulosData.length} relaciones:${relacionesData.length} | esAdmin:${esAdmin} verTodo:${verTodo} empresa:${empresaAutorizada || 'TODAS'}`);
+
+  const relacionesActivas = relacionesData.filter(
     relacion =>
       empresaData
         ? relacion?.empresaId === empresaData.id && relacion.activo
@@ -234,7 +260,7 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
   );
 
   const modulosActivos = new Set(
-    (modulosResponse.data || [])
+    modulosData
       .filter(moduloData =>
         verTodo
           ? true // admin viendo todo: todos los modulos disponibles
@@ -244,7 +270,7 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
       .filter(Boolean)
   );
 
-  const archivosPermitidos = (archivosResponse.data || []).filter((archivo) => {
+  const archivosPermitidos = archivosData.filter((archivo) => {
     if (!archivo) return false;
     // Aislamiento por empresa (no aplica cuando admin ve todo).
     if (empresaAutorizada && archivo.empresa !== empresaAutorizada) return false;
@@ -267,7 +293,7 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
   );
 
   const queryEmbedding = await embed(cleanMessage);
-  const chunks = (embeddingsResponse.data || [])
+  const chunks = embeddingsData
     .filter((chunk) => {
       if (!chunk) return false;
       if (!archivosPermitidosPorId.has(chunk.archivoId)) return false;
@@ -287,6 +313,8 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
     }))
     .sort((a, b) => b.score - a.score)
     .slice(0, 8);
+
+  console.log(`[CHAT] archivosPermitidos:${archivosPermitidos.length} chunksRelevantes:${chunks.length} | modulosActivos:[${Array.from(modulosActivos).join(', ')}]`);
 
   const archivosResumen = archivosPermitidos
     .slice(0, 30)

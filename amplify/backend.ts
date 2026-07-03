@@ -5,6 +5,8 @@ import { auth } from './auth/resource';
 import {
   chatAssistant,
   indexArchivo,
+  alertaEntregas,
+  enviarAlertaPrueba,
   data,
   BEDROCK_CHAT_MODEL_ID,
   BEDROCK_EMBEDDING_MODEL_ID,
@@ -16,6 +18,8 @@ const backend = defineBackend({
   data,
   chatAssistant,
   indexArchivo,
+  alertaEntregas,
+  enviarAlertaPrueba,
   storage,
 });
 
@@ -59,6 +63,14 @@ backend.indexArchivo.resources.lambda.addToRolePolicy(
 );
 
 backend.storage.resources.bucket.grantRead(backend.indexArchivo.resources.lambda);
+
+// Las funciones de alerta necesitan enviar correo por SES.
+const sesPolicy = new PolicyStatement({
+  actions: ['ses:SendEmail', 'ses:SendRawEmail'],
+  resources: ['*'],
+});
+backend.alertaEntregas.resources.lambda.addToRolePolicy(sesPolicy);
+backend.enviarAlertaPrueba.resources.lambda.addToRolePolicy(sesPolicy);
 
 backend.indexArchivo.addEnvironment(
   'BUCKET_NAME',

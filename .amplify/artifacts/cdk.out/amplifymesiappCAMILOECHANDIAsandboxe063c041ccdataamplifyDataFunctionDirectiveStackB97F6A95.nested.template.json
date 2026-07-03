@@ -670,6 +670,202 @@
     "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/mutationIndexArchivoResolver"
    }
   },
+  "FnEnviarAlertaPruebaLambdaDataSourceServiceRoleC4205FCB": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "appsync.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "amplifyData"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/FnEnviarAlertaPruebaLambdaDataSource/ServiceRole/Resource"
+   }
+  },
+  "FnEnviarAlertaPruebaLambdaDataSourceServiceRoleDefaultPolicy8E66950B": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaAE765651Arn"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaAE765651Arn"
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "FnEnviarAlertaPruebaLambdaDataSourceServiceRoleDefaultPolicy8E66950B",
+    "Roles": [
+     {
+      "Ref": "FnEnviarAlertaPruebaLambdaDataSourceServiceRoleC4205FCB"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/FnEnviarAlertaPruebaLambdaDataSource/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "FnEnviarAlertaPruebaLambdaDataSource": {
+   "Type": "AWS::AppSync::DataSource",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "LambdaConfig": {
+     "LambdaFunctionArn": {
+      "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaAE765651Arn"
+     }
+    },
+    "Name": "FnEnviarAlertaPruebaLambdaDataSource",
+    "ServiceRoleArn": {
+     "Fn::GetAtt": [
+      "FnEnviarAlertaPruebaLambdaDataSourceServiceRoleC4205FCB",
+      "Arn"
+     ]
+    },
+    "Type": "AWS_LAMBDA"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/FnEnviarAlertaPruebaLambdaDataSource/Resource"
+   }
+  },
+  "InvokeFnEnviarAlertaPruebaLambdaDataSourceInvokeFnEnviarAlertaPruebaLambdaDataSourceAppSyncFunction54DB3D63": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "FnEnviarAlertaPruebaLambdaDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "InvokeFnEnviarAlertaPruebaLambdaDataSource",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1314a1f80a02a9fd8a0bd43c3fe8deb65d6cffa6907baae5e6d2663fdc3b90b6.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a20e304512b1fde77dc16ed9d5e0ed03817afcab629ce87ef11c99877b7b1e30.vtl"
+    }
+   },
+   "DependsOn": [
+    "FnEnviarAlertaPruebaLambdaDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/InvokeFnEnviarAlertaPruebaLambdaDataSource/InvokeFnEnviarAlertaPruebaLambdaDataSource.AppSyncFunction"
+   }
+  },
+  "MutationenviarAlertaPruebaResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "FieldName": "enviarAlertaPrueba",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationEnviarAlertaPruebaAuthFNMutationEnviarAlertaPruebaAuthFNAppSyncFunction69D5FFE5",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "InvokeFnEnviarAlertaPruebaLambdaDataSourceInvokeFnEnviarAlertaPruebaLambdaDataSourceAppSyncFunction54DB3D63",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "## [Start] Stash resolver specific context.. **\n$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"enviarAlertaPrueba\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n{}\n## [End] Stash resolver specific context.. **"
+      ]
+     ]
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/387d5992f5fc03d05de27289457dcc374a84c42a889acb504aff1031047dde00.vtl"
+    },
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/mutationEnviarAlertaPruebaResolver"
+   }
+  },
   "MutationChatAssistantAuthFNMutationChatAssistantAuthFNAppSyncFunction1AACDFBB": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
@@ -714,6 +910,28 @@
     "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/MutationIndexArchivoAuthFN/MutationIndexArchivoAuthFN.AppSyncFunction"
    }
   },
+  "MutationEnviarAlertaPruebaAuthFNMutationEnviarAlertaPruebaAuthFNAppSyncFunction69D5FFE5": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationEnviarAlertaPruebaAuthFN",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/830fd5a473c43e78ac02d7ec373d9543ca16c5b96b72acdde27ccd8277dec3f2.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/MutationEnviarAlertaPruebaAuthFN/MutationEnviarAlertaPruebaAuthFN.AppSyncFunction"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
@@ -742,6 +960,9 @@
    "Type": "String"
   },
   "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionindexarchivolambda81886849Arn": {
+   "Type": "String"
+  },
+  "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaAE765651Arn": {
    "Type": "String"
   },
   "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name": {

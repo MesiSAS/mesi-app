@@ -205,7 +205,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "0aa1f3dfc3479ffb5fb0c4f97f9ade475d2b4e8ad8e76215ab098e4ea5323b29.zip"
+     "S3Key": "2c81bb86c270f8b1eaefbbac1731e49696266f981cc386accd76fcf8f75b5d8b.zip"
     },
     "Environment": {
      "Variables": {
@@ -254,7 +254,7 @@
    "DeletionPolicy": "Delete",
    "Metadata": {
     "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/chat-assistant-lambda/Resource",
-    "aws:asset:path": "asset.0aa1f3dfc3479ffb5fb0c4f97f9ade475d2b4e8ad8e76215ab098e4ea5323b29",
+    "aws:asset:path": "asset.2c81bb86c270f8b1eaefbbac1731e49696266f981cc386accd76fcf8f75b5d8b",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -466,7 +466,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "fc6ce19c6a522cad87dd5692723b8f940f3091f5f5e54740157ad5d46c84c99d.zip"
+     "S3Key": "5dec5e89cceb6d8e9aeb9f6a5f7720b2365f2220162dab54da8b3e8cb4525b5a.zip"
     },
     "Environment": {
      "Variables": {
@@ -517,15 +517,609 @@
    "DeletionPolicy": "Delete",
    "Metadata": {
     "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/index-archivo-lambda/Resource",
-    "aws:asset:path": "asset.fc6ce19c6a522cad87dd5692723b8f940f3091f5f5e54740157ad5d46c84c99d",
+    "aws:asset:path": "asset.5dec5e89cceb6d8e9aeb9f6a5f7720b2365f2220162dab54da8b3e8cb4525b5a",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
+   }
+  },
+  "enviaralertapruebalambdaServiceRole776B71DD": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "enviar-alerta-prueba"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/enviar-alerta-prueba-lambda/ServiceRole/Resource"
+   }
+  },
+  "enviaralertapruebalambdaServiceRoleDefaultPolicy5625F931": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ses:SendEmail",
+        "ses:SendRawEmail"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "ssm:GetParameters",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ssm:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":parameter/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_GRAPHQL_ENDPOINT"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ssm:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":parameter/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ssm:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":parameter/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ssm:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":parameter/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_DEFAULT_NAME"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "enviaralertapruebalambdaServiceRoleDefaultPolicy5625F931",
+    "Roles": [
+     {
+      "Ref": "enviaralertapruebalambdaServiceRole776B71DD"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/enviar-alerta-prueba-lambda/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "enviaralertapruebalambdaBD73622C": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "x86_64"
+    ],
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "84dc065ec522d5ed20e4379a4bb18caf9d89204db37b5253dd97ce2acace1ab5.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AMPLIFY_SSM_ENV_CONFIG": "{\"AMPLIFY_DATA_GRAPHQL_ENDPOINT\":{\"path\":\"/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_GRAPHQL_ENDPOINT\"},\"AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME\":{\"path\":\"/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME\"},\"AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY\":{\"path\":\"/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY\"},\"AMPLIFY_DATA_DEFAULT_NAME\":{\"path\":\"/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_DEFAULT_NAME\"}}",
+      "AMPLIFY_DATA_GRAPHQL_ENDPOINT": "<value will be resolved during runtime>",
+      "AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME": "<value will be resolved during runtime>",
+      "AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY": "<value will be resolved during runtime>",
+      "AMPLIFY_DATA_DEFAULT_NAME": "<value will be resolved during runtime>"
+     }
+    },
+    "EphemeralStorage": {
+     "Size": 512
+    },
+    "Handler": "index.handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "enviaralertapruebalambdaServiceRole776B71DD",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "enviar-alerta-prueba"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ],
+    "Timeout": 120
+   },
+   "DependsOn": [
+    "enviaralertapruebalambdaServiceRoleDefaultPolicy5625F931",
+    "enviaralertapruebalambdaServiceRole776B71DD"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/enviar-alerta-prueba-lambda/Resource",
+    "aws:asset:path": "asset.84dc065ec522d5ed20e4379a4bb18caf9d89204db37b5253dd97ce2acace1ab5",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "alertaentregaslambdaServiceRoleA5E077F6": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "alerta-entregas"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/alerta-entregas-lambda/ServiceRole/Resource"
+   }
+  },
+  "alertaentregaslambdaServiceRoleDefaultPolicy3A8F3B21": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ses:SendEmail",
+        "ses:SendRawEmail"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "ssm:GetParameters",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ssm:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":parameter/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_GRAPHQL_ENDPOINT"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ssm:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":parameter/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ssm:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":parameter/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ssm:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":parameter/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_DEFAULT_NAME"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "alertaentregaslambdaServiceRoleDefaultPolicy3A8F3B21",
+    "Roles": [
+     {
+      "Ref": "alertaentregaslambdaServiceRoleA5E077F6"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/alerta-entregas-lambda/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "alertaentregaslambda532DF923": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "x86_64"
+    ],
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "44d555cb9818fd1a42307da484f2e39bd2b83df03d420200dc9f2aec084ad17d.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AMPLIFY_SSM_ENV_CONFIG": "{\"AMPLIFY_DATA_GRAPHQL_ENDPOINT\":{\"path\":\"/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_GRAPHQL_ENDPOINT\"},\"AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME\":{\"path\":\"/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME\"},\"AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY\":{\"path\":\"/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY\"},\"AMPLIFY_DATA_DEFAULT_NAME\":{\"path\":\"/amplify/resource_reference/mesiapp/CAMILOECHANDIA-sandbox-e063c041cc/AMPLIFY_DATA_DEFAULT_NAME\"}}",
+      "AMPLIFY_DATA_GRAPHQL_ENDPOINT": "<value will be resolved during runtime>",
+      "AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME": "<value will be resolved during runtime>",
+      "AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY": "<value will be resolved during runtime>",
+      "AMPLIFY_DATA_DEFAULT_NAME": "<value will be resolved during runtime>"
+     }
+    },
+    "EphemeralStorage": {
+     "Size": 512
+    },
+    "Handler": "index.handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "alertaentregaslambdaServiceRoleA5E077F6",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "alerta-entregas"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ],
+    "Timeout": 120
+   },
+   "DependsOn": [
+    "alertaentregaslambdaServiceRoleDefaultPolicy3A8F3B21",
+    "alertaentregaslambdaServiceRoleA5E077F6"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/alerta-entregas-lambda/Resource",
+    "aws:asset:path": "asset.44d555cb9818fd1a42307da484f2e39bd2b83df03d420200dc9f2aec084ad17d",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "alertaentregaslambdaschedule068D6EDA9": {
+   "Type": "AWS::Scheduler::Schedule",
+   "Properties": {
+    "FlexibleTimeWindow": {
+     "Mode": "OFF"
+    },
+    "ScheduleExpression": "cron(0 13 * * ? *)",
+    "ScheduleExpressionTimezone": "UTC",
+    "State": "ENABLED",
+    "Target": {
+     "Arn": {
+      "Fn::GetAtt": [
+       "alertaentregaslambda532DF923",
+       "Arn"
+      ]
+     },
+     "RetryPolicy": {
+      "MaximumEventAgeInSeconds": 86400,
+      "MaximumRetryAttempts": 185
+     },
+     "RoleArn": {
+      "Fn::GetAtt": [
+       "SchedulerRoleForTargetafb611EF45166C",
+       "Arn"
+      ]
+     }
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/alerta-entregas-lambda/schedule-0/Resource"
+   }
+  },
+  "SchedulerRoleForTargetafb611EF45166C": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Condition": {
+        "StringEquals": {
+         "aws:SourceAccount": {
+          "Ref": "AWS::AccountId"
+         },
+         "aws:SourceArn": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":scheduler:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":schedule-group/default"
+           ]
+          ]
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "scheduler.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/SchedulerRoleForTarget-afb611/Resource"
+   }
+  },
+  "SchedulerRoleForTargetafb611DefaultPolicyD50EB33D": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "alertaentregaslambda532DF923",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "alertaentregaslambda532DF923",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SchedulerRoleForTargetafb611DefaultPolicyD50EB33D",
+    "Roles": [
+     {
+      "Ref": "SchedulerRoleForTargetafb611EF45166C"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/SchedulerRoleForTarget-afb611/DefaultPolicy/Resource"
    }
   },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zWNzQqDMBCEn8X7usWf9l4LPUrRB5A1WSUaE+jGShHfvaj09M3A8E2K6fWGSUSLxEqPsTUtriVLYF0HUiPQIs1qaWo1Nc5rHgTLA8/ZqWC8A0MTrpW3DI/OHXx5a9R3r2faQLKGRDgI3neAZFjMauRQkDCcenx07i/d4NjVgXrj+g32Zxzk8klzTHJMokGMid+zC2ZirE7+AFCb9TzMAAAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/z2Oyw6CMBBFv8V9GcND90Likhj4ADK0AxZKmzBFYgj/bgB1dc7dnNwIossVwhPOHEjVB0bXsOTEnlTpUfYCZ64Wg0OtsLJOUceQ77hPVnrtrNA4wFI4QyJr7M6HM1q+t3nYKjiukJk8w22D4BjSSfbkU2QSRx6yxv6jLJ+kJkMjLOVXt97P11XsodJjq227iu0adHx+RQmECYSnjrUOxsl6PRAUBz/nmspR7QAAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/CDKMetadata/Default"
@@ -816,6 +1410,14 @@
     ]
    }
   },
+  "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaAE765651Arn": {
+   "Value": {
+    "Fn::GetAtt": [
+     "enviaralertapruebalambdaBD73622C",
+     "Arn"
+    ]
+   }
+  },
   "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambdaServiceRoleE9EE5AC3Ref": {
    "Value": {
     "Ref": "chatassistantlambdaServiceRole765B308A"
@@ -826,6 +1428,16 @@
     "Ref": "indexarchivolambdaServiceRole095FF52B"
    }
   },
+  "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionalertaentregaslambdaServiceRole7E9A0BEFRef": {
+   "Value": {
+    "Ref": "alertaentregaslambdaServiceRoleA5E077F6"
+   }
+  },
+  "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaServiceRole3651750ERef": {
+   "Value": {
+    "Ref": "enviaralertapruebalambdaServiceRole776B71DD"
+   }
+  },
   "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BRef": {
    "Value": {
     "Ref": "chatassistantlambda17DD3042"
@@ -834,6 +1446,16 @@
   "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionindexarchivolambda81886849Ref": {
    "Value": {
     "Ref": "indexarchivolambda3C640C65"
+   }
+  },
+  "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaAE765651Ref": {
+   "Value": {
+    "Ref": "enviaralertapruebalambdaBD73622C"
+   }
+  },
+  "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionalertaentregaslambdaAABCBCFBRef": {
+   "Value": {
+    "Ref": "alertaentregaslambda532DF923"
    }
   }
  },

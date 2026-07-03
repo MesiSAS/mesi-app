@@ -26,6 +26,24 @@ export const indexArchivo = defineFunction({
   },
 });
 
+// Alerta de entregas incompletas (mes vencido). Corre A DIARIO; internamente
+// solo envia si esta activa y si hoy coincide con el dia de envio configurado.
+export const alertaEntregas = defineFunction({
+  entry: '../functions/alerta-entregas/handler.ts',
+  name: 'alerta-entregas',
+  timeoutSeconds: 120,
+  memoryMB: 512,
+  schedule: '0 13 * * ?',
+});
+
+// Envio de prueba bajo demanda (mutation).
+export const enviarAlertaPrueba = defineFunction({
+  entry: '../functions/enviar-alerta-prueba/handler.ts',
+  name: 'enviar-alerta-prueba',
+  timeoutSeconds: 120,
+  memoryMB: 512,
+});
+
 const schema = a.schema({
 
   Archivo: a
@@ -151,6 +169,18 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
+  // Configuracion (singleton) de la alerta mensual de entregas. Opt-in: solo
+  // se envia correo si 'activo' es true. 'email' = destinatarios (coma).
+  AlertaEntregas: a
+    .model({
+      activo: a.boolean().default(false),
+      email: a.string(),
+      remitente: a.string(),
+      diaEnvio: a.integer().default(1),
+      actualizado: a.datetime(),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
   ChatSource: a.customType({
     archivoId: a.string(),
     nombreArchivo: a.string(),
@@ -202,10 +232,23 @@ const schema = a.schema({
     .authorization((allow) => [allow.publicApiKey()])
     .handler(a.handler.function(indexArchivo)),
 
+  AlertaPruebaResponse: a.customType({
+    enviado: a.boolean(),
+    mensaje: a.string(),
+  }),
+
+  enviarAlertaPrueba: a
+    .mutation()
+    .returns(a.ref('AlertaPruebaResponse'))
+    .authorization((allow) => [allow.publicApiKey()])
+    .handler(a.handler.function(enviarAlertaPrueba)),
+
 })
 .authorization((allow) => [
   allow.resource(chatAssistant),
   allow.resource(indexArchivo),
+  allow.resource(alertaEntregas),
+  allow.resource(enviarAlertaPrueba),
 ]);
 
 export type Schema = ClientSchema<typeof schema>;

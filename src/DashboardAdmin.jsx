@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
-import { LogOut, Building2, Users, Layers, ChevronRight, Plus, Pencil, Trash2, X, Check, Eye, EyeOff, FileText, Database } from 'lucide-react';
+import { LogOut, Building2, Users, Layers, ChevronRight, Plus, Pencil, Trash2, X, Check, Eye, EyeOff, FileText, Database, Bell } from 'lucide-react';
 import EmpresaPortal from './EmpresaPortal';
 import { Folder } from 'lucide-react';
 import { useArchivos } from './hooks/useArchivos';
+import VerificadorEntregas from './components/VerificadorEntregas';
+import ConfiguracionAlerta from './components/ConfiguracionAlerta';
 import { useEmpresas } from './hooks/useEmpresas';
 import { useModulos } from './hooks/useModulos';
 import { useUsuarios } from './hooks/useUsuarios';
@@ -151,9 +153,14 @@ const DashboardAdmin = () => {
 
   const handleLogout = () => { logout(); navigate('/'); };
 
-  const { reindexarTodos } = useArchivos();
+  const { reindexarTodos, getAllArchivos } = useArchivos();
   const [indexando, setIndexando] = useState(false);
   const [indexMsg, setIndexMsg] = useState('');
+  const [archivosAll, setArchivosAll] = useState([]);
+
+  const abrirEmpresaModulo = (empresaNombre, moduloNombre) => {
+    setSearchParams({ empresa: empresaNombre, modulo: moduloNombre });
+  };
 
   const handleReindexar = async () => {
     if (indexando) return;
@@ -196,6 +203,7 @@ const DashboardAdmin = () => {
     loadModulos();
     loadEmpresaModulos();
     loadSubmodulos();
+    getAllArchivos().then(setArchivosAll).catch((e) => console.error('ERROR CARGANDO ARCHIVOS (verificador):', e));
 
   }, []);
 
@@ -337,6 +345,7 @@ const DashboardAdmin = () => {
     { key: 'empresas', label: 'Empresas', icon: <Building2 className="w-4 h-4" />, count: empresas.length },
     { key: 'usuarios', label: 'Usuarios', icon: <Users className="w-4 h-4" />, count: usuarios.length },
     { key: 'modulos', label: 'Módulos', icon: <Layers className="w-4 h-4" />, count: modulos.length },
+    { key: 'alertas', label: 'Alertas', icon: <Bell className="w-4 h-4" />, count: empresas.length },
   ];
 
   return (
@@ -392,7 +401,7 @@ const DashboardAdmin = () => {
   </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {tabs.map(t => (
             <div key={t.key} onClick={() => setTab(t.key)}
               className={`rounded-2xl p-6 shadow-sm cursor-pointer transition-all ${tab === t.key ? 'bg-[#0A353F] text-white' : 'bg-white hover:shadow-md'}`}>
@@ -405,6 +414,20 @@ const DashboardAdmin = () => {
       
 
 
+
+        {/* Tab: Alertas */}
+        {tab === 'alertas' && (
+          <>
+            <VerificadorEntregas
+              empresas={empresas}
+              modulos={modulos}
+              empresaModulos={empresaModulos}
+              archivos={archivosAll}
+              onAbrir={abrirEmpresaModulo}
+            />
+            <ConfiguracionAlerta />
+          </>
+        )}
 
         {/* Tab: Empresas */}
         {tab === 'empresas' && (

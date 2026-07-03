@@ -1,0 +1,128 @@
+type Archivo @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  empresa: String
+  modulo: String
+  submodulo: String
+  nombre: String
+  url: String
+  s3Key: String
+  tamano: Int
+  tipo: String
+  oculto: Boolean
+  fecha: AWSDateTime
+  anio: String
+  mes: String
+}
+
+type Empresa @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  nombre: String!
+  logo: String
+}
+
+type Modulo @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  nombre: String!
+  icono: String
+  logo: String
+}
+
+type Usuario @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  empresa: String!
+  correo: String!
+  nombre: String!
+  tipo: String!
+  password: String!
+  logo: String
+}
+
+type Submodulo @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  nombre: String!
+  moduloId: String!
+}
+
+type EmpresaModulo @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  empresaId: String!
+  moduloId: String!
+  activo: Boolean @default(value: "true")
+}
+
+type ArchivoEmbedding @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  archivoId: String!
+  empresa: String!
+  modulo: String!
+  submodulo: String
+  s3Key: String
+  nombreArchivo: String
+  chunkIndex: Int!
+  texto: String!
+  embedding: [Float]
+  oculto: Boolean @default(value: "false")
+  fecha: AWSDateTime
+}
+
+type ChatMessage @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  userId: String!
+  empresa: String!
+  role: String!
+  content: String!
+  sources: String
+  createdAt: AWSDateTime
+}
+
+type PerfilUsuario @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  userId: String!
+  resumen: String
+  actualizado: AWSDateTime
+}
+
+type AlertaEntregas @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  activo: Boolean @default(value: "false")
+  email: String
+  remitente: String
+  actualizado: AWSDateTime
+}
+
+type ChatSource @aws_api_key
+{
+  archivoId: String
+  nombreArchivo: String
+  modulo: String
+  submodulo: String
+  score: Float
+}
+
+type ChatAction @aws_api_key
+{
+  type: String
+  moduloNombre: String
+  archivoId: String
+  nombreArchivo: String
+  label: String
+}
+
+type ChatAssistantResponse @aws_api_key
+{
+  answer: String
+  sources: [ChatSource]
+  action: ChatAction
+}
+
+type IndexResponse @aws_api_key
+{
+  indexados: Int
+  archivos: Int
+  mensaje: String
+}
+
+type Mutation {
+  chatAssistant(userId: String!, message: String!, empresa: String, modulo: String, moduloActivo: String): ChatAssistantResponse @function(name: "FnChatAssistant") @auth(rules: [{allow: public, provider: apiKey}])
+  indexArchivo(archivoId: String): IndexResponse @function(name: "FnIndexArchivo") @auth(rules: [{allow: public, provider: apiKey}])
+}

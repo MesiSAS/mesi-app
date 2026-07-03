@@ -1,0 +1,2108 @@
+{
+ "Parameters": {
+  "DynamoDBModelTableReadIOPS": {
+   "Type": "Number",
+   "Default": 5,
+   "Description": "The number of read IOPS the table should support."
+  },
+  "DynamoDBModelTableWriteIOPS": {
+   "Type": "Number",
+   "Default": 5,
+   "Description": "The number of write IOPS the table should support."
+  },
+  "DynamoDBBillingMode": {
+   "Type": "String",
+   "Default": "PAY_PER_REQUEST",
+   "AllowedValues": [
+    "PAY_PER_REQUEST",
+    "PROVISIONED"
+   ],
+   "Description": "Configure @model types to create DynamoDB tables with PAY_PER_REQUEST or PROVISIONED billing modes."
+  },
+  "DynamoDBEnablePointInTimeRecovery": {
+   "Type": "String",
+   "Default": "false",
+   "AllowedValues": [
+    "true",
+    "false"
+   ],
+   "Description": "Whether to enable Point in Time Recovery on the table."
+  },
+  "DynamoDBEnableServerSideEncryption": {
+   "Type": "String",
+   "Default": "true",
+   "AllowedValues": [
+    "true",
+    "false"
+   ],
+   "Description": "Enable server side encryption powered by KMS."
+  },
+  "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceD24837ADOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerTableMa3EBAD889": {
+   "Type": "String"
+  },
+  "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId": {
+   "Type": "String"
+  },
+  "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name": {
+   "Type": "String"
+  },
+  "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref": {
+   "Type": "String"
+  },
+  "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref": {
+   "Type": "String"
+  },
+  "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref": {
+   "Type": "String"
+  }
+ },
+ "Conditions": {
+  "HasEnvironmentParameter": {
+   "Fn::Not": [
+    {
+     "Fn::Equals": [
+      "NONE",
+      "NONE"
+     ]
+    }
+   ]
+  },
+  "ShouldUsePayPerRequestBilling": {
+   "Fn::Equals": [
+    {
+     "Ref": "DynamoDBBillingMode"
+    },
+    "PAY_PER_REQUEST"
+   ]
+  },
+  "ShouldUsePointInTimeRecovery": {
+   "Fn::Equals": [
+    {
+     "Ref": "DynamoDBEnablePointInTimeRecovery"
+    },
+    "true"
+   ]
+  },
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-3"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-4"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "AWS::Region"
+      },
+      "us-west-2"
+     ]
+    }
+   ]
+  }
+ },
+ "Resources": {
+  "AlertaEntregasTable": {
+   "Type": "Custom::AmplifyDynamoDBTable",
+   "Properties": {
+    "ServiceToken": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceD24837ADOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerTableMa3EBAD889"
+    },
+    "tableName": {
+     "Fn::Join": [
+      "",
+      [
+       "AlertaEntregas-",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+       },
+       "-NONE"
+      ]
+     ]
+    },
+    "attributeDefinitions": [
+     {
+      "attributeName": "id",
+      "attributeType": "S"
+     }
+    ],
+    "keySchema": [
+     {
+      "attributeName": "id",
+      "keyType": "HASH"
+     }
+    ],
+    "provisionedThroughput": {
+     "Fn::If": [
+      "ShouldUsePayPerRequestBilling",
+      {
+       "Ref": "AWS::NoValue"
+      },
+      {
+       "ReadCapacityUnits": {
+        "Ref": "DynamoDBModelTableReadIOPS"
+       },
+       "WriteCapacityUnits": {
+        "Ref": "DynamoDBModelTableWriteIOPS"
+       }
+      }
+     ]
+    },
+    "sseSpecification": {
+     "sseEnabled": false
+    },
+    "streamSpecification": {
+     "streamViewType": "NEW_AND_OLD_IMAGES"
+    },
+    "deletionProtectionEnabled": false,
+    "allowDestructiveGraphqlSchemaUpdates": true,
+    "replaceTableUponGsiUpdate": true,
+    "pointInTimeRecoverySpecification": {
+     "Fn::If": [
+      "ShouldUsePointInTimeRecovery",
+      {
+       "PointInTimeRecoveryEnabled": true
+      },
+      {
+       "Ref": "AWS::NoValue"
+      }
+     ]
+    },
+    "billingMode": {
+     "Fn::If": [
+      "ShouldUsePayPerRequestBilling",
+      "PAY_PER_REQUEST",
+      {
+       "Ref": "AWS::NoValue"
+      }
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/AlertaEntregasTable/Default/Default"
+   }
+  },
+  "AlertaEntregasIAMRoleA0C8615C": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "appsync.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "dynamodb:BatchGetItem",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:PutItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:GetItem",
+          "dynamodb:Scan",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem",
+          "dynamodb:ConditionCheckItem",
+          "dynamodb:DescribeTable",
+          "dynamodb:GetRecords",
+          "dynamodb:GetShardIterator"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::Sub": [
+            "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}",
+            {
+             "tablename": {
+              "Fn::Join": [
+               "",
+               [
+                "AlertaEntregas-",
+                {
+                 "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+                },
+                "-NONE"
+               ]
+              ]
+             }
+            }
+           ]
+          },
+          {
+           "Fn::Sub": [
+            "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}/*",
+            {
+             "tablename": {
+              "Fn::Join": [
+               "",
+               [
+                "AlertaEntregas-",
+                {
+                 "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+                },
+                "-NONE"
+               ]
+              ]
+             }
+            }
+           ]
+          }
+         ]
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "DynamoDBAccess"
+     }
+    ],
+    "RoleName": {
+     "Fn::Join": [
+      "",
+      [
+       "AlertaEntregasIAMRolad0b59-",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+       },
+       "-NONE"
+      ]
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "amplifyData"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/AlertaEntregasIAMRole/Resource"
+   }
+  },
+  "AlertaEntregasDataSource": {
+   "Type": "AWS::AppSync::DataSource",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DynamoDBConfig": {
+     "AwsRegion": {
+      "Ref": "AWS::Region"
+     },
+     "TableName": {
+      "Fn::Select": [
+       1,
+       {
+        "Fn::Split": [
+         "/",
+         {
+          "Fn::Select": [
+           5,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "AlertaEntregasTable",
+               "TableArn"
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    },
+    "Name": "AlertaEntregasTable",
+    "ServiceRoleArn": {
+     "Fn::GetAtt": [
+      "AlertaEntregasIAMRoleA0C8615C",
+      "Arn"
+     ]
+    },
+    "Type": "AMAZON_DYNAMODB"
+   },
+   "DependsOn": [
+    "AlertaEntregasIAMRoleA0C8615C"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/AlertaEntregasDataSource/Resource"
+   }
+  },
+  "QuerygetAlertaEntregasauth0FunctionQuerygetAlertaEntregasauth0FunctionAppSyncFunctionD0A97E53": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerygetAlertaEntregasauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0224a3e5097427da3f4460b5d6d2b86ad4195c9cb8da7bc13e7187eead1c3ae3.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/QuerygetAlertaEntregasauth0Function/QuerygetAlertaEntregasauth0Function.AppSyncFunction"
+   }
+  },
+  "QuerygetAlertaEntregaspostAuth0FunctionQuerygetAlertaEntregaspostAuth0FunctionAppSyncFunctionFAAE1F24": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerygetAlertaEntregaspostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/QuerygetAlertaEntregaspostAuth0Function/QuerygetAlertaEntregaspostAuth0Function.AppSyncFunction"
+   }
+  },
+  "QueryGetAlertaEntregasDataResolverFnQueryGetAlertaEntregasDataResolverFnAppSyncFunction706E5D34": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "AlertaEntregasDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QueryGetAlertaEntregasDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/08f4d557693d96c1a4efba0f9dc91330e4b19772fd5477c156468843e3d9cb5e.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4c6a2d29f01c6091bd1d9afe16e5849d456c96f17c3b215938c8067399532719.vtl"
+    }
+   },
+   "DependsOn": [
+    "AlertaEntregasDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/QueryGetAlertaEntregasDataResolverFn/QueryGetAlertaEntregasDataResolverFn.AppSyncFunction"
+   }
+  },
+  "GetAlertaEntregasResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "FieldName": "getAlertaEntregas",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "QuerygetAlertaEntregasauth0FunctionQuerygetAlertaEntregasauth0FunctionAppSyncFunctionD0A97E53",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QuerygetAlertaEntregaspostAuth0FunctionQuerygetAlertaEntregaspostAuth0FunctionAppSyncFunctionFAAE1F24",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QueryGetAlertaEntregasDataResolverFnQueryGetAlertaEntregasDataResolverFnAppSyncFunction706E5D34",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"getAlertaEntregas\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "AlertaEntregasTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Query"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/queryGetAlertaEntregasResolver"
+   }
+  },
+  "QuerylistAlertaEntregasesauth0FunctionQuerylistAlertaEntregasesauth0FunctionAppSyncFunction4A8DBA60": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerylistAlertaEntregasesauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0224a3e5097427da3f4460b5d6d2b86ad4195c9cb8da7bc13e7187eead1c3ae3.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/QuerylistAlertaEntregasesauth0Function/QuerylistAlertaEntregasesauth0Function.AppSyncFunction"
+   }
+  },
+  "QuerylistAlertaEntregasespostAuth0FunctionQuerylistAlertaEntregasespostAuth0FunctionAppSyncFunctionD75F4AA9": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerylistAlertaEntregasespostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/QuerylistAlertaEntregasespostAuth0Function/QuerylistAlertaEntregasespostAuth0Function.AppSyncFunction"
+   }
+  },
+  "QueryListAlertaEntregasesDataResolverFnQueryListAlertaEntregasesDataResolverFnAppSyncFunction6FEFC1BE": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "AlertaEntregasDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QueryListAlertaEntregasesDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9fcbe070ecd3023c5bf5b966fa9584757db9762eef123bad0820bd87591b2174.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/cc01911d0269d4080ea57505dc445dfc315ef7ad85d3d9d4ea1357858bff451d.vtl"
+    }
+   },
+   "DependsOn": [
+    "AlertaEntregasDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/QueryListAlertaEntregasesDataResolverFn/QueryListAlertaEntregasesDataResolverFn.AppSyncFunction"
+   }
+  },
+  "ListAlertaEntregasResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "FieldName": "listAlertaEntregases",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "QuerylistAlertaEntregasesauth0FunctionQuerylistAlertaEntregasesauth0FunctionAppSyncFunction4A8DBA60",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QuerylistAlertaEntregasespostAuth0FunctionQuerylistAlertaEntregasespostAuth0FunctionAppSyncFunctionD75F4AA9",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QueryListAlertaEntregasesDataResolverFnQueryListAlertaEntregasesDataResolverFnAppSyncFunction6FEFC1BE",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"listAlertaEntregases\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "AlertaEntregasTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Query"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/queryListAlertaEntregasesResolver"
+   }
+  },
+  "MutationcreateAlertaEntregasinit0FunctionMutationcreateAlertaEntregasinit0FunctionAppSyncFunctionBDB2C86F": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateAlertaEntregasinit0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a183ddccbd956316c38ef97177b8f088ef0826f62023323f5ae6053d348ccffc.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/MutationcreateAlertaEntregasinit0Function/MutationcreateAlertaEntregasinit0Function.AppSyncFunction"
+   }
+  },
+  "MutationcreateAlertaEntregasinit1FunctionMutationcreateAlertaEntregasinit1FunctionAppSyncFunctionF5050646": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateAlertaEntregasinit1Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5ec36c83d1ef4a7879734c77fa2c4376473aa33363984ec2098abe1dc84b6aa7.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/MutationcreateAlertaEntregasinit1Function/MutationcreateAlertaEntregasinit1Function.AppSyncFunction"
+   }
+  },
+  "MutationcreateAlertaEntregasauth0FunctionMutationcreateAlertaEntregasauth0FunctionAppSyncFunction417A7075": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateAlertaEntregasauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d637c1fb7301003b8a5ada269338cf2e8df6cc0dc412ef13acc6158d680b6d3e.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/MutationcreateAlertaEntregasauth0Function/MutationcreateAlertaEntregasauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationcreateAlertaEntregaspostAuth0FunctionMutationcreateAlertaEntregaspostAuth0FunctionAppSyncFunction84038AD1": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateAlertaEntregaspostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/MutationcreateAlertaEntregaspostAuth0Function/MutationcreateAlertaEntregaspostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationCreateAlertaEntregasDataResolverFnMutationCreateAlertaEntregasDataResolverFnAppSyncFunction61230CEF": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "AlertaEntregasDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationCreateAlertaEntregasDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ce6864c63b4540619869669250a03ff96601cf4808bfbb218bae7fd427371bcc.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "AlertaEntregasDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/MutationCreateAlertaEntregasDataResolverFn/MutationCreateAlertaEntregasDataResolverFn.AppSyncFunction"
+   }
+  },
+  "CreateAlertaEntregasResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "FieldName": "createAlertaEntregas",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationcreateAlertaEntregasinit0FunctionMutationcreateAlertaEntregasinit0FunctionAppSyncFunctionBDB2C86F",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationcreateAlertaEntregasinit1FunctionMutationcreateAlertaEntregasinit1FunctionAppSyncFunctionF5050646",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationcreateAlertaEntregasauth0FunctionMutationcreateAlertaEntregasauth0FunctionAppSyncFunction417A7075",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationcreateAlertaEntregaspostAuth0FunctionMutationcreateAlertaEntregaspostAuth0FunctionAppSyncFunction84038AD1",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationCreateAlertaEntregasDataResolverFnMutationCreateAlertaEntregasDataResolverFnAppSyncFunction61230CEF",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"createAlertaEntregas\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "AlertaEntregasTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/mutationCreateAlertaEntregasResolver"
+   }
+  },
+  "MutationupdateAlertaEntregasinit0FunctionMutationupdateAlertaEntregasinit0FunctionAppSyncFunction9D351B8A": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateAlertaEntregasinit0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/06db846fd14e6fc371f22b12b5545ba8e2dbfeda85d8c8d586c71c282166657b.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/MutationupdateAlertaEntregasinit0Function/MutationupdateAlertaEntregasinit0Function.AppSyncFunction"
+   }
+  },
+  "MutationupdateAlertaEntregasauth0FunctionMutationupdateAlertaEntregasauth0FunctionAppSyncFunction58848352": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "AlertaEntregasDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateAlertaEntregasauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f5fed297da9c32ae3af922bf3a38ccf23b956078887d16891ec06c20c64722c.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/89f92efd98b1034df0e2497fe31a97de6975de554b8a22e0677d05d6efcafa59.vtl"
+    }
+   },
+   "DependsOn": [
+    "AlertaEntregasDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/MutationupdateAlertaEntregasauth0Function/MutationupdateAlertaEntregasauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationupdateAlertaEntregaspostAuth0FunctionMutationupdateAlertaEntregaspostAuth0FunctionAppSyncFunctionA605C26F": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateAlertaEntregaspostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/MutationupdateAlertaEntregaspostAuth0Function/MutationupdateAlertaEntregaspostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationUpdateAlertaEntregasDataResolverFnMutationUpdateAlertaEntregasDataResolverFnAppSyncFunction8AB842D5": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "AlertaEntregasDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationUpdateAlertaEntregasDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/474bf0776ec2164a13191d1a0a9e057154931e4918fea5086f49850d02a5371b.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "AlertaEntregasDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/MutationUpdateAlertaEntregasDataResolverFn/MutationUpdateAlertaEntregasDataResolverFn.AppSyncFunction"
+   }
+  },
+  "UpdateAlertaEntregasResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "FieldName": "updateAlertaEntregas",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationupdateAlertaEntregasinit0FunctionMutationupdateAlertaEntregasinit0FunctionAppSyncFunction9D351B8A",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationupdateAlertaEntregasauth0FunctionMutationupdateAlertaEntregasauth0FunctionAppSyncFunction58848352",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationupdateAlertaEntregaspostAuth0FunctionMutationupdateAlertaEntregaspostAuth0FunctionAppSyncFunctionA605C26F",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationUpdateAlertaEntregasDataResolverFnMutationUpdateAlertaEntregasDataResolverFnAppSyncFunction8AB842D5",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"updateAlertaEntregas\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "AlertaEntregasTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/mutationUpdateAlertaEntregasResolver"
+   }
+  },
+  "MutationdeleteAlertaEntregasauth0FunctionMutationdeleteAlertaEntregasauth0FunctionAppSyncFunction9A0BFB5D": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "AlertaEntregasDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationdeleteAlertaEntregasauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f5fed297da9c32ae3af922bf3a38ccf23b956078887d16891ec06c20c64722c.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e3416b4d47414f29c21e59a70e83bddb959ef0625854ed7fb0ca376573e99069.vtl"
+    }
+   },
+   "DependsOn": [
+    "AlertaEntregasDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/MutationdeleteAlertaEntregasauth0Function/MutationdeleteAlertaEntregasauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationdeleteAlertaEntregaspostAuth0FunctionMutationdeleteAlertaEntregaspostAuth0FunctionAppSyncFunction19A98B69": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationdeleteAlertaEntregaspostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/MutationdeleteAlertaEntregaspostAuth0Function/MutationdeleteAlertaEntregaspostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationDeleteAlertaEntregasDataResolverFnMutationDeleteAlertaEntregasDataResolverFnAppSyncFunctionCF08FB68": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "AlertaEntregasDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationDeleteAlertaEntregasDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4f7907d1209a2c9953a0c053df402c634e359546d70c7cc5c2e8e21ea734880f.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "AlertaEntregasDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/MutationDeleteAlertaEntregasDataResolverFn/MutationDeleteAlertaEntregasDataResolverFn.AppSyncFunction"
+   }
+  },
+  "DeleteAlertaEntregasResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "FieldName": "deleteAlertaEntregas",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationdeleteAlertaEntregasauth0FunctionMutationdeleteAlertaEntregasauth0FunctionAppSyncFunction9A0BFB5D",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationdeleteAlertaEntregaspostAuth0FunctionMutationdeleteAlertaEntregaspostAuth0FunctionAppSyncFunction19A98B69",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationDeleteAlertaEntregasDataResolverFnMutationDeleteAlertaEntregasDataResolverFnAppSyncFunctionCF08FB68",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"deleteAlertaEntregas\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "AlertaEntregasTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/mutationDeleteAlertaEntregasResolver"
+   }
+  },
+  "SubscriptiononCreateAlertaEntregasauth0FunctionSubscriptiononCreateAlertaEntregasauth0FunctionAppSyncFunction5BE60041": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononCreateAlertaEntregasauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e6da5a6e993df8b5fdc91086b71eb53e72a3a97c98836ef9c9257776f36c452b.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/SubscriptiononCreateAlertaEntregasauth0Function/SubscriptiononCreateAlertaEntregasauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononCreateAlertaEntregaspostAuth0FunctionSubscriptiononCreateAlertaEntregaspostAuth0FunctionAppSyncFunction1BBBBE45": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononCreateAlertaEntregaspostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/SubscriptiononCreateAlertaEntregaspostAuth0Function/SubscriptiononCreateAlertaEntregaspostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnCreateAlertaEntregasDataResolverFnSubscriptionOnCreateAlertaEntregasDataResolverFnAppSyncFunctionBD8088DD": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnCreateAlertaEntregasDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/SubscriptionOnCreateAlertaEntregasDataResolverFn/SubscriptionOnCreateAlertaEntregasDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononCreateAlertaEntregasResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "FieldName": "onCreateAlertaEntregas",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononCreateAlertaEntregasauth0FunctionSubscriptiononCreateAlertaEntregasauth0FunctionAppSyncFunction5BE60041",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononCreateAlertaEntregaspostAuth0FunctionSubscriptiononCreateAlertaEntregaspostAuth0FunctionAppSyncFunction1BBBBE45",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnCreateAlertaEntregasDataResolverFnSubscriptionOnCreateAlertaEntregasDataResolverFnAppSyncFunctionBD8088DD",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onCreateAlertaEntregas\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/subscriptionOnCreateAlertaEntregasResolver"
+   }
+  },
+  "SubscriptiononUpdateAlertaEntregasauth0FunctionSubscriptiononUpdateAlertaEntregasauth0FunctionAppSyncFunction1A5F29BC": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononUpdateAlertaEntregasauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e6da5a6e993df8b5fdc91086b71eb53e72a3a97c98836ef9c9257776f36c452b.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/SubscriptiononUpdateAlertaEntregasauth0Function/SubscriptiononUpdateAlertaEntregasauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononUpdateAlertaEntregaspostAuth0FunctionSubscriptiononUpdateAlertaEntregaspostAuth0FunctionAppSyncFunction84FA70BA": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononUpdateAlertaEntregaspostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/SubscriptiononUpdateAlertaEntregaspostAuth0Function/SubscriptiononUpdateAlertaEntregaspostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnUpdateAlertaEntregasDataResolverFnSubscriptionOnUpdateAlertaEntregasDataResolverFnAppSyncFunction56473222": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnUpdateAlertaEntregasDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/SubscriptionOnUpdateAlertaEntregasDataResolverFn/SubscriptionOnUpdateAlertaEntregasDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononUpdateAlertaEntregasResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "FieldName": "onUpdateAlertaEntregas",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononUpdateAlertaEntregasauth0FunctionSubscriptiononUpdateAlertaEntregasauth0FunctionAppSyncFunction1A5F29BC",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononUpdateAlertaEntregaspostAuth0FunctionSubscriptiononUpdateAlertaEntregaspostAuth0FunctionAppSyncFunction84FA70BA",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnUpdateAlertaEntregasDataResolverFnSubscriptionOnUpdateAlertaEntregasDataResolverFnAppSyncFunction56473222",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onUpdateAlertaEntregas\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/subscriptionOnUpdateAlertaEntregasResolver"
+   }
+  },
+  "SubscriptiononDeleteAlertaEntregasauth0FunctionSubscriptiononDeleteAlertaEntregasauth0FunctionAppSyncFunction37A43E1A": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononDeleteAlertaEntregasauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e6da5a6e993df8b5fdc91086b71eb53e72a3a97c98836ef9c9257776f36c452b.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/SubscriptiononDeleteAlertaEntregasauth0Function/SubscriptiononDeleteAlertaEntregasauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononDeleteAlertaEntregaspostAuth0FunctionSubscriptiononDeleteAlertaEntregaspostAuth0FunctionAppSyncFunction4310496D": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononDeleteAlertaEntregaspostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/SubscriptiononDeleteAlertaEntregaspostAuth0Function/SubscriptiononDeleteAlertaEntregaspostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnDeleteAlertaEntregasDataResolverFnSubscriptionOnDeleteAlertaEntregasDataResolverFnAppSyncFunctionB01ABB79": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnDeleteAlertaEntregasDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/SubscriptionOnDeleteAlertaEntregasDataResolverFn/SubscriptionOnDeleteAlertaEntregasDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononDeleteAlertaEntregasResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    "FieldName": "onDeleteAlertaEntregas",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononDeleteAlertaEntregasauth0FunctionSubscriptiononDeleteAlertaEntregasauth0FunctionAppSyncFunction37A43E1A",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononDeleteAlertaEntregaspostAuth0FunctionSubscriptiononDeleteAlertaEntregaspostAuth0FunctionAppSyncFunction4310496D",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnDeleteAlertaEntregasDataResolverFnSubscriptionOnDeleteAlertaEntregasDataResolverFnAppSyncFunctionB01ABB79",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onDeleteAlertaEntregas\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/subscriptionOnDeleteAlertaEntregasResolver"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WOwW6DMAyGn6X34Ana7b6Cetwm2L0yiUEpJEGx06pCvPsEnTrt9PuTP9l/AcXrG+Q7vHGmzZCNtoX5g1jINIJ6UGXnvzCiI6G4Qhm8sWKDVzVxSFGTKhNLcH/Y+eeMNz7P5u7RBdPCN7YjHZFJWXQw12F82GGkReE08d1rmKtNr9oKBZvnyf90Sl6vJcrgO9uniFuj38/jleKieH9GZhKG9zUU7+GY9ECyFlhW9zPJlERt60awt75flA+G4MIv1+IA+QHy3YWtzWLyYh1B/cgfIA4KNTYBAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "GetAttAlertaEntregasTableStreamArn": {
+   "Description": "Your DynamoDB table StreamArn.",
+   "Value": {
+    "Fn::GetAtt": [
+     "AlertaEntregasTable",
+     "TableStreamArn"
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      ":",
+      [
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+       },
+       "GetAtt:AlertaEntregasTable:StreamArn"
+      ]
+     ]
+    }
+   }
+  },
+  "GetAttAlertaEntregasTableName": {
+   "Description": "Your DynamoDB table name.",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "AlertaEntregas-",
+      {
+       "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+      },
+      "-NONE"
+     ]
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      ":",
+      [
+       {
+        "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+       },
+       "GetAtt:AlertaEntregasTable:Name"
+      ]
+     ]
+    }
+   }
+  }
+ }
+}
