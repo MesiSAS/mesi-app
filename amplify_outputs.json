@@ -1041,6 +1041,13 @@
               "isRequired": false,
               "attributes": []
             },
+            "submodulo": {
+              "name": "submodulo",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "archivoId": {
               "name": "archivoId",
               "isArray": false,

@@ -2,7 +2,7 @@ import { Amplify } from 'aws-amplify';
 import { generateClient } from 'aws-amplify/data';
 import { getAmplifyDataClientConfig } from '@aws-amplify/backend/function/runtime';
 import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import mammoth from 'mammoth';
 import * as XLSX from 'xlsx';
 // pdf-parse expone codigo de debug en su index; importamos el lib directo.
@@ -102,23 +102,14 @@ const chunkText = (text: string, size = 1000, overlap = 150): string[] => {
   return chunks.slice(0, 100); // tope de seguridad por archivo
 };
 
-// Indexa un unico archivo: extrae texto, genera embeddings y los guarda.
+// Indexa un archivo: extrae texto, genera embeddings (en paralelo) y escribe
+// UN objeto JSON en S3 (embeddings-cache/{archivoId}.json). Sin escaneos de
+// DynamoDB: la escritura es idempotente porque el put reemplaza el objeto.
 const indexarUno = async (archivo: Schema['Archivo']['type']): Promise<number> => {
   if (!archivo?.s3Key) return 0;
 
-  // Borrar embeddings previos de este archivo (re-indexacion idempotente).
-  const previos = await client.models.ArchivoEmbedding.list({
-    filter: { archivoId: { eq: archivo.id } },
-    limit: 1000,
-  });
-  await Promise.all(
-    (previos.data || []).map((registro) =>
-      client.models.ArchivoEmbedding.delete({ id: registro.id })
-    )
-  );
-
   const objeto = await s3.send(new GetObjectCommand({
-    Bucket: process.env.BUCKET_NAME,
+    Bucket: env.BUCKET_NAME,
     Key: archivo.s3Key,
   }));
   const buffer = await streamToBuffer(objeto.Body);
@@ -136,28 +127,42 @@ const indexarUno = async (archivo: Schema['Archivo']['type']): Promise<number> =
 
   if (!chunks.length) return 0;
 
-  let guardados = 0;
-  for (let i = 0; i < chunks.length; i += 1) {
-    const embedding = await embed(chunks[i]);
-    if (!embedding.length) continue;
-
-    await client.models.ArchivoEmbedding.create({
-      archivoId: archivo.id,
-      empresa: archivo.empresa || '',
-      modulo: archivo.modulo || '',
-      submodulo: archivo.submodulo || '',
-      s3Key: archivo.s3Key,
-      nombreArchivo: archivo.nombre || '',
-      chunkIndex: i,
-      texto: chunks[i],
-      embedding,
-      oculto: archivo.oculto || false,
-      fecha: new Date().toISOString(),
-    });
-    guardados += 1;
+  // Embeddings con concurrencia limitada (5 a la vez) para velocidad sin throttling.
+  const vectores: (number[] | null)[] = new Array(chunks.length).fill(null);
+  const CONCURRENCIA = 5;
+  for (let i = 0; i < chunks.length; i += CONCURRENCIA) {
+    await Promise.all(
+      chunks.slice(i, i + CONCURRENCIA).map(async (chunk, j) => {
+        try {
+          vectores[i + j] = await embed(chunk);
+        } catch (e) {
+          console.error('ERROR EMBED chunk', i + j, (e as Error)?.message);
+        }
+      })
+    );
   }
 
-  return guardados;
+  const doc = {
+    archivoId: archivo.id,
+    empresa: archivo.empresa || '',
+    modulo: archivo.modulo || '',
+    submodulo: archivo.submodulo || '',
+    nombreArchivo: archivo.nombre || '',
+    chunks: chunks
+      .map((textoChunk, i) => ({ i, texto: textoChunk, embedding: vectores[i] || [] }))
+      .filter((c) => c.embedding.length > 0),
+  };
+
+  if (!doc.chunks.length) return 0;
+
+  await s3.send(new PutObjectCommand({
+    Bucket: env.BUCKET_NAME,
+    Key: `embeddings-cache/${archivo.id}.json`,
+    Body: JSON.stringify(doc),
+    ContentType: 'application/json',
+  }));
+
+  return doc.chunks.length;
 };
 
 export const handler: Schema['indexArchivo']['functionHandler'] = async (event) => {
@@ -174,7 +179,9 @@ export const handler: Schema['indexArchivo']['functionHandler'] = async (event) 
       return {
         indexados: chunks,
         archivos: 1,
-        mensaje: `Archivo indexado (${chunks} fragmentos).`,
+        mensaje: chunks > 0
+          ? `Archivo indexado (${chunks} fragmentos).`
+          : 'Sin texto extraible (imagen/escaneado o tipo no soportado).',
       };
     }
 

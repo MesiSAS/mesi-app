@@ -94,6 +94,30 @@
        ]
       },
       {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccstorageNestedStackstorageNestedStackResource3353B50FOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccstoragemesiStorageBucket7ABBC0E6Arn"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccstorageNestedStackstorageNestedStackResource3353B50FOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccstoragemesiStorageBucket7ABBC0E6Arn"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
        "Action": "ssm:GetParameters",
        "Effect": "Allow",
        "Resource": [
@@ -205,7 +229,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "2c81bb86c270f8b1eaefbbac1731e49696266f981cc386accd76fcf8f75b5d8b.zip"
+     "S3Key": "46a5ddb12dec935fc210b24e4734b17964240d979b3554e70cdb33321d946d66.zip"
     },
     "Environment": {
      "Variables": {
@@ -215,7 +239,10 @@
       "AMPLIFY_DATA_GRAPHQL_ENDPOINT": "<value will be resolved during runtime>",
       "AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME": "<value will be resolved during runtime>",
       "AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY": "<value will be resolved during runtime>",
-      "AMPLIFY_DATA_DEFAULT_NAME": "<value will be resolved during runtime>"
+      "AMPLIFY_DATA_DEFAULT_NAME": "<value will be resolved during runtime>",
+      "BUCKET_NAME": {
+       "Ref": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccstorageNestedStackstorageNestedStackResource3353B50FOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccstoragemesiStorageBucket7ABBC0E6Ref"
+      }
      }
     },
     "EphemeralStorage": {
@@ -254,7 +281,7 @@
    "DeletionPolicy": "Delete",
    "Metadata": {
     "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/chat-assistant-lambda/Resource",
-    "aws:asset:path": "asset.2c81bb86c270f8b1eaefbbac1731e49696266f981cc386accd76fcf8f75b5d8b",
+    "aws:asset:path": "asset.46a5ddb12dec935fc210b24e4734b17964240d979b3554e70cdb33321d946d66",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -334,7 +361,14 @@
        "Action": [
         "s3:GetObject*",
         "s3:GetBucket*",
-        "s3:List*"
+        "s3:List*",
+        "s3:DeleteObject*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
        ],
        "Effect": "Allow",
        "Resource": [
@@ -466,7 +500,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "5dec5e89cceb6d8e9aeb9f6a5f7720b2365f2220162dab54da8b3e8cb4525b5a.zip"
+     "S3Key": "757b093e1cfd57dc0d431f88536e9673c8133b4fe535706aaa6e4c2e8a8e86c3.zip"
     },
     "Environment": {
      "Variables": {
@@ -517,7 +551,7 @@
    "DeletionPolicy": "Delete",
    "Metadata": {
     "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/index-archivo-lambda/Resource",
-    "aws:asset:path": "asset.5dec5e89cceb6d8e9aeb9f6a5f7720b2365f2220162dab54da8b3e8cb4525b5a",
+    "aws:asset:path": "asset.757b093e1cfd57dc0d431f88536e9673c8133b4fe535706aaa6e4c2e8a8e86c3",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }

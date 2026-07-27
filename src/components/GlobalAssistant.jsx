@@ -14,14 +14,21 @@ const GlobalAssistant = () => {
   const enArea = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin');
   if (!user || !enArea) return null;
 
-  // Para admin viendo una empresa, usa el param ?empresa; si no, su propia empresa.
-  const empresa = searchParams.get('empresa') || user.empresa;
+  // Admin: la empresa del param ?empresa, o ninguna (= acceso a todas).
+  // Usuario normal: siempre su propia empresa (el backend igual lo fuerza).
+  const esAdmin = user.tipo === 'admin';
+  const empresa = esAdmin ? (searchParams.get('empresa') || null) : user.empresa;
   const moduloActivo = searchParams.get('modulo') || null;
 
   const handleNavigate = (action) => {
     if (!action?.moduloNombre) return;
     const next = new URLSearchParams(searchParams);
     next.set('modulo', action.moduloNombre);
+    // Limpiar contexto previo y aplicar el nuevo (submodulo y archivo destino).
+    next.delete('submodulo');
+    next.delete('archivo');
+    if (action.submodulo) next.set('submodulo', action.submodulo);
+    if (action.type === 'open_file' && action.archivoId) next.set('archivo', action.archivoId);
     setSearchParams(next);
   };
 

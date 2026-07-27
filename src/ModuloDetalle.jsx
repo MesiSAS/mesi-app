@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useArchivos } from './hooks/useArchivos';
 import { useModulos } from './hooks/useModulos';
 import { useSubmodulos } from './hooks/useSubmodulos';
@@ -93,6 +94,19 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
 
   const [submoduloActivo, setSubmoduloActivo] = useState(null);
 
+  // Navegacion profunda desde el asistente: ?submodulo abre el submodulo y
+  // ?archivo expande el grupo del archivo destino y lo resalta.
+  const [searchParams] = useSearchParams();
+  const submoduloParam = searchParams.get('submodulo');
+  const archivoDestino = searchParams.get('archivo');
+
+  useEffect(() => {
+    if (submoduloParam && submoduloParam !== submoduloActivo) {
+      setSubmoduloActivo(submoduloParam);
+    }
+    // Solo reaccionamos al param (la navegacion manual usa su propio flujo).
+  }, [submoduloParam]);
+
   useEffect(() => {
 
     loadModulos();
@@ -149,6 +163,15 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
 
     load();
   }, [contexto]);
+
+  // Si venimos con un archivo destino, expandir el grupo (anio/mes) que lo contiene.
+  useEffect(() => {
+    if (!archivoDestino || !archivos.length) return;
+    const arch = archivos.find(a => a.id === archivoDestino);
+    if (arch) {
+      setGruposExpandidos(prev => ({ ...prev, [`${arch.anio}__${arch.mes}`]: true }));
+    }
+  }, [archivoDestino, archivos]);
   // Si cambia el submódulo, refresca
   const handleSubmodulo = async (nombre) => {
     setSubmoduloActivo(nombre);
@@ -373,7 +396,7 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
                       <div className="divide-y divide-gray-50">
                         {grupo.archivos.map((arch) => (
                           <div key={arch.id}
-                            className={`flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors group ${arch.oculto ? 'opacity-50' : ''}`}>
+                            className={`flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors group ${arch.oculto ? 'opacity-50' : ''} ${arch.id === archivoDestino ? 'bg-[#8CC63F]/10 ring-1 ring-inset ring-[#8CC63F]' : ''}`}>
                             <div className="w-10 h-10 bg-[#F5F5F7] rounded-xl flex items-center justify-center flex-shrink-0">
                               <FileText className="w-5 h-5 text-[#0A353F]" />
                             </div>

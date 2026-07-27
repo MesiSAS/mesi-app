@@ -11944,7 +11944,7 @@
       "type": "aws:cdk:creationStack",
       "data": [
         "...NodejsFunction.addToRolePolicy in aws-cdk-lib...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:73:45)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:82:45)",
         "...node internals, @aws-amplify/backend-deployer..."
       ]
     }
@@ -11958,7 +11958,7 @@
       "type": "aws:cdk:creationStack",
       "data": [
         "...NodejsFunction.addToRolePolicy in aws-cdk-lib...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:72:41)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:81:41)",
         "...node internals, @aws-amplify/backend-deployer..."
       ]
     }

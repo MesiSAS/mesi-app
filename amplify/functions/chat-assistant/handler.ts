@@ -4,6 +4,7 @@ import { getAmplifyDataClientConfig } from '@aws-amplify/backend/function/runtim
 
 type DataClientEnv = Parameters<typeof getAmplifyDataClientConfig>[0];
 import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
+import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 import { env } from '$amplify/env/chat-assistant';
 import type { Schema } from '../../data/resource';
 
@@ -18,6 +19,7 @@ type ChatSource = {
 type ChatAction = {
   type: string;
   moduloNombre?: string | null;
+  submodulo?: string | null;
   archivoId?: string | null;
   nombreArchivo?: string | null;
   label?: string | null;
@@ -34,6 +36,35 @@ type ScoredChunk = {
 
 const textDecoder = new TextDecoder();
 const bedrock = new BedrockRuntimeClient({ region: env.AWS_REGION });
+const s3 = new S3Client({ region: env.AWS_REGION });
+
+// Normaliza nombres de empresa para comparar (en la BD conviven variantes
+// como 'Mesi'/'MESI' y 'Ombia'/'OMBIA').
+const normEmpresa = (v?: string | null) => (v || '').trim().toLowerCase();
+
+type CacheDoc = {
+  archivoId: string;
+  empresa?: string;
+  modulo?: string;
+  submodulo?: string;
+  nombreArchivo?: string;
+  chunks: { i: number; texto: string; embedding: number[] }[];
+};
+
+// Lee los vectores de un archivo desde el cache S3 (embeddings-cache/{id}.json).
+// Devuelve null si el archivo no esta indexado (sin cache).
+const leerCache = async (archivoId: string): Promise<CacheDoc | null> => {
+  try {
+    const res = await s3.send(new GetObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: `embeddings-cache/${archivoId}.json`,
+    }));
+    const body = await res.Body?.transformToString();
+    return body ? (JSON.parse(body) as CacheDoc) : null;
+  } catch {
+    return null; // NoSuchKey u otro: el archivo no tiene cache.
+  }
+};
 
 // `allow.resource(chatAssistant)` en el schema inyecta AMPLIFY_DATA_DEFAULT_NAME en runtime.
 // El cast evita el deadlock de bootstrap: el tipo del env se regenera al final de la sintesis,
@@ -235,7 +266,7 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
     'Empresa'
   );
   const empresaData = empresaAutorizada
-    ? empresasData.find(item => item?.nombre === empresaAutorizada)
+    ? empresasData.find(item => normEmpresa(item?.nombre) === normEmpresa(empresaAutorizada))
     : null;
 
   // Solo los no-admin requieren una empresa valida. El admin puede ver todo.
@@ -243,14 +274,13 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
     throw new Error('Empresa no autorizada.');
   }
 
-  const [modulosData, relacionesData, archivosData, embeddingsData] = await Promise.all([
+  const [modulosData, relacionesData, archivosData] = await Promise.all([
     listAll((args) => client.models.Modulo.list(args), 'Modulo'),
     listAll((args) => client.models.EmpresaModulo.list(args), 'EmpresaModulo'),
     listAll((args) => client.models.Archivo.list(args), 'Archivo'),
-    listAll((args) => client.models.ArchivoEmbedding.list(args), 'ArchivoEmbedding'),
   ]);
 
-  console.log(`[CHAT] BD -> archivos:${archivosData.length} embeddings:${embeddingsData.length} modulos:${modulosData.length} relaciones:${relacionesData.length} | esAdmin:${esAdmin} verTodo:${verTodo} empresa:${empresaAutorizada || 'TODAS'}`);
+  console.log(`[CHAT] BD -> archivos:${archivosData.length} modulos:${modulosData.length} relaciones:${relacionesData.length} | esAdmin:${esAdmin} verTodo:${verTodo} empresa:${empresaAutorizada || 'TODAS'}`);
 
   const relacionesActivas = relacionesData.filter(
     relacion =>
@@ -273,7 +303,7 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
   const archivosPermitidos = archivosData.filter((archivo) => {
     if (!archivo) return false;
     // Aislamiento por empresa (no aplica cuando admin ve todo).
-    if (empresaAutorizada && archivo.empresa !== empresaAutorizada) return false;
+    if (empresaAutorizada && normEmpresa(archivo.empresa) !== normEmpresa(empresaAutorizada)) return false;
     // Los archivos ocultos solo los ve un admin.
     if (archivo.oculto && !esAdmin) return false;
 
@@ -292,27 +322,36 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
     archivosPermitidos.map(archivo => [archivo.id, archivo])
   );
 
+  // Vectores desde el cache S3: solo los archivos permitidos (la autorizacion
+  // ya quedo aplicada en archivosPermitidos, asi que el cache no filtra nada).
   const queryEmbedding = await embed(cleanMessage);
-  const chunks = embeddingsData
-    .filter((chunk) => {
-      if (!chunk) return false;
-      if (!archivosPermitidosPorId.has(chunk.archivoId)) return false;
-      if (chunk.oculto && user.tipo !== 'admin') return false;
-      return Array.isArray(chunk.embedding) && chunk.embedding.length > 0;
+
+  const idsACargar = archivosPermitidos.slice(0, 400).map((a) => a.id);
+  const caches: CacheDoc[] = [];
+  const LOTE = 25;
+  for (let i = 0; i < idsACargar.length; i += LOTE) {
+    const docs = await Promise.all(idsACargar.slice(i, i + LOTE).map(leerCache));
+    docs.forEach((d) => { if (d?.chunks?.length) caches.push(d); });
+  }
+
+  const chunks: ScoredChunk[] = caches
+    .flatMap((doc) => {
+      const archivo = archivosPermitidosPorId.get(doc.archivoId);
+      return doc.chunks
+        .filter((c) => Array.isArray(c.embedding) && c.embedding.length > 0)
+        .map((c) => ({
+          archivoId: doc.archivoId,
+          nombreArchivo: archivo?.nombre || doc.nombreArchivo,
+          modulo: archivo?.modulo || doc.modulo,
+          submodulo: doc.submodulo,
+          texto: c.texto,
+          score: cosineSimilarity(queryEmbedding, c.embedding),
+        }));
     })
-    .map((chunk) => ({
-      archivoId: chunk.archivoId,
-      nombreArchivo: chunk.nombreArchivo,
-      modulo: chunk.modulo,
-      submodulo: chunk.submodulo,
-      texto: chunk.texto,
-      score: cosineSimilarity(
-        queryEmbedding,
-        (chunk.embedding || []).filter((value): value is number => typeof value === 'number')
-      ),
-    }))
     .sort((a, b) => b.score - a.score)
     .slice(0, 8);
+
+  console.log(`[CHAT] cache S3 -> archivosConCache:${caches.length}/${idsACargar.length}`);
 
   console.log(`[CHAT] archivosPermitidos:${archivosPermitidos.length} chunksRelevantes:${chunks.length} | modulosActivos:[${Array.from(modulosActivos).join(', ')}]`);
 
@@ -390,14 +429,16 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
   } else if (rawAction?.type === 'open_file') {
     const archivo = rawAction.archivoId ? archivosPermitidosPorId.get(rawAction.archivoId) : undefined;
     if (archivo) {
-      const nombreModulo = archivo.modulo?.includes('__')
-        ? archivo.modulo.split('__')[0]
-        : archivo.modulo;
+      // El submodulo va codificado en el campo modulo como 'Modulo__Submodulo'.
+      const [nombreModulo, nombreSubmodulo] = archivo.modulo?.includes('__')
+        ? archivo.modulo.split('__')
+        : [archivo.modulo, null];
       action = {
         type: 'open_file',
         archivoId: archivo.id,
         nombreArchivo: archivo.nombre,
         moduloNombre: nombreModulo,
+        submodulo: nombreSubmodulo || null,
         label: rawAction.label || `Abrir ${archivo.nombre}`,
       };
     }

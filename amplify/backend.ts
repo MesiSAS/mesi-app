@@ -62,7 +62,16 @@ backend.indexArchivo.resources.lambda.addToRolePolicy(
   })
 );
 
-backend.storage.resources.bucket.grantRead(backend.indexArchivo.resources.lambda);
+// index-archivo lee los originales y escribe el cache de vectores.
+backend.storage.resources.bucket.grantReadWrite(backend.indexArchivo.resources.lambda);
+
+// El chat lee el cache de vectores (embeddings-cache/*) desde S3.
+backend.storage.resources.bucket.grantRead(backend.chatAssistant.resources.lambda);
+
+backend.chatAssistant.addEnvironment(
+  'BUCKET_NAME',
+  backend.storage.resources.bucket.bucketName
+);
 
 // Las funciones de alerta necesitan enviar correo por SES.
 const sesPolicy = new PolicyStatement({
