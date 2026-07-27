@@ -37,6 +37,7 @@ export const useAiAssistant = () => {
         role: m.role,
         content: m.content,
         sources: safeParse(m.sources),
+        createdAt: m.createdAt || null,
       }));
   };
 

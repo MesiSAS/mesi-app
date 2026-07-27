@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Bot, Send, X, MessageCircle, FileText, ArrowRight } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Bot, Send, X, MessageCircle, ArrowRight, Trash2 } from 'lucide-react';
 import { useAiAssistant } from '../hooks/useAiAssistant';
 
 // Apodos / diminutivos comunes en espanol para personalizar el saludo.
@@ -29,32 +29,63 @@ const getApodo = (nombreCompleto) => {
   return primer.charAt(0).toUpperCase() + primer.slice(1).toLowerCase();
 };
 
+const saludoDe = (user) =>
+  `¡Hola, ${getApodo(user?.nombre)}! 👋 Soy tu asistente Mesi. Puedo ayudarte a encontrar tus archivos y a moverte por la plataforma. ¿En qué te ayudo?`;
+
 const AiAssistantChat = ({ user, empresa, modulo, moduloActivo, onNavigate }) => {
   const { askAssistant, getHistorial } = useAiAssistant();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const finRef = useRef(null);
+
+  // Popup de bienvenida: una vez por inicio de sesion (se marca en sessionStorage).
+  const [showWelcome, setShowWelcome] = useState(() => {
+    if (!user?.id) return false;
+    return !sessionStorage.getItem(`mesi_welcome_${user.id}`);
+  });
+
+  const cerrarWelcome = () => {
+    if (user?.id) sessionStorage.setItem(`mesi_welcome_${user.id}`, '1');
+    setShowWelcome(false);
+  };
+
   const [messages, setMessages] = useState(() => [
-    {
-      role: 'assistant',
-      content: `¡Hola, ${getApodo(user?.nombre)}! 👋 Soy tu asistente Mesi. Puedo ayudarte a encontrar tus archivos y a moverte por la plataforma. ¿En qué te ayudo?`,
-      sources: [],
-    },
+    { role: 'assistant', content: saludoDe(user), sources: [] },
   ]);
 
-  // Carga el historial persistido una vez al montar (memoria entre sesiones).
+  // "Vaciar chat" es solo visual: guarda un corte local; los mensajes siguen
+  // en la BD (y el asistente conserva su memoria en el backend).
+  const claveCorte = user?.id ? `mesi_chat_cleared_${user.id}` : null;
+
+  // Carga el historial persistido una vez al montar (memoria entre sesiones),
+  // omitiendo lo anterior al ultimo "vaciar chat" de este usuario.
   useEffect(() => {
     if (!user?.id) return;
     let activo = true;
+    const corte = claveCorte ? localStorage.getItem(claveCorte) : null;
     getHistorial(user.id)
       .then((historial) => {
-        if (activo && historial.length) {
-          setMessages((prev) => [...prev, ...historial]);
+        const visibles = corte
+          ? historial.filter((m) => m.createdAt && m.createdAt > corte)
+          : historial;
+        if (activo && visibles.length) {
+          setMessages((prev) => [...prev, ...visibles]);
         }
       })
       .catch((err) => console.error('ERROR CARGANDO HISTORIAL:', err));
     return () => { activo = false; };
   }, [user?.id]);
+
+  // Siempre mostrar lo mas reciente: al abrir, al llegar mensajes o al cargar historial.
+  useEffect(() => {
+    if (open) finRef.current?.scrollIntoView({ block: 'end' });
+  }, [open, messages, loading]);
+
+  const vaciarChat = () => {
+    if (claveCorte) localStorage.setItem(claveCorte, new Date().toISOString());
+    setMessages([{ role: 'assistant', content: saludoDe(user), sources: [] }]);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -106,13 +137,38 @@ const AiAssistantChat = ({ user, empresa, modulo, moduloActivo, onNavigate }) =>
 
   if (!open) {
     return (
-      <button
-        onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-40 h-14 w-14 rounded-full bg-[#0A353F] text-white shadow-xl flex items-center justify-center hover:bg-[#0A353F]/90 transition-colors"
-        title="Asistente IA"
-      >
-        <MessageCircle className="w-6 h-6" />
-      </button>
+      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3">
+        {showWelcome && (
+          <div className="w-[min(340px,calc(100vw-48px))] bg-white rounded-2xl shadow-2xl border border-gray-100 p-5 relative">
+            <button
+              onClick={cerrarWelcome}
+              className="absolute top-3 right-3 text-gray-300 hover:text-gray-500 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-xl bg-[#0A353F] flex items-center justify-center text-white flex-shrink-0">
+                <Bot className="w-5 h-5" />
+              </div>
+              <h3 className="font-bold text-[#0A353F] text-sm">Asistente Mesi</h3>
+            </div>
+            <p className="text-sm text-[#1d1d1f] leading-relaxed mb-4">{saludoDe(user)}</p>
+            <button
+              onClick={() => { cerrarWelcome(); setOpen(true); }}
+              className="w-full flex items-center justify-center gap-2 bg-[#8CC63F] text-white rounded-xl px-4 py-2.5 text-sm font-semibold hover:bg-[#7ab234] transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" /> Abrir chat
+            </button>
+          </div>
+        )}
+        <button
+          onClick={() => { cerrarWelcome(); setOpen(true); }}
+          className="h-14 w-14 rounded-full bg-[#0A353F] text-white shadow-xl flex items-center justify-center hover:bg-[#0A353F]/90 transition-colors"
+          title="Asistente IA"
+        >
+          <MessageCircle className="w-6 h-6" />
+        </button>
+      </div>
     );
   }
 
@@ -126,6 +182,15 @@ const AiAssistantChat = ({ user, empresa, modulo, moduloActivo, onNavigate }) =>
           <h2 className="font-bold text-sm">Asistente Mesi</h2>
           <p className="text-xs text-white/70 truncate">{empresa}{modulo ? ` - ${modulo}` : ''}</p>
         </div>
+        <button
+          onClick={() => {
+            if (confirm('¿Vaciar la conversación? El asistente conservará su memoria, pero dejarás de ver los mensajes anteriores.')) vaciarChat();
+          }}
+          className="w-8 h-8 rounded-lg hover:bg-white/10 flex items-center justify-center transition-colors"
+          title="Vaciar chat"
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
         <button
           onClick={() => setOpen(false)}
           className="w-8 h-8 rounded-lg hover:bg-white/10 flex items-center justify-center transition-colors"
@@ -147,19 +212,6 @@ const AiAssistantChat = ({ user, empresa, modulo, moduloActivo, onNavigate }) =>
             }`}
             >
               <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
-              {message.sources?.length > 0 && (
-                <div className="mt-3 pt-3 border-t border-gray-100 space-y-2">
-                  {message.sources.map((source, sourceIndex) => (
-                    <div key={`${source.archivoId}-${sourceIndex}`} className="flex items-start gap-2 text-xs text-gray-500">
-                      <FileText className="w-3.5 h-3.5 mt-0.5 text-[#8CC63F]" />
-                      <span className="min-w-0">
-                        <strong className="text-[#0A353F]">{source.nombreArchivo || 'Archivo'}</strong>
-                        {source.modulo ? ` - ${source.modulo}` : ''}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
               {message.action && onNavigate && (
                 <button
                   onClick={() => handleAction(message.action)}
@@ -179,6 +231,7 @@ const AiAssistantChat = ({ user, empresa, modulo, moduloActivo, onNavigate }) =>
             </div>
           </div>
         )}
+        <div ref={finRef} />
       </div>
 
       <form onSubmit={handleSubmit} className="p-4 bg-white border-t border-gray-100 flex gap-2">

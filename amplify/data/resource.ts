@@ -191,6 +191,7 @@ const schema = a.schema({
 
   ChatAction: a.customType({
     type: a.string(),
+    empresa: a.string(),
     moduloNombre: a.string(),
     submodulo: a.string(),
     archivoId: a.string(),

@@ -23,6 +23,9 @@ const GlobalAssistant = () => {
   const handleNavigate = (action) => {
     if (!action?.moduloNombre) return;
     const next = new URLSearchParams(searchParams);
+    // Admin desde el panel principal: fijar la empresa para abrir su portal.
+    // (Para un usuario de empresa, el Dashboard ignora este param, no estorba.)
+    if (esAdmin && action.empresa) next.set('empresa', action.empresa);
     next.set('modulo', action.moduloNombre);
     // Limpiar contexto previo y aplicar el nuevo (submodulo y archivo destino).
     next.delete('submodulo');

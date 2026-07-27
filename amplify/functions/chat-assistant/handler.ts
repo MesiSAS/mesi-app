@@ -18,6 +18,7 @@ type ChatSource = {
 
 type ChatAction = {
   type: string;
+  empresa?: string | null;
   moduloNombre?: string | null;
   submodulo?: string | null;
   archivoId?: string | null;
@@ -424,7 +425,12 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
   if (rawAction?.type === 'open_module') {
     const nombre = rawAction.moduloNombre;
     if (nombre && modulosActivos.has(nombre)) {
-      action = { type: 'open_module', moduloNombre: nombre, label: rawAction.label || `Ir a ${nombre}` };
+      action = {
+        type: 'open_module',
+        empresa: empresaAutorizada || null,
+        moduloNombre: nombre,
+        label: rawAction.label || `Ir a ${nombre}`,
+      };
     }
   } else if (rawAction?.type === 'open_file') {
     const archivo = rawAction.archivoId ? archivosPermitidosPorId.get(rawAction.archivoId) : undefined;
@@ -435,6 +441,7 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
         : [archivo.modulo, null];
       action = {
         type: 'open_file',
+        empresa: archivo.empresa || empresaAutorizada || null,
         archivoId: archivo.id,
         nombreArchivo: archivo.nombre,
         moduloNombre: nombreModulo,

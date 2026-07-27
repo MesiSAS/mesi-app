@@ -1034,6 +1034,13 @@
               "isRequired": false,
               "attributes": []
             },
+            "empresa": {
+              "name": "empresa",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "moduloNombre": {
               "name": "moduloNombre",
               "isArray": false,
