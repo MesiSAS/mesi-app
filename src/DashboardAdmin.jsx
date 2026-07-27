@@ -505,126 +505,96 @@ const DashboardAdmin = () => {
           </div>
         )}
 
-        {/* Tab: Módulos */}
+        {/* Tab: Módulos (organizado por empresa) */}
         {tab === 'modulos' && (
   <div className="bg-white rounded-3xl p-8 shadow-sm">
     <div className="flex justify-between items-center mb-2">
-      <h2 className="text-xl font-bold text-[#1d1d1f]">Módulos</h2>
+      <h2 className="text-xl font-bold text-[#1d1d1f]">Módulos por empresa</h2>
       <button onClick={() => openModal('modulo', 'create', { icono: 'FileText' })}
         className="flex items-center gap-2 bg-[#0A353F] text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-[#0A353F]/90 transition-colors">
         <Plus className="w-4 h-4" /> Nuevo Módulo
       </button>
     </div>
-    <p className="text-xs text-gray-400 mb-6">Los módulos nuevos se activan en todas las empresas por defecto.</p>
-    
-    <div className="space-y-4">
-      {modulos.map(mod => {
-        const Icono = ICONOS[mod.icono] || FileText;
+    <p className="text-xs text-gray-400 mb-6">
+      Cada empresa muestra sus módulos activos y submódulos. La activación/desactivación se hace desde el portal de cada empresa (botón "Ver portal").
+    </p>
+
+    <div className="space-y-6">
+      {empresas.map(emp => {
+        const modsActivos = modulos.filter(mod =>
+          empresaModulos.some(r => r.empresaId === emp.id && r.moduloId === mod.id && r.activo)
+        );
+
         return (
-          <div key={mod.id} className="border border-gray-100 rounded-2xl overflow-hidden">
-            {/* Módulo header */}
-            <div className="flex items-center gap-4 p-4 bg-[#F5F5F7]">
-              {mod.logo ? (
-                <img src={mod.logo} alt={mod.nombre} className="h-10 w-10 object-contain rounded-xl bg-white p-1" />
-              ) : (
-                <div className="w-10 h-10 rounded-xl bg-[#8CC63F]/10 flex items-center justify-center text-[#8CC63F] flex-shrink-0">
-                  <Icono className="w-5 h-5" />
-                </div>
+          <div key={emp.id} className="border border-gray-100 rounded-2xl overflow-hidden">
+            {/* Empresa header */}
+            <div className="flex items-center gap-3 p-4 bg-[#0A353F]">
+              {emp.logo && (
+                <img src={emp.logo} alt={emp.nombre} className="h-8 w-14 object-contain bg-white rounded-lg p-1" onError={e => e.target.style.display = 'none'} />
               )}
               <div className="flex-1">
-                <p className="font-bold text-[#1d1d1f] text-sm">{mod.nombre}</p>
-                <p className="text-xs text-gray-400">{(mod.submodulos || []).length} submódulo(s)</p>
+                <p className="font-bold text-white text-sm">{emp.nombre}</p>
+                <p className="text-xs text-white/60">{modsActivos.length} módulo(s) activo(s)</p>
               </div>
-              <div className="flex items-center gap-1">
-                <button onClick={() => openModal('modulo', 'edit', mod)}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-white hover:text-[#0A353F] transition-colors">
-                  <Pencil className="w-4 h-4" />
-                </button>
-                <button onClick={() => handleDelete('modulo', mod.id)}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
+              <button onClick={() => abrirEmpresa(emp.nombre)}
+                className="flex items-center gap-1 text-xs text-white/80 hover:text-white font-medium px-2 py-1">
+                Ver portal <ChevronRight className="w-3 h-3" />
+              </button>
             </div>
 
-            {/* Submódulos */}
-            <div className="px-4 pb-4 pt-2 space-y-2">
-
-              {submodulos
-              .filter(sub => sub.moduloId === mod.id)
-              .map(sub => (
-                <div
-                  key={sub.id}
-                  className="flex items-center gap-3 px-3 py-2 bg-white rounded-xl border border-gray-100"
-                >
-                  <Folder className="w-4 h-4 text-[#8CC63F]" />
-
-                  <span className="flex-1 text-sm text-[#1d1d1f]">
-                    {sub.nombre}
-                  </span>
-
-                  <button
-                    onClick={async () => {
-
-                      await deleteSubmodulo(sub.id);
-
-                      await loadSubmodulos();
-                    }}
-                    className="w-6 h-6 flex items-center justify-center rounded-lg text-gray-300 hover:text-red-400 transition-colors"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </div>
-            ))}
-
-              {/* Agregar submódulo */}
-              <SubmoduloInput
-                moduloId={mod.id}
-                onAdd={loadSubmodulos}
-                addSubmodulo={addSubmodulo}
-              />
-
-            </div>
-
-            {/* Activación por empresa */}
-            <div className="border-t border-gray-100 px-4 py-3">
-              <p className="text-xs text-gray-400 font-medium uppercase mb-2">Activo en empresas</p>
-              <div className="flex flex-wrap gap-2">
-                {empresas.map(emp => {
-                  const relacion = empresaModulos.find(
-                    r =>
-                      r.empresaId === emp.id &&
-                      r.moduloId === mod.id
-                  );
-
-                  const activo = relacion
-                    ? relacion.activo
-                    : true;
-
+            {/* Módulos de la empresa */}
+            <div className="p-4 space-y-3">
+              {modsActivos.length === 0 ? (
+                <p className="text-xs text-gray-400">Sin módulos activos. Actívalos desde el portal de la empresa.</p>
+              ) : (
+                modsActivos.map(mod => {
+                  const Icono = ICONOS[mod.icono] || FileText;
+                  const subs = submodulos.filter(sub => sub.moduloId === mod.id);
                   return (
-                    <button
-                      key={`${emp.id}-${mod.id}`}
-                      onClick={async () => {
+                    <div key={`${emp.id}-${mod.id}`} className="border border-gray-100 rounded-xl overflow-hidden">
+                      <div className="flex items-center gap-3 px-4 py-3 bg-[#F5F5F7]">
+                        {mod.logo ? (
+                          <img src={mod.logo} alt={mod.nombre} className="h-8 w-8 object-contain rounded-lg bg-white p-1" />
+                        ) : (
+                          <div className="w-8 h-8 rounded-lg bg-[#8CC63F]/10 flex items-center justify-center text-[#8CC63F] flex-shrink-0">
+                            <Icono className="w-4 h-4" />
+                          </div>
+                        )}
+                        <div className="flex-1">
+                          <p className="font-bold text-[#1d1d1f] text-sm">{mod.nombre}</p>
+                          <p className="text-xs text-gray-400">{subs.length} submódulo(s)</p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <button onClick={() => openModal('modulo', 'edit', mod)}
+                            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-white hover:text-[#0A353F] transition-colors" title="Editar módulo">
+                            <Pencil className="w-4 h-4" />
+                          </button>
+                          <button onClick={() => handleDelete('modulo', mod.id)}
+                            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors" title="Eliminar módulo">
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
 
-                        await toggleModuloEmpresa(
-                          emp.id,
-                          mod.id,
-                          !activo
-                        );
-
-                        await loadEmpresaModulos();
-                      }}
-                      className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${
-                        activo
-                          ? 'bg-[#8CC63F] text-white'
-                          : 'bg-gray-100 text-gray-400'
-                      }`}
-                    >
-                      {activo ? '✓' : '○'} {emp.nombre}
-                    </button>
+                      {/* Submódulos */}
+                      <div className="px-4 py-3 space-y-2">
+                        {subs.map(sub => (
+                          <div key={sub.id} className="flex items-center gap-3 px-3 py-2 bg-white rounded-xl border border-gray-100">
+                            <Folder className="w-4 h-4 text-[#8CC63F]" />
+                            <span className="flex-1 text-sm text-[#1d1d1f]">{sub.nombre}</span>
+                            <button
+                              onClick={async () => { await deleteSubmodulo(sub.id); await loadSubmodulos(); }}
+                              className="w-6 h-6 flex items-center justify-center rounded-lg text-gray-300 hover:text-red-400 transition-colors">
+                              <X className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ))}
+                        <SubmoduloInput moduloId={mod.id} onAdd={loadSubmodulos} addSubmodulo={addSubmodulo} />
+                      </div>
+                    </div>
                   );
-                })}
-              </div>
+                })
+              )}
             </div>
           </div>
         );

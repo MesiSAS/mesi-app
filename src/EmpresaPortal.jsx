@@ -26,7 +26,9 @@ const EmpresaPortal = ({ empresaNombre, onBack }) => {
   const { getEmpresas } = useEmpresas();
   const {modulos, loadModulos} = useModulos();
   const [empresas, setEmpresas] = useState([]);
-  const {empresaModulos, loadEmpresaModulos } = useEmpresaModulos();
+  const {empresaModulos, loadEmpresaModulos, toggleModuloEmpresa, setTodosModulos } = useEmpresaModulos();
+  const isAdmin = user?.tipo === 'admin';
+  const [activandoTodos, setActivandoTodos] = useState(false);
   const empresaData = empresas.find(
       e => e.nombre === empresaNombre
   );
@@ -115,7 +117,22 @@ const EmpresaPortal = ({ empresaNombre, onBack }) => {
 
       {/* Módulos */}
       <div className="max-w-5xl mx-auto px-4 py-12">
-        <p className="text-gray-500 mb-8 text-sm">Selecciona un módulo para ver o subir documentos.</p>
+        <div className="flex items-center justify-between mb-8 gap-4">
+          <p className="text-gray-500 text-sm">Selecciona un módulo para ver o subir documentos.</p>
+          {isAdmin && empresaData && (
+            <button
+              onClick={async () => {
+                setActivandoTodos(true);
+                await setTodosModulos(empresaData.id, modulos.map(m => m.id), true);
+                setActivandoTodos(false);
+              }}
+              disabled={activandoTodos}
+              className="flex items-center gap-2 bg-[#8CC63F] text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-[#7ab234] transition-colors disabled:opacity-50 flex-shrink-0"
+            >
+              {activandoTodos ? 'Activando...' : 'Activar todos'}
+            </button>
+          )}
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {modulos.map((mod) => {
 
@@ -144,15 +161,31 @@ const EmpresaPortal = ({ empresaNombre, onBack }) => {
           <Icono className="w-6 h-6" />
         </div>
 
-        <span
-          className={`text-xs font-semibold px-3 py-1 rounded-full ${
-            activo
-              ? 'text-green-500 bg-green-50'
-              : 'text-gray-500 bg-gray-100'
-          }`}
-        >
-          {activo ? 'Activo' : 'Inactivo'}
-        </span>
+        <div className="flex items-center gap-3">
+          <span
+            className={`text-xs font-semibold px-3 py-1 rounded-full ${
+              activo
+                ? 'text-green-500 bg-green-50'
+                : 'text-gray-500 bg-gray-100'
+            }`}
+          >
+            {activo ? 'Activo' : 'Inactivo'}
+          </span>
+
+          {isAdmin && (
+            <button
+              onClick={async (e) => {
+                e.stopPropagation();
+                if (!empresaData) return;
+                await toggleModuloEmpresa(empresaData.id, mod.id, !activo);
+              }}
+              title={activo ? 'Desactivar para esta empresa' : 'Activar para esta empresa'}
+              className={`relative w-11 h-6 rounded-full transition-colors flex-shrink-0 ${activo ? 'bg-[#8CC63F]' : 'bg-gray-300'}`}
+            >
+              <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${activo ? 'translate-x-5' : ''}`} />
+            </button>
+          )}
+        </div>
 
       </div>
 
