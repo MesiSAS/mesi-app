@@ -216,7 +216,7 @@ const extractAction = (raw: string): { answer: string; action: ChatAction | null
 
 export const handler: Schema['chatAssistant']['functionHandler'] = async (event) => {
  try {
-  const { userId, message, empresa, modulo, moduloActivo } = event.arguments;
+  const { userId, message, empresa, modulo, moduloActivo, historial: historialArg } = event.arguments;
   const cleanMessage = message.trim();
 
   if (!cleanMessage) {
@@ -233,26 +233,29 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
     throw new Error('Usuario no autorizado.');
   }
 
-  // ----- Memoria por usuario: historial reciente + perfil destilado -----
-  const [historialResponse, perfilResponse] = await Promise.all([
-    client.models.ChatMessage.list({
-      filter: { userId: { eq: userId } },
-      limit: 200,
-    }),
-    client.models.PerfilUsuario.list({
-      filter: { userId: { eq: userId } },
-      limit: 1,
-    }),
-  ]);
+  // ----- Memoria por usuario: historial (enviado por el cliente) + perfil -----
+  // El historial lo manda el frontend porque un scan filtrado de DynamoDB con
+  // limit no devuelve de forma confiable los mensajes recientes de un usuario.
+  let historial: HistMsg[] = [];
+  try {
+    const parsed = historialArg ? JSON.parse(historialArg) : [];
+    if (Array.isArray(parsed)) {
+      historial = parsed
+        .filter((m: any) => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+        .slice(-12)
+        .map((m: any) => ({ role: m.role as 'user' | 'assistant', content: String(m.content).slice(0, 4000) }));
+    }
+  } catch (e) {
+    console.error('Historial invalido:', (e as Error)?.message);
+  }
 
-  const historial: HistMsg[] = (historialResponse.data || [])
-    .filter((m): m is NonNullable<typeof m> => !!m && (m.role === 'user' || m.role === 'assistant'))
-    .sort((a, b) => new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime())
-    .slice(-10)
-    .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content }));
-
-  const perfilExistente = perfilResponse.data?.[0] || null;
+  // Perfil: se pagina y se busca en memoria (son pocos usuarios). Un list con
+  // limit:1 y filtro no lo encuentra de forma confiable.
+  const perfiles = await listAll((args) => client.models.PerfilUsuario.list(args), 'PerfilUsuario');
+  const perfilExistente = perfiles.find((p) => p?.userId === userId) || null;
   const perfilResumen = perfilExistente?.resumen || '';
+
+  console.log(`[CHAT] historial recibido:${historial.length} | perfil:${perfilResumen ? 'si' : 'no'}`);
 
   const esAdmin = user.tipo === 'admin';
 

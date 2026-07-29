@@ -92,19 +92,24 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
     loadSubmodulos
   } = useSubmodulos();
 
-  const [submoduloActivo, setSubmoduloActivo] = useState(null);
-
   // Navegacion profunda desde el asistente: ?submodulo abre el submodulo y
   // ?archivo expande el grupo del archivo destino y lo resalta.
   const [searchParams] = useSearchParams();
   const submoduloParam = searchParams.get('submodulo');
   const archivoDestino = searchParams.get('archivo');
 
+  // Inicializar desde la URL en el primer render evita una carga intermedia del
+  // modulo base (vacia) que competia con la del submodulo (race condition).
+  const [submoduloActivo, setSubmoduloActivo] = useState(submoduloParam || null);
+
+  // Reaccionar solo cuando el param CAMBIA (p. ej. el asistente navega a otro
+  // archivo), sin pelear con la navegacion manual de submodulos.
+  const ultimoSubmoduloParam = useRef(submoduloParam);
   useEffect(() => {
-    if (submoduloParam && submoduloParam !== submoduloActivo) {
-      setSubmoduloActivo(submoduloParam);
+    if (submoduloParam !== ultimoSubmoduloParam.current) {
+      ultimoSubmoduloParam.current = submoduloParam;
+      if (submoduloParam) setSubmoduloActivo(submoduloParam);
     }
-    // Solo reaccionamos al param (la navegacion manual usa su propio flujo).
   }, [submoduloParam]);
 
   useEffect(() => {
@@ -164,13 +169,24 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
     load();
   }, [contexto]);
 
-  // Si venimos con un archivo destino, expandir el grupo (anio/mes) que lo contiene.
+  // Si venimos con un archivo destino: expandir su grupo (anio/mes) y, una vez
+  // que el DOM se estabiliza, centrarlo en pantalla. Consultamos el elemento por
+  // atributo (no por ref) con un pequeno delay para evitar problemas de timing
+  // con las recargas de la lista.
   useEffect(() => {
     if (!archivoDestino || !archivos.length) return;
     const arch = archivos.find(a => a.id === archivoDestino);
-    if (arch) {
-      setGruposExpandidos(prev => ({ ...prev, [`${arch.anio}__${arch.mes}`]: true }));
-    }
+    if (!arch) return;
+    setGruposExpandidos(prev => ({ ...prev, [`${arch.anio}__${arch.mes}`]: true }));
+    // Reintentos con scroll instantaneo: la lista puede recargarse un par de
+    // veces al montar y cancelar un scroll suave. Reasegurar hasta que asiente.
+    const timers = [];
+    const scrollAlDestino = () => {
+      const el = document.querySelector(`[data-archivo-id="${archivoDestino}"]`);
+      if (el) el.scrollIntoView({ block: 'center' });
+    };
+    [300, 600, 1000, 1500].forEach(ms => timers.push(setTimeout(scrollAlDestino, ms)));
+    return () => timers.forEach(clearTimeout);
   }, [archivoDestino, archivos]);
   // Si cambia el submódulo, refresca
   const handleSubmodulo = async (nombre) => {
@@ -396,6 +412,7 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
                       <div className="divide-y divide-gray-50">
                         {grupo.archivos.map((arch) => (
                           <div key={arch.id}
+                            data-archivo-id={arch.id}
                             className={`flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors group ${arch.oculto ? 'opacity-50' : ''} ${arch.id === archivoDestino ? 'bg-[#8CC63F]/10 ring-1 ring-inset ring-[#8CC63F]' : ''}`}>
                             <div className="w-10 h-10 bg-[#F5F5F7] rounded-xl flex items-center justify-center flex-shrink-0">
                               <FileText className="w-5 h-5 text-[#0A353F]" />

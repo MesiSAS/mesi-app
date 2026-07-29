@@ -93,6 +93,13 @@ const AiAssistantChat = ({ user, empresa, modulo, moduloActivo, onNavigate }) =>
     const question = input.trim();
     if (!question || loading) return;
 
+    // Historial reciente para dar memoria al asistente (ultimos intercambios,
+    // sin el saludo inicial), tomado de lo que ya esta en pantalla.
+    const historial = messages
+      .filter(m => m.role === 'user' || m.role === 'assistant')
+      .slice(-12)
+      .map(m => ({ role: m.role, content: m.content }));
+
     setInput('');
     setLoading(true);
     setMessages(prev => [...prev, { role: 'user', content: question, sources: [] }]);
@@ -104,6 +111,7 @@ const AiAssistantChat = ({ user, empresa, modulo, moduloActivo, onNavigate }) =>
         empresa,
         modulo,
         moduloActivo,
+        historial,
       });
 
       setMessages(prev => [

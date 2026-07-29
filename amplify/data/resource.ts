@@ -213,6 +213,8 @@ const schema = a.schema({
       empresa: a.string(),
       modulo: a.string(),
       moduloActivo: a.string(),
+      // Historial reciente enviado por el cliente (JSON: [{role, content}]).
+      historial: a.string(),
     })
     .returns(a.ref('ChatAssistantResponse'))
     .authorization((allow) => [allow.publicApiKey()])

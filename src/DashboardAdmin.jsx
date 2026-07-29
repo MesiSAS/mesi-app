@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
-import { LogOut, Building2, Users, Layers, ChevronRight, Plus, Pencil, Trash2, X, Check, Eye, EyeOff, FileText, Database, Bell } from 'lucide-react';
+import { LogOut, Building2, Users, Layers, ChevronRight, ChevronDown, Plus, Pencil, Trash2, X, Check, Eye, EyeOff, FileText, Database, Bell } from 'lucide-react';
 import EmpresaPortal from './EmpresaPortal';
 import { Folder } from 'lucide-react';
 import { useArchivos } from './hooks/useArchivos';
@@ -207,6 +207,15 @@ const DashboardAdmin = () => {
 
   }, []);
 
+  // Al volver del portal de una empresa a la vista principal, recargar las
+  // relaciones para reflejar los cambios de activacion hechos en el portal
+  // (cada vista usa su propia instancia del hook, con estado independiente).
+  useEffect(() => {
+    if (!empresaActiva) {
+      loadEmpresaModulos();
+    }
+  }, [empresaActiva]);
+
 
 
   const openModal = (type, mode, data = {}) => {
@@ -341,10 +350,13 @@ const DashboardAdmin = () => {
 
   
 
+  const [empresasExpandidas, setEmpresasExpandidas] = useState({});
+  const toggleEmpresaExpandida = (id) =>
+    setEmpresasExpandidas(prev => ({ ...prev, [id]: !prev[id] }));
+
   const tabs = [
     { key: 'empresas', label: 'Empresas', icon: <Building2 className="w-4 h-4" />, count: empresas.length },
     { key: 'usuarios', label: 'Usuarios', icon: <Users className="w-4 h-4" />, count: usuarios.length },
-    { key: 'modulos', label: 'Módulos', icon: <Layers className="w-4 h-4" />, count: modulos.length },
     { key: 'alertas', label: 'Alertas', icon: <Bell className="w-4 h-4" />, count: empresas.length },
   ];
 
@@ -401,7 +413,7 @@ const DashboardAdmin = () => {
   </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-3 gap-4 mb-8">
           {tabs.map(t => (
             <div key={t.key} onClick={() => setTab(t.key)}
               className={`rounded-2xl p-6 shadow-sm cursor-pointer transition-all ${tab === t.key ? 'bg-[#0A353F] text-white' : 'bg-white hover:shadow-md'}`}>
@@ -429,39 +441,128 @@ const DashboardAdmin = () => {
           </>
         )}
 
-        {/* Tab: Empresas */}
+        {/* Tab: Empresas (con módulos por empresa) */}
         {tab === 'empresas' && (
           <div className="bg-white rounded-3xl p-8 shadow-sm">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-[#1d1d1f]">Empresas Cliente</h2>
-              <button onClick={() => openModal('empresa', 'create')}
-                className="flex items-center gap-2 bg-[#0A353F] text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-[#0A353F]/90 transition-colors">
-                <Plus className="w-4 h-4" /> Nueva Empresa
-              </button>
+              <h2 className="text-xl font-bold text-[#1d1d1f]">Empresas y módulos</h2>
+              <div className="flex items-center gap-2">
+                <button onClick={() => openModal('empresa', 'create')}
+                  className="flex items-center gap-2 bg-[#0A353F] text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-[#0A353F]/90 transition-colors">
+                  <Plus className="w-4 h-4" /> Nueva Empresa
+                </button>
+                <button onClick={() => openModal('modulo', 'create', { icono: 'FileText' })}
+                  className="flex items-center gap-2 bg-[#8CC63F] text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-[#7ab234] transition-colors">
+                  <Plus className="w-4 h-4" /> Nuevo Módulo
+                </button>
+              </div>
             </div>
+
             <div className="space-y-3">
-              {empresas.map(emp => (
-                <div key={emp.id} className="flex items-center gap-4 p-4 bg-[#F5F5F7] rounded-2xl group">
-                  <img src={emp.logo} alt={emp.nombre} className="h-8 w-16 object-contain" onError={e => e.target.style.display = 'none'} />
-                  <div className="flex-1">
-                    <p className="font-bold text-[#1d1d1f]">{emp.nombre}</p>
+              {empresas.map(emp => {
+                const expandida = !!empresasExpandidas[emp.id];
+                const activosCount = modulos.filter(mod =>
+                  empresaModulos.some(r => r.empresaId === emp.id && r.moduloId === mod.id && r.activo)
+                ).length;
+
+                return (
+                  <div key={emp.id} className="border border-gray-100 rounded-2xl overflow-hidden">
+                    {/* Cabecera empresa (colapsable) */}
+                    <div className="flex items-center gap-4 p-4 bg-[#F5F5F7]">
+                      <button onClick={() => toggleEmpresaExpandida(emp.id)} className="text-gray-400 hover:text-[#0A353F] transition-colors">
+                        {expandida ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+                      </button>
+                      {emp.logo && (
+                        <img src={emp.logo} alt={emp.nombre} className="h-8 w-16 object-contain" onError={e => e.target.style.display = 'none'} />
+                      )}
+                      <button onClick={() => toggleEmpresaExpandida(emp.id)} className="flex-1 text-left">
+                        <p className="font-bold text-[#1d1d1f]">{emp.nombre}</p>
+                        <p className="text-xs text-gray-400">{activosCount} de {modulos.length} módulo(s) activo(s)</p>
+                      </button>
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => abrirEmpresa(emp.nombre)}
+                          className="flex items-center gap-1 text-xs text-[#0071e3] hover:underline font-medium px-2 py-1">
+                          Ver portal <ChevronRight className="w-3 h-3" />
+                        </button>
+                        <button onClick={() => openModal('empresa', 'edit', emp)}
+                          className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-white hover:text-[#0A353F] transition-colors">
+                          <Pencil className="w-4 h-4" />
+                        </button>
+                        <button onClick={() => handleDelete('empresa', emp.id)}
+                          className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Módulos de la empresa (todos, con toggle) */}
+                    {expandida && (
+                      <div className="p-4 space-y-3">
+                        {modulos.length === 0 ? (
+                          <p className="text-xs text-gray-400">No hay módulos creados.</p>
+                        ) : (
+                          modulos.map(mod => {
+                            const Icono = ICONOS[mod.icono] || FileText;
+                            const subs = submodulos.filter(sub => sub.moduloId === mod.id);
+                            const activo = empresaModulos.some(
+                              r => r.empresaId === emp.id && r.moduloId === mod.id && r.activo
+                            );
+                            return (
+                              <div key={`${emp.id}-${mod.id}`} className={`border rounded-xl overflow-hidden ${activo ? 'border-[#8CC63F]/40' : 'border-gray-100'}`}>
+                                <div className="flex items-center gap-3 px-4 py-3">
+                                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${activo ? 'bg-[#8CC63F]/10 text-[#8CC63F]' : 'bg-gray-100 text-gray-400'}`}>
+                                    <Icono className="w-4 h-4" />
+                                  </div>
+                                  <div className="flex-1">
+                                    <p className="font-bold text-[#1d1d1f] text-sm">{mod.nombre}</p>
+                                    <p className="text-xs text-gray-400">{subs.length} submódulo(s)</p>
+                                  </div>
+
+                                  {/* Toggle activar/desactivar para esta empresa */}
+                                  <button
+                                    onClick={async () => { await toggleModuloEmpresa(emp.id, mod.id, !activo); }}
+                                    title={activo ? 'Desactivar para esta empresa' : 'Activar para esta empresa'}
+                                    className={`relative w-11 h-6 rounded-full transition-colors flex-shrink-0 ${activo ? 'bg-[#8CC63F]' : 'bg-gray-300'}`}
+                                  >
+                                    <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${activo ? 'translate-x-5' : ''}`} />
+                                  </button>
+
+                                  <div className="flex items-center gap-1 border-l border-gray-100 pl-2 ml-1">
+                                    <button onClick={() => openModal('modulo', 'edit', mod)}
+                                      className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-[#0A353F] transition-colors" title="Editar módulo">
+                                      <Pencil className="w-4 h-4" />
+                                    </button>
+                                    <button onClick={() => handleDelete('modulo', mod.id)}
+                                      className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors" title="Eliminar módulo">
+                                      <Trash2 className="w-4 h-4" />
+                                    </button>
+                                  </div>
+                                </div>
+
+                                {/* Submódulos */}
+                                <div className="px-4 pb-3 space-y-2 bg-[#F5F5F7]/40">
+                                  {subs.map(sub => (
+                                    <div key={sub.id} className="flex items-center gap-3 px-3 py-2 bg-white rounded-xl border border-gray-100">
+                                      <Folder className="w-4 h-4 text-[#8CC63F]" />
+                                      <span className="flex-1 text-sm text-[#1d1d1f]">{sub.nombre}</span>
+                                      <button
+                                        onClick={async () => { await deleteSubmodulo(sub.id); await loadSubmodulos(); }}
+                                        className="w-6 h-6 flex items-center justify-center rounded-lg text-gray-300 hover:text-red-400 transition-colors">
+                                        <X className="w-3 h-3" />
+                                      </button>
+                                    </div>
+                                  ))}
+                                  <SubmoduloInput moduloId={mod.id} onAdd={loadSubmodulos} addSubmodulo={addSubmodulo} />
+                                </div>
+                              </div>
+                            );
+                          })
+                        )}
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button onClick={() => abrirEmpresa(emp.nombre)}
-                      className="flex items-center gap-1 text-xs text-[#0071e3] hover:underline font-medium px-2 py-1">
-                      Ver portal <ChevronRight className="w-3 h-3" />
-                    </button>
-                    <button onClick={() => openModal('empresa', 'edit', emp)}
-                      className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-white hover:text-[#0A353F] transition-colors">
-                      <Pencil className="w-4 h-4" />
-                    </button>
-                    <button onClick={() => handleDelete('empresa', emp.id)}
-                      className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors">
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -505,103 +606,6 @@ const DashboardAdmin = () => {
           </div>
         )}
 
-        {/* Tab: Módulos (organizado por empresa) */}
-        {tab === 'modulos' && (
-  <div className="bg-white rounded-3xl p-8 shadow-sm">
-    <div className="flex justify-between items-center mb-2">
-      <h2 className="text-xl font-bold text-[#1d1d1f]">Módulos por empresa</h2>
-      <button onClick={() => openModal('modulo', 'create', { icono: 'FileText' })}
-        className="flex items-center gap-2 bg-[#0A353F] text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-[#0A353F]/90 transition-colors">
-        <Plus className="w-4 h-4" /> Nuevo Módulo
-      </button>
-    </div>
-    <p className="text-xs text-gray-400 mb-6">
-      Cada empresa muestra sus módulos activos y submódulos. La activación/desactivación se hace desde el portal de cada empresa (botón "Ver portal").
-    </p>
-
-    <div className="space-y-6">
-      {empresas.map(emp => {
-        const modsActivos = modulos.filter(mod =>
-          empresaModulos.some(r => r.empresaId === emp.id && r.moduloId === mod.id && r.activo)
-        );
-
-        return (
-          <div key={emp.id} className="border border-gray-100 rounded-2xl overflow-hidden">
-            {/* Empresa header */}
-            <div className="flex items-center gap-3 p-4 bg-[#0A353F]">
-              {emp.logo && (
-                <img src={emp.logo} alt={emp.nombre} className="h-8 w-14 object-contain bg-white rounded-lg p-1" onError={e => e.target.style.display = 'none'} />
-              )}
-              <div className="flex-1">
-                <p className="font-bold text-white text-sm">{emp.nombre}</p>
-                <p className="text-xs text-white/60">{modsActivos.length} módulo(s) activo(s)</p>
-              </div>
-              <button onClick={() => abrirEmpresa(emp.nombre)}
-                className="flex items-center gap-1 text-xs text-white/80 hover:text-white font-medium px-2 py-1">
-                Ver portal <ChevronRight className="w-3 h-3" />
-              </button>
-            </div>
-
-            {/* Módulos de la empresa */}
-            <div className="p-4 space-y-3">
-              {modsActivos.length === 0 ? (
-                <p className="text-xs text-gray-400">Sin módulos activos. Actívalos desde el portal de la empresa.</p>
-              ) : (
-                modsActivos.map(mod => {
-                  const Icono = ICONOS[mod.icono] || FileText;
-                  const subs = submodulos.filter(sub => sub.moduloId === mod.id);
-                  return (
-                    <div key={`${emp.id}-${mod.id}`} className="border border-gray-100 rounded-xl overflow-hidden">
-                      <div className="flex items-center gap-3 px-4 py-3 bg-[#F5F5F7]">
-                        {mod.logo ? (
-                          <img src={mod.logo} alt={mod.nombre} className="h-8 w-8 object-contain rounded-lg bg-white p-1" />
-                        ) : (
-                          <div className="w-8 h-8 rounded-lg bg-[#8CC63F]/10 flex items-center justify-center text-[#8CC63F] flex-shrink-0">
-                            <Icono className="w-4 h-4" />
-                          </div>
-                        )}
-                        <div className="flex-1">
-                          <p className="font-bold text-[#1d1d1f] text-sm">{mod.nombre}</p>
-                          <p className="text-xs text-gray-400">{subs.length} submódulo(s)</p>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <button onClick={() => openModal('modulo', 'edit', mod)}
-                            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-white hover:text-[#0A353F] transition-colors" title="Editar módulo">
-                            <Pencil className="w-4 h-4" />
-                          </button>
-                          <button onClick={() => handleDelete('modulo', mod.id)}
-                            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors" title="Eliminar módulo">
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Submódulos */}
-                      <div className="px-4 py-3 space-y-2">
-                        {subs.map(sub => (
-                          <div key={sub.id} className="flex items-center gap-3 px-3 py-2 bg-white rounded-xl border border-gray-100">
-                            <Folder className="w-4 h-4 text-[#8CC63F]" />
-                            <span className="flex-1 text-sm text-[#1d1d1f]">{sub.nombre}</span>
-                            <button
-                              onClick={async () => { await deleteSubmodulo(sub.id); await loadSubmodulos(); }}
-                              className="w-6 h-6 flex items-center justify-center rounded-lg text-gray-300 hover:text-red-400 transition-colors">
-                              <X className="w-3 h-3" />
-                            </button>
-                          </div>
-                        ))}
-                        <SubmoduloInput moduloId={mod.id} onAdd={loadSubmodulos} addSubmodulo={addSubmodulo} />
-                      </div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  </div>
-)}
       </div>
 
       {/* Modal */}

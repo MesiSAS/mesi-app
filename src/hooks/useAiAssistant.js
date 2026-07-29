@@ -3,13 +3,14 @@ import { generateClient } from 'aws-amplify/data';
 const client = generateClient();
 
 export const useAiAssistant = () => {
-  const askAssistant = async ({ userId, message, empresa, modulo, moduloActivo }) => {
+  const askAssistant = async ({ userId, message, empresa, modulo, moduloActivo, historial }) => {
     const response = await client.mutations.chatAssistant({
       userId,
       message,
       empresa,
       modulo,
       moduloActivo,
+      historial: historial ? JSON.stringify(historial) : undefined,
     });
 
     if (response.errors?.length) {
