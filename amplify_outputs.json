@@ -1193,6 +1193,12 @@
               "isArray": false,
               "type": "String",
               "isRequired": false
+            },
+            "historial": {
+              "name": "historial",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
             }
           }
         },
