@@ -62,7 +62,7 @@ const App = () => {
     }
   } catch (error) {
     console.error('ERROR INICIANDO SESION:', error);
-    setLoginError('No se pudo validar el usuario.');
+    setLoginError('No se pudo conectar con el servidor. Intenta de nuevo en un momento.');
   }
 };
 

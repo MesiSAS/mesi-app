@@ -31,7 +31,10 @@ const clasificar = (nombre = '', tipo = ''): 'pdf' | 'editable' | 'otro' => {
   return 'otro';
 };
 
-const baseModulo = (m = '') => (m.includes('__') ? m.split('__')[0] : m);
+const normEmpresa = (v = '') =>
+  v.toString().trim().toLowerCase()
+    .replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i')
+    .replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ñ/g, 'n');
 
 export type ResultadoAlerta = { enviado: boolean; mensaje: string };
 
@@ -72,9 +75,10 @@ export const ejecutarAlerta = async (
   const anio = String(prev.getFullYear());
   const mes = String(prev.getMonth() + 1).padStart(2, '0');
 
-  const [empresas, modulos, empresaModulos, archivos] = await Promise.all([
+  const [empresas, modulos, submodulos, empresaModulos, archivos] = await Promise.all([
     listAll<any>((a) => client.models.Empresa.list(a)),
     listAll<any>((a) => client.models.Modulo.list(a)),
+    listAll<any>((a) => client.models.Submodulo.list(a)),
     listAll<any>((a) => client.models.EmpresaModulo.list(a)),
     listAll<any>((a) => client.models.Archivo.list(a)),
   ]);
@@ -87,17 +91,25 @@ export const ejecutarAlerta = async (
       .filter(Boolean);
 
     for (const modulo of modulosActivos) {
-      const delModulo = archivos.filter(
-        (a) =>
-          a.empresa === empresa.nombre &&
-          baseModulo(a.modulo || '') === modulo.nombre &&
-          a.anio === anio &&
-          a.mes === mes
-      );
-      const pdf = delModulo.filter((a) => clasificar(a.nombre || '', a.tipo || '') === 'pdf').length;
-      const editable = delModulo.filter((a) => clasificar(a.nombre || '', a.tipo || '') === 'editable').length;
-      if (pdf < REQ_PDF || editable < REQ_EDITABLE) {
-        incompletos.push(`${empresa.nombre} · ${modulo.nombre}: ${pdf}/${REQ_PDF} PDF, ${editable}/${REQ_EDITABLE} editables`);
+      // Unidad = cada submodulo, o el modulo mismo si no tiene submodulos.
+      const subs = submodulos.filter((s) => s.moduloId === modulo.id);
+      const unidades = subs.length > 0
+        ? subs.map((s) => ({ label: `${modulo.nombre} · ${s.nombre}`, contexto: `${modulo.nombre}__${s.nombre}` }))
+        : [{ label: modulo.nombre, contexto: modulo.nombre }];
+
+      for (const u of unidades) {
+        const delUnidad = archivos.filter(
+          (a) =>
+            normEmpresa(a.empresa || '') === normEmpresa(empresa.nombre || '') &&
+            (a.modulo || '') === u.contexto &&
+            a.anio === anio &&
+            a.mes === mes
+        );
+        const pdf = delUnidad.filter((a) => clasificar(a.nombre || '', a.tipo || '') === 'pdf').length;
+        const editable = delUnidad.filter((a) => clasificar(a.nombre || '', a.tipo || '') === 'editable').length;
+        if (pdf < REQ_PDF || editable < REQ_EDITABLE) {
+          incompletos.push(`${empresa.nombre} · ${u.label}: ${pdf}/${REQ_PDF} PDF, ${editable}/${REQ_EDITABLE} editables`);
+        }
       }
     }
   }

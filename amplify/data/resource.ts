@@ -264,7 +264,8 @@ export const data = defineData({
     defaultAuthorizationMode: 'apiKey',
 
     apiKeyAuthorizationMode: {
-      expiresInDays: 30,
+      // 365 (maximo de AppSync) para que la key no expire cada mes y tumbe el login.
+      expiresInDays: 365,
     },
   },
 });

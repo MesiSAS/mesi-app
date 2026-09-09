@@ -158,8 +158,10 @@ const DashboardAdmin = () => {
   const [indexMsg, setIndexMsg] = useState('');
   const [archivosAll, setArchivosAll] = useState([]);
 
-  const abrirEmpresaModulo = (empresaNombre, moduloNombre) => {
-    setSearchParams({ empresa: empresaNombre, modulo: moduloNombre });
+  const abrirEmpresaModulo = (empresaNombre, moduloNombre, submoduloNombre) => {
+    const params = { empresa: empresaNombre, modulo: moduloNombre };
+    if (submoduloNombre) params.submodulo = submoduloNombre;
+    setSearchParams(params);
   };
 
   const handleReindexar = async () => {
@@ -433,6 +435,7 @@ const DashboardAdmin = () => {
             <VerificadorEntregas
               empresas={empresas}
               modulos={modulos}
+              submodulos={submodulos}
               empresaModulos={empresaModulos}
               archivos={archivosAll}
               onAbrir={abrirEmpresaModulo}

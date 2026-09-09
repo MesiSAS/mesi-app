@@ -21,7 +21,12 @@ const clasificar = (nombre = '', tipo = '') => {
   return 'otro';
 };
 
-const baseModulo = (m = '') => (m.includes('__') ? m.split('__')[0] : m);
+// Empareja nombres de empresa sin distinguir mayusculas/acentos/espacios
+// (en los datos conviven Ombia/OMBIA, Mesi/MESI, etc.).
+const normEmpresa = (v = '') =>
+  v.toString().trim().toLowerCase()
+    .replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i')
+    .replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ñ/g, 'n');
 
 // Ultimos 6 periodos (mes vencido primero).
 const construirPeriodos = () => {
@@ -50,12 +55,14 @@ const COLORES = {
   rojo: { bg: 'bg-red-50', text: 'text-red-600', dot: 'bg-red-500', label: 'Sin archivos' },
 };
 
-const VerificadorEntregas = ({ empresas, modulos, empresaModulos, archivos, onAbrir }) => {
+const VerificadorEntregas = ({ empresas, modulos, submodulos, empresaModulos, archivos, onAbrir }) => {
   const periodos = useMemo(construirPeriodos, []);
   const [periodoIdx, setPeriodoIdx] = useState(0);
   const periodo = periodos[periodoIdx];
 
-  // Matriz: por cada empresa, sus modulos activos con conteo pdf/editable.
+  // Matriz: por cada empresa, una CELDA por cada unidad verificable. La unidad
+  // es el submodulo (si el modulo tiene submodulos) o el modulo mismo (si no).
+  // Asi, un modulo solo esta completo si TODOS sus submodulos cumplen 2+2.
   const filas = useMemo(() => {
     return empresas.map((empresa) => {
       const modulosActivos = empresaModulos
@@ -63,17 +70,35 @@ const VerificadorEntregas = ({ empresas, modulos, empresaModulos, archivos, onAb
         .map((em) => modulos.find((m) => m.id === em.moduloId))
         .filter(Boolean);
 
-      const celdas = modulosActivos.map((modulo) => {
-        const delModulo = archivos.filter(
-          (a) =>
-            a.empresa === empresa.nombre &&
-            baseModulo(a.modulo) === modulo.nombre &&
-            a.anio === periodo.anio &&
-            a.mes === periodo.mes
-        );
-        const pdf = delModulo.filter((a) => clasificar(a.nombre, a.tipo) === 'pdf').length;
-        const editable = delModulo.filter((a) => clasificar(a.nombre, a.tipo) === 'editable').length;
-        return { modulo, pdf, editable, estado: estadoDe(pdf, editable) };
+      const celdas = [];
+      modulosActivos.forEach((modulo) => {
+        const subs = (submodulos || []).filter((s) => s.moduloId === modulo.id);
+        const unidades = subs.length > 0
+          ? subs.map((s) => ({
+              label: `${modulo.nombre} · ${s.nombre}`,
+              moduloNombre: modulo.nombre,
+              submodulo: s.nombre,
+              contexto: `${modulo.nombre}__${s.nombre}`,
+            }))
+          : [{
+              label: modulo.nombre,
+              moduloNombre: modulo.nombre,
+              submodulo: null,
+              contexto: modulo.nombre,
+            }];
+
+        unidades.forEach((u) => {
+          const delUnidad = archivos.filter(
+            (a) =>
+              normEmpresa(a.empresa) === normEmpresa(empresa.nombre) &&
+              a.modulo === u.contexto &&
+              a.anio === periodo.anio &&
+              a.mes === periodo.mes
+          );
+          const pdf = delUnidad.filter((a) => clasificar(a.nombre, a.tipo) === 'pdf').length;
+          const editable = delUnidad.filter((a) => clasificar(a.nombre, a.tipo) === 'editable').length;
+          celdas.push({ ...u, pdf, editable, estado: estadoDe(pdf, editable) });
+        });
       });
 
       const resumen = celdas.reduce(
@@ -161,16 +186,16 @@ const VerificadorEntregas = ({ empresas, modulos, empresaModulos, archivos, onAb
               <p className="text-xs text-gray-400">Sin módulos activos.</p>
             ) : (
               <div className="flex flex-wrap gap-2">
-                {celdas.map(({ modulo, pdf, editable, estado }) => (
+                {celdas.map((c) => (
                   <button
-                    key={modulo.id}
-                    onClick={() => onAbrir?.(empresa.nombre, modulo.nombre)}
-                    title={`${modulo.nombre}: ${pdf}/${REQ_PDF} PDF · ${editable}/${REQ_EDITABLE} editables`}
-                    className={`flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium transition-transform hover:scale-[1.03] ${COLORES[estado].bg} ${COLORES[estado].text}`}
+                    key={c.contexto}
+                    onClick={() => onAbrir?.(empresa.nombre, c.moduloNombre, c.submodulo)}
+                    title={`${c.label}: ${c.pdf}/${REQ_PDF} PDF · ${c.editable}/${REQ_EDITABLE} editables`}
+                    className={`flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium transition-transform hover:scale-[1.03] ${COLORES[c.estado].bg} ${COLORES[c.estado].text}`}
                   >
-                    <span className={`w-2 h-2 rounded-full ${COLORES[estado].dot}`} />
-                    {modulo.nombre}
-                    <span className="opacity-70">({pdf}·{editable})</span>
+                    <span className={`w-2 h-2 rounded-full ${COLORES[c.estado].dot}`} />
+                    {c.label}
+                    <span className="opacity-70">({c.pdf}·{c.editable})</span>
                   </button>
                 ))}
               </div>
