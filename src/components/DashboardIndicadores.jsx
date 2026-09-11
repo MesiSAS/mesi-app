@@ -80,23 +80,44 @@ const DashboardIndicadores = ({ empresas = [] }) => {
 
   const serie = (clave) => meses.map((ym) => valor(ym, clave) ?? 0);
 
-  // KPIs sobre el ultimo mes del rango.
+  // Ultimo mes (dentro del rango) con dato para una clave, en el scope actual.
+  const latest = (clave) => {
+    for (let k = meses.length-1; k >= 0; k--) { const v = valor(meses[k], clave); if (v != null) return { ym: meses[k], v }; }
+    return { ym: null, v: null };
+  };
+  const latestPair = (a, b) => {
+    for (let k = meses.length-1; k >= 0; k--) { const va = valor(meses[k], a), vb = valor(meses[k], b); if (va != null && vb != null) return { ym: meses[k], a: va, b: vb }; }
+    return null;
+  };
+
+  // KPIs con el valor mas reciente disponible por clave (no un mes fijo vacio).
   const kpis = useMemo(() => {
-    const ymE = meses[meses.length-1];
-    if (!ymE) return [];
-    const ing = valor(ymE,'ingresos'), cost = valor(ymE,'costos');
-    const cart = valor(ymE,'cartera_total'), venc = valor(ymE,'cartera_vencida'), rec = valor(ymE,'recaudo');
-    const margen = (ing!=null && cost!=null && ing) ? ((ing-cost)/ing*100) : null;
-    const vencPct = (venc!=null && cart) ? (venc/cart*100) : null;
-    const f = (v,u) => v==null ? '—' : (u==='%'? v.toFixed(1)+'%' : '$'+fmt(v));
+    if (!meses.length) return [];
+    const ing = latest('ingresos'), cost = latest('costos'), cart = latest('cartera_total'), rec = latest('recaudo');
+    const mp = latestPair('ingresos','costos');
+    const margen = mp && mp.a ? (mp.a - mp.b)/mp.a*100 : null;
+    const vp = latestPair('cartera_total','cartera_vencida');
+    const vencPct = vp && vp.a ? vp.b/vp.a*100 : null;
+    const sub = (x) => x && x.ym ? ymLabel(x.ym) : '';
     return [
-      { lbl:'Ingresos', txt:f(ing) }, { lbl:'Costos', txt:f(cost) },
-      { lbl:'Margen', txt: margen==null?'—':margen.toFixed(1)+'%' },
-      { lbl:'Cartera total', txt:f(cart) },
-      { lbl:'Cartera vencida', txt: vencPct==null?'—':vencPct.toFixed(1)+'%' },
-      { lbl:'Recaudo', txt:f(rec) },
+      { lbl:'Ingresos', txt: ing.v==null?'—':'$'+fmt(ing.v), sub: sub(ing) },
+      { lbl:'Costos', txt: cost.v==null?'—':'$'+fmt(cost.v), sub: sub(cost) },
+      { lbl:'Margen', txt: margen==null?'—':margen.toFixed(1)+'%', sub: mp?ymLabel(mp.ym):'' },
+      { lbl:'Cartera total', txt: cart.v==null?'—':'$'+fmt(cart.v), sub: sub(cart) },
+      { lbl:'Cartera vencida', txt: vencPct==null?'—':vencPct.toFixed(1)+'%', sub: vp?ymLabel(vp.ym):'' },
+      { lbl:'Recaudo', txt: rec.v==null?'—':'$'+fmt(rec.v), sub: sub(rec) },
     ];
   }, [idx, meses, empresaSel, empresas]);
+
+  // Comparación de ingresos por empresa (valor mas reciente en el rango).
+  const comparacion = useMemo(() => {
+    if (!meses.length) return [];
+    return empresas.map((e) => {
+      let ing = null;
+      for (let k = meses.length-1; k >= 0; k--) { const v = idx[`${e.nombre}|${meses[k]}|ingresos`]; if (typeof v === 'number') { ing = v; break; } }
+      return { nombre: e.nombre, ing: ing || 0 };
+    }).filter((r) => r.ing > 0).sort((a,b) => b.ing - a.ing);
+  }, [idx, meses, empresas]);
 
   const porConfirmar = useMemo(() =>
     inds.filter((i) => i.estado === 'por_confirmar' && (empresaSel==='ALL' || i.empresa===empresaSel))
@@ -131,6 +152,23 @@ const DashboardIndicadores = ({ empresas = [] }) => {
       console.error(e); setProgreso(`Error: ${e.message || e}`);
     } finally {
       setExtrayendoTodos(false);
+    }
+  };
+
+  const [confirmandoTodos, setConfirmandoTodos] = useState(false);
+  const onConfirmarTodos = async () => {
+    if (confirmandoTodos || !porConfirmar.length) return;
+    if (!confirm(`¿Confirmar ${porConfirmar.length} indicador(es)?`)) return;
+    setConfirmandoTodos(true);
+    try {
+      const items = porConfirmar.slice();
+      const CONC = 8;
+      for (let i = 0; i < items.length; i += CONC) {
+        await Promise.all(items.slice(i, i + CONC).map((it) => confirmarIndicador(it.id).catch((e) => console.error('confirmar', e))));
+      }
+      cargar();
+    } finally {
+      setConfirmandoTodos(false);
     }
   };
 
@@ -190,6 +228,7 @@ const DashboardIndicadores = ({ empresas = [] }) => {
           <div key={k.lbl} className="bg-[#F5F5F7] rounded-2xl p-4">
             <p className="text-[10.5px] uppercase tracking-wide text-gray-400 font-semibold truncate">{k.lbl}</p>
             <p className="text-lg font-bold text-[#0A353F] mt-1">{k.txt}</p>
+            <p className="text-[10px] text-gray-400 mt-0.5 h-3">{k.sub || ''}</p>
           </div>
         ))}
       </div>
@@ -220,11 +259,39 @@ const DashboardIndicadores = ({ empresas = [] }) => {
         )}
       </div>
 
+      {/* Ingresos por empresa (consolidado) */}
+      {empresaSel==='ALL' && comparacion.length>0 && (
+        <div className="border border-gray-100 rounded-2xl p-4 mb-6">
+          <h3 className="text-sm font-semibold text-[#1d1d1f] mb-3">Ingresos por empresa</h3>
+          <div className="flex flex-col gap-2.5">
+            {comparacion.map((r)=>{
+              const max = comparacion[0].ing || 1;
+              return (
+                <button key={r.nombre} onClick={()=>setEmpresaSel(r.nombre)}
+                  className="grid items-center gap-3 text-left group" style={{gridTemplateColumns:'130px 1fr auto'}}>
+                  <span className="text-xs font-semibold text-gray-600 truncate group-hover:text-[#0097A7]">{r.nombre}</span>
+                  <span className="bg-[#EEF3F1] rounded-md h-3.5 overflow-hidden"><span className="block h-full rounded-md" style={{width:`${(r.ing/max*100).toFixed(1)}%`,background:'#0097A7'}} /></span>
+                  <span className="font-mono text-xs font-semibold text-[#1d1d1f]">${fmt(r.ing)}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Por confirmar */}
       <div>
-        <h3 className="text-sm font-semibold text-[#1d1d1f] mb-3">
+        <div className="flex items-center justify-between mb-3">
+        <h3 className="text-sm font-semibold text-[#1d1d1f]">
           Por confirmar {porConfirmar.length>0 && <span className="ml-1 text-xs bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full font-bold">{porConfirmar.length}</span>}
         </h3>
+        {porConfirmar.length>0 && (
+          <button onClick={onConfirmarTodos} disabled={confirmandoTodos}
+            className="flex items-center gap-2 bg-[#0A353F] text-white rounded-xl px-3 py-2 text-xs font-semibold hover:bg-[#0A353F]/90 transition-colors disabled:opacity-50">
+            <Check className="w-3.5 h-3.5" /> {confirmandoTodos ? 'Confirmando...' : `Confirmar todos (${porConfirmar.length})`}
+          </button>
+        )}
+        </div>
         {cargando ? (
           <p className="text-gray-400 text-sm">Cargando…</p>
         ) : porConfirmar.length===0 ? (
