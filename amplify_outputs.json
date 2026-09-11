@@ -888,6 +888,134 @@
             "sortKeyFieldNames": []
           }
         },
+        "IndicadorEmpresa": {
+          "name": "IndicadorEmpresa",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "empresa": {
+              "name": "empresa",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "anio": {
+              "name": "anio",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "mes": {
+              "name": "mes",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "clave": {
+              "name": "clave",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "valor": {
+              "name": "valor",
+              "isArray": false,
+              "type": "Float",
+              "isRequired": false,
+              "attributes": []
+            },
+            "unidad": {
+              "name": "unidad",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "fuente": {
+              "name": "fuente",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "fuenteArchivoId": {
+              "name": "fuenteArchivoId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "estado": {
+              "name": "estado",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "actualizado": {
+              "name": "actualizado",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "IndicadorEmpresas",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
         "AlertaEntregas": {
           "name": "AlertaEntregas",
           "fields": {
@@ -1153,6 +1281,39 @@
               "attributes": []
             }
           }
+        },
+        "ExtraccionResponse": {
+          "name": "ExtraccionResponse",
+          "fields": {
+            "creados": {
+              "name": "creados",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false,
+              "attributes": []
+            },
+            "actualizados": {
+              "name": "actualizados",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false,
+              "attributes": []
+            },
+            "claves": {
+              "name": "claves",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "mensaje": {
+              "name": "mensaje",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            }
+          }
         }
       },
       "mutations": {
@@ -1225,6 +1386,22 @@
             "nonModel": "AlertaPruebaResponse"
           },
           "isRequired": false
+        },
+        "extraerIndicadores": {
+          "name": "extraerIndicadores",
+          "isArray": false,
+          "type": {
+            "nonModel": "ExtraccionResponse"
+          },
+          "isRequired": false,
+          "arguments": {
+            "archivoId": {
+              "name": "archivoId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
         }
       }
     }

@@ -2,12 +2,13 @@ import { useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import JSZip from 'jszip';
 import { useArchivos } from './hooks/useArchivos';
+import { useIndicadores } from './hooks/useIndicadores';
 import { useModulos } from './hooks/useModulos';
 import { useSubmodulos } from './hooks/useSubmodulos';
 import {
   ArrowLeft, Upload, FileText, Trash2, Download,
   Filter, Calendar, FolderOpen, ChevronDown, ChevronRight,
-  EyeOff, Eye, Folder, X
+  EyeOff, Eye, Folder, X, BarChart3
 } from 'lucide-react';
 
 const MESES = [
@@ -154,6 +155,27 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
   const [seleccion, setSeleccion] = useState(new Set());
   const [descargando, setDescargando] = useState(false);
   const [descargaMsg, setDescargaMsg] = useState('');
+
+  // Extracción de indicadores (dashboard).
+  const { extraer } = useIndicadores();
+  const [extrayendo, setExtrayendo] = useState(null); // id del archivo en proceso
+  const [extraerMsg, setExtraerMsg] = useState('');
+
+  const handleExtraer = async (arch) => {
+    if (extrayendo) return;
+    setExtrayendo(arch.id);
+    setExtraerMsg(`Extrayendo indicadores de "${arch.nombre}"...`);
+    try {
+      const res = await extraer(arch.id);
+      setExtraerMsg(res?.mensaje || 'Extracción completada.');
+    } catch (err) {
+      console.error('ERROR EXTRAYENDO INDICADORES:', err);
+      setExtraerMsg(`Error: ${err?.message || err}`);
+    } finally {
+      setExtrayendo(null);
+      setTimeout(() => setExtraerMsg(''), 8000);
+    }
+  };
 
   const refreshArchivos = async (anio = filtroanio, mes = filtroMes) => {
     const data = await getArchivosFiltrados(
@@ -531,6 +553,11 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
                                 <Download className="w-4 h-4" />
                               </button>
                               {isAdmin && (<>
+                                <button onClick={() => handleExtraer(arch)} disabled={extrayendo===arch.id}
+                                  className="w-8 h-8 flex items-center justify-center rounded-lg text-[#8CC63F] hover:bg-[#8CC63F]/10 transition-colors disabled:opacity-40"
+                                  title="Extraer indicadores para el dashboard">
+                                  <BarChart3 className="w-4 h-4" />
+                                </button>
                                 <button onClick={() => handleToggleOculto(arch.anio, arch.mes, arch.id)}
                                   className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors ${arch.oculto ? 'text-[#8CC63F] hover:bg-[#8CC63F]/10' : 'text-gray-400 hover:bg-gray-100'}`}
                                   title={arch.oculto ? 'Mostrar al usuario' : 'Ocultar al usuario'}>
@@ -552,6 +579,13 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
             </div>
           )}
         </div>
+        {extraerMsg && (
+          <div className="fixed bottom-6 left-6 z-50 max-w-sm bg-[#0A353F] text-white text-sm px-4 py-3 rounded-xl shadow-xl flex items-start gap-3">
+            <BarChart3 className="w-4 h-4 mt-0.5 text-[#8CC63F] flex-shrink-0" />
+            <span className="flex-1">{extraerMsg}</span>
+            <button onClick={() => setExtraerMsg('')} className="text-white/60 hover:text-white">×</button>
+          </div>
+        )}
         {previewArchivo && (
   <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6">
     

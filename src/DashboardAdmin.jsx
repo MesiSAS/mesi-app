@@ -7,6 +7,7 @@ import { Folder } from 'lucide-react';
 import { useArchivos } from './hooks/useArchivos';
 import VerificadorEntregas from './components/VerificadorEntregas';
 import ConfiguracionAlerta from './components/ConfiguracionAlerta';
+import DashboardIndicadores from './components/DashboardIndicadores';
 import { useEmpresas } from './hooks/useEmpresas';
 import { useModulos } from './hooks/useModulos';
 import { useUsuarios } from './hooks/useUsuarios';
@@ -400,6 +401,8 @@ const DashboardAdmin = () => {
       <div className="max-w-5xl mx-auto px-4 py-10">
         <h1 className="text-3xl font-bold text-[#1d1d1f] mb-2">Panel de Administración</h1>
         <p className="text-gray-500 mb-8">Gestiona empresas, usuarios y módulos de Mesi.</p>
+
+        <DashboardIndicadores empresas={empresas} />
         <div className="bg-white rounded-3xl p-6 shadow-sm mt-8">
   <h2 className="text-xl font-bold text-[#1d1d1f] mb-6" >Panel de Reportes</h2>
 

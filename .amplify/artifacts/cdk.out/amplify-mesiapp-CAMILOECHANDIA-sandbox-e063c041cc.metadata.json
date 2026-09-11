@@ -4,7 +4,7 @@
       "type": "aws:cdk:creationStack",
       "data": [
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:16:17)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:17:17)",
         "...node internals, @aws-amplify/backend-deployer, @aws-cdk\\toolkit-lib..."
       ]
     },
@@ -33,7 +33,7 @@
         "...<anonymous> in @aws-amplify\\backend-output-storage...",
         "Array.forEach (:)",
         "...@aws-amplify\\backend-output-storage, defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:16:17)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:17:17)",
         "...node internals, @aws-amplify/backend-deployer, @aws-cdk\\toolkit-lib..."
       ]
     }
@@ -49,7 +49,7 @@
         "...<anonymous> in @aws-amplify\\backend-output-storage...",
         "Array.forEach (:)",
         "...@aws-amplify\\backend-output-storage, defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:16:17)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:17:17)",
         "...node internals, @aws-amplify/backend-deployer, @aws-cdk\\toolkit-lib..."
       ]
     }
@@ -61,7 +61,7 @@
         "...<anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:16:17)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:17:17)",
         "...node internals..."
       ]
     }
@@ -388,7 +388,7 @@
         "...<anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:16:17)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:17:17)",
         "...node internals..."
       ]
     }
@@ -530,7 +530,7 @@
         "...<anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:16:17)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:17:17)",
         "...node internals..."
       ]
     }
@@ -679,7 +679,7 @@
         "...aws-cdk-lib, <anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:16:17)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:17:17)",
         "...node internals..."
       ]
     }
@@ -869,6 +869,19 @@
       ]
     }
   ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionextraerindicadoreslambda02236DD8Arn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionextraerindicadoreslambda02236DD8Arn"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambdaServiceRoleE9EE5AC3Ref": [
     {
       "type": "aws:cdk:logicalId",
@@ -912,6 +925,19 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaServiceRole3651750ERef"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionextraerindicadoreslambdaServiceRole5A7F588BRef": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionextraerindicadoreslambdaServiceRole5A7F588BRef"
     },
     {
       "type": "aws:cdk:creationStack",
@@ -984,7 +1010,7 @@
         "...aws-cdk-lib, <anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:16:17)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:17:17)",
         "...node internals..."
       ]
     }
@@ -1019,6 +1045,19 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaAE765651Arn"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals, @aws-amplify/backend-deployer...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionextraerindicadoreslambda02236DD8Arn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionextraerindicadoreslambda02236DD8Arn"
     },
     {
       "type": "aws:cdk:creationStack",
@@ -1071,6 +1110,19 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaServiceRole3651750ERef"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals, @aws-amplify/backend-deployer...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionextraerindicadoreslambdaServiceRole5A7F588BRef": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionextraerindicadoreslambdaServiceRole5A7F588BRef"
     },
     {
       "type": "aws:cdk:creationStack",
@@ -1136,6 +1188,19 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaAE765651Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals, @aws-amplify/backend-deployer...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionextraerindicadoreslambda02236DD8Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionextraerindicadoreslambda02236DD8Ref"
     },
     {
       "type": "aws:cdk:creationStack",
@@ -1228,7 +1293,7 @@
         "...aws-cdk-lib, <anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:16:17)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:17:17)",
         "...node internals..."
       ]
     }
@@ -1270,7 +1335,7 @@
         "...@aws-amplify\\auth-construct, @aws-amplify\\backend-auth, <anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:16:17)"
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:17:17)"
       ]
     }
   ],
@@ -1285,7 +1350,7 @@
         "...@aws-amplify\\auth-construct, @aws-amplify\\backend-auth, <anonymous> in @aws-amplify\\backend...",
         "Array.forEach (:)",
         "...defineBackend in @aws-amplify\\backend...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:16:17)"
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:17:17)"
       ]
     }
   ],
@@ -1422,6 +1487,18 @@
     }
   ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/PerfilUsuario": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa": [
     {
       "type": "aws:cdk:creationStack",
       "data": [
@@ -1629,6 +1706,20 @@
       ]
     }
   ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/GraphqlAccessPolicy5/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GraphqlAccessPolicy5A6E9D2F2"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\backend-data...",
+        "Array.forEach (:)",
+        "...@aws-amplify\\backend-data, @aws-amplify\\backend..."
+      ]
+    }
+  ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/CDKMetadata/Default": [
     {
       "type": "aws:cdk:logicalId",
@@ -1687,6 +1778,20 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "enviaralertapruebalambdaBD73622C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend-function, <anonymous> in @aws-amplify\\backend...",
+        "Array.map (:)",
+        "...@aws-amplify\\backend-data..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/extraer-indicadores-lambda/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "extraerindicadoreslambda6064E37F"
     },
     {
       "type": "aws:cdk:creationStack",
@@ -5697,6 +5802,420 @@
       ]
     }
   ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/DynamoDBModelTableReadIOPS": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBModelTableReadIOPS"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/DynamoDBModelTableWriteIOPS": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBModelTableWriteIOPS"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/DynamoDBBillingMode": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBBillingMode"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/DynamoDBEnablePointInTimeRecovery": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBEnablePointInTimeRecovery"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/DynamoDBEnableServerSideEncryption": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DynamoDBEnableServerSideEncryption"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/HasEnvironmentParameter": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "HasEnvironmentParameter"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/ShouldUsePayPerRequestBilling": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ShouldUsePayPerRequestBilling"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/ShouldUsePointInTimeRecovery": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ShouldUsePointInTimeRecovery"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/IndicadorEmpresaTable": [
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "IndicadorEmpresa"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/CustomTableIndicadorEmpresaTable": [
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "IndicadorEmpresa"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/GetAttIndicadorEmpresaTableStreamArn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GetAttIndicadorEmpresaTableStreamArn"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/GetAttIndicadorEmpresaTableName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GetAttIndicadorEmpresaTableName"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/IndicadorEmpresaIAMRole": [
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "IndicadorEmpresaIAMRole"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/IndicadorEmpresaDataSource": [
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "IndicadorEmpresaTable"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/queryGetIndicadorEmpresaResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GetIndicadorEmpresaResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Query.getIndicadorEmpresa"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/queryListIndicadorEmpresasResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ListIndicadorEmpresaResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Query.listIndicadorEmpresas"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/mutationCreateIndicadorEmpresaResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CreateIndicadorEmpresaResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Mutation.createIndicadorEmpresa"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/mutationUpdateIndicadorEmpresaResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "UpdateIndicadorEmpresaResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Mutation.updateIndicadorEmpresa"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/mutationDeleteIndicadorEmpresaResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DeleteIndicadorEmpresaResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Mutation.deleteIndicadorEmpresa"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/subscriptionOnCreateIndicadorEmpresaResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononCreateIndicadorEmpresaResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Subscription.onCreateIndicadorEmpresa"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/subscriptionOnUpdateIndicadorEmpresaResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononUpdateIndicadorEmpresaResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Subscription.onUpdateIndicadorEmpresa"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/subscriptionOnDeleteIndicadorEmpresaResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononDeleteIndicadorEmpresaResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Subscription.onDeleteIndicadorEmpresa"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceD24837ADOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent430A1464Arn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceD24837ADOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataAmplifyTableManagerTableMa3EBAD889"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPI5E1CF517ApiId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals, @aws-amplify/backend-deployer...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccdataamplifyDataGraphQLAPINONEDS54299485Name"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals, @aws-amplify/backend-deployer...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthauthenticatedUserRoleFA4858F4Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthunauthenticatedUserRole5544B9C3Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthNestedStackauthNestedStackResourceC5E63C0BOutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccauthamplifyAuthIdentityPoolDDAEC769Ref"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa.NestedStack/IndicadorEmpresa.NestedStackResource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "amplifyDataIndicadorEmpresaNestedStackIndicadorEmpresaNestedStackResourceD31C20D0"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    }
+  ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/DynamoDBModelTableReadIOPS": [
     {
       "type": "aws:cdk:logicalId",
@@ -6203,6 +6722,32 @@
       "data": "Mutation.enviarAlertaPrueba"
     }
   ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/FnExtraerIndicadoresLambdaDataSource": [
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "FnExtraerIndicadoresLambdaDataSource"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/mutationExtraerIndicadoresResolver": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationextraerIndicadoresResolver"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "Mutation.extraerIndicadores"
+    }
+  ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionchatassistantlambda08C4C19BArn": [
     {
       "type": "aws:cdk:logicalId",
@@ -6285,6 +6830,19 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionenviaralertapruebalambdaAE765651Arn"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/reference-to-amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880Outputs.amplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionextraerindicadoreslambda02236DD8Arn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "referencetoamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionNestedStackfunctionNestedStackResourceCFA71880OutputsamplifymesiappCAMILOECHANDIAsandboxe063c041ccfunctionextraerindicadoreslambda02236DD8Arn"
     },
     {
       "type": "aws:cdk:creationStack",
@@ -6421,6 +6979,19 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "enviaralertapruebalambdaServiceRole776B71DD"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-amplify\\backend-function, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/extraer-indicadores-lambda/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "extraerindicadoreslambdaServiceRole34CA10DA"
     },
     {
       "type": "aws:cdk:creationStack",
@@ -11156,6 +11727,511 @@
       ]
     }
   ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/IndicadorEmpresaIAMRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "IndicadorEmpresaIAMRole5CA4F86D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "IndicadorEmpresaIAMRole"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/IndicadorEmpresaDataSource/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "IndicadorEmpresaDataSource"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "IndicadorEmpresaTable"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/QuerygetIndicadorEmpresaauth0Function/QuerygetIndicadorEmpresaauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QuerygetIndicadorEmpresaauth0FunctionQuerygetIndicadorEmpresaauth0FunctionAppSyncFunction6461D182"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QuerygetIndicadorEmpresaauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/QuerygetIndicadorEmpresapostAuth0Function/QuerygetIndicadorEmpresapostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QuerygetIndicadorEmpresapostAuth0FunctionQuerygetIndicadorEmpresapostAuth0FunctionAppSyncFunction3A77ABB7"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QuerygetIndicadorEmpresapostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/QueryGetIndicadorEmpresaDataResolverFn/QueryGetIndicadorEmpresaDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QueryGetIndicadorEmpresaDataResolverFnQueryGetIndicadorEmpresaDataResolverFnAppSyncFunction87543540"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QueryGetIndicadorEmpresaDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/QuerylistIndicadorEmpresasauth0Function/QuerylistIndicadorEmpresasauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QuerylistIndicadorEmpresasauth0FunctionQuerylistIndicadorEmpresasauth0FunctionAppSyncFunctionC621D558"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QuerylistIndicadorEmpresasauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/QuerylistIndicadorEmpresaspostAuth0Function/QuerylistIndicadorEmpresaspostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QuerylistIndicadorEmpresaspostAuth0FunctionQuerylistIndicadorEmpresaspostAuth0FunctionAppSyncFunctionCAF38273"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QuerylistIndicadorEmpresaspostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/QueryListIndicadorEmpresasDataResolverFn/QueryListIndicadorEmpresasDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "QueryListIndicadorEmpresasDataResolverFnQueryListIndicadorEmpresasDataResolverFnAppSyncFunction642BEB9E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "QueryListIndicadorEmpresasDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/MutationcreateIndicadorEmpresainit0Function/MutationcreateIndicadorEmpresainit0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationcreateIndicadorEmpresainit0FunctionMutationcreateIndicadorEmpresainit0FunctionAppSyncFunction85BDC9DE"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationcreateIndicadorEmpresainit0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/MutationcreateIndicadorEmpresaauth0Function/MutationcreateIndicadorEmpresaauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationcreateIndicadorEmpresaauth0FunctionMutationcreateIndicadorEmpresaauth0FunctionAppSyncFunction06F69C95"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationcreateIndicadorEmpresaauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/MutationcreateIndicadorEmpresapostAuth0Function/MutationcreateIndicadorEmpresapostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationcreateIndicadorEmpresapostAuth0FunctionMutationcreateIndicadorEmpresapostAuth0FunctionAppSyncFunction56044264"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationcreateIndicadorEmpresapostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/MutationCreateIndicadorEmpresaDataResolverFn/MutationCreateIndicadorEmpresaDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationCreateIndicadorEmpresaDataResolverFnMutationCreateIndicadorEmpresaDataResolverFnAppSyncFunction2EC4EEB7"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationCreateIndicadorEmpresaDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/MutationupdateIndicadorEmpresainit0Function/MutationupdateIndicadorEmpresainit0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationupdateIndicadorEmpresainit0FunctionMutationupdateIndicadorEmpresainit0FunctionAppSyncFunction98770322"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationupdateIndicadorEmpresainit0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/MutationupdateIndicadorEmpresaauth0Function/MutationupdateIndicadorEmpresaauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationupdateIndicadorEmpresaauth0FunctionMutationupdateIndicadorEmpresaauth0FunctionAppSyncFunction7F04B100"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationupdateIndicadorEmpresaauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/MutationupdateIndicadorEmpresapostAuth0Function/MutationupdateIndicadorEmpresapostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationupdateIndicadorEmpresapostAuth0FunctionMutationupdateIndicadorEmpresapostAuth0FunctionAppSyncFunction193CBBF9"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationupdateIndicadorEmpresapostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/MutationUpdateIndicadorEmpresaDataResolverFn/MutationUpdateIndicadorEmpresaDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationUpdateIndicadorEmpresaDataResolverFnMutationUpdateIndicadorEmpresaDataResolverFnAppSyncFunctionDC6C2A2F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationUpdateIndicadorEmpresaDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/MutationdeleteIndicadorEmpresaauth0Function/MutationdeleteIndicadorEmpresaauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationdeleteIndicadorEmpresaauth0FunctionMutationdeleteIndicadorEmpresaauth0FunctionAppSyncFunctionCA359376"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationdeleteIndicadorEmpresaauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/MutationdeleteIndicadorEmpresapostAuth0Function/MutationdeleteIndicadorEmpresapostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationdeleteIndicadorEmpresapostAuth0FunctionMutationdeleteIndicadorEmpresapostAuth0FunctionAppSyncFunction6CF0C2DA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationdeleteIndicadorEmpresapostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/MutationDeleteIndicadorEmpresaDataResolverFn/MutationDeleteIndicadorEmpresaDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationDeleteIndicadorEmpresaDataResolverFnMutationDeleteIndicadorEmpresaDataResolverFnAppSyncFunction9446DF7B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationDeleteIndicadorEmpresaDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/SubscriptiononCreateIndicadorEmpresaauth0Function/SubscriptiononCreateIndicadorEmpresaauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononCreateIndicadorEmpresaauth0FunctionSubscriptiononCreateIndicadorEmpresaauth0FunctionAppSyncFunction520173F0"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononCreateIndicadorEmpresaauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/SubscriptiononCreateIndicadorEmpresapostAuth0Function/SubscriptiononCreateIndicadorEmpresapostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononCreateIndicadorEmpresapostAuth0FunctionSubscriptiononCreateIndicadorEmpresapostAuth0FunctionAppSyncFunction7D490B83"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononCreateIndicadorEmpresapostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/SubscriptionOnCreateIndicadorEmpresaDataResolverFn/SubscriptionOnCreateIndicadorEmpresaDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptionOnCreateIndicadorEmpresaDataResolverFnSubscriptionOnCreateIndicadorEmpresaDataResolverFnAppSyncFunctionDC370082"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptionOnCreateIndicadorEmpresaDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/SubscriptiononUpdateIndicadorEmpresaauth0Function/SubscriptiononUpdateIndicadorEmpresaauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononUpdateIndicadorEmpresaauth0FunctionSubscriptiononUpdateIndicadorEmpresaauth0FunctionAppSyncFunction70D52AC8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononUpdateIndicadorEmpresaauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/SubscriptiononUpdateIndicadorEmpresapostAuth0Function/SubscriptiononUpdateIndicadorEmpresapostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononUpdateIndicadorEmpresapostAuth0FunctionSubscriptiononUpdateIndicadorEmpresapostAuth0FunctionAppSyncFunction9BF111E8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononUpdateIndicadorEmpresapostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/SubscriptionOnUpdateIndicadorEmpresaDataResolverFn/SubscriptionOnUpdateIndicadorEmpresaDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptionOnUpdateIndicadorEmpresaDataResolverFnSubscriptionOnUpdateIndicadorEmpresaDataResolverFnAppSyncFunctionD0C86B01"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptionOnUpdateIndicadorEmpresaDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/SubscriptiononDeleteIndicadorEmpresaauth0Function/SubscriptiononDeleteIndicadorEmpresaauth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononDeleteIndicadorEmpresaauth0FunctionSubscriptiononDeleteIndicadorEmpresaauth0FunctionAppSyncFunctionB2642ADF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononDeleteIndicadorEmpresaauth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/SubscriptiononDeleteIndicadorEmpresapostAuth0Function/SubscriptiononDeleteIndicadorEmpresapostAuth0Function.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptiononDeleteIndicadorEmpresapostAuth0FunctionSubscriptiononDeleteIndicadorEmpresapostAuth0FunctionAppSyncFunction4C185EA4"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptiononDeleteIndicadorEmpresapostAuth0Function"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/SubscriptionOnDeleteIndicadorEmpresaDataResolverFn/SubscriptionOnDeleteIndicadorEmpresaDataResolverFn.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubscriptionOnDeleteIndicadorEmpresaDataResolverFnSubscriptionOnDeleteIndicadorEmpresaDataResolverFnAppSyncFunction2498FFE5"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-amplify\\graphql-api-construct, @aws-amplify\\backend-data, @aws-amplify\\backend...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "SubscriptionOnDeleteIndicadorEmpresaDataResolverFn"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/CDKMetadata/Condition": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadataAvailable"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/AlertaEntregasIAMRole/Resource": [
     {
       "type": "aws:cdk:logicalId",
@@ -11795,6 +12871,45 @@
       "data": "InvokeFnEnviarAlertaPruebaLambdaDataSource"
     }
   ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/FnExtraerIndicadoresLambdaDataSource/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "FnExtraerIndicadoresLambdaDataSource"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "FnExtraerIndicadoresLambdaDataSource"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/InvokeFnExtraerIndicadoresLambdaDataSource/InvokeFnExtraerIndicadoresLambdaDataSource.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "InvokeFnExtraerIndicadoresLambdaDataSourceInvokeFnExtraerIndicadoresLambdaDataSourceAppSyncFunctionC5E288A5"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "InvokeFnExtraerIndicadoresLambdaDataSource"
+    }
+  ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/MutationChatAssistantAuthFN/MutationChatAssistantAuthFN.AppSyncFunction": [
     {
       "type": "aws:cdk:logicalId",
@@ -11847,6 +12962,24 @@
     {
       "type": "graphqltransformer:resourceName",
       "data": "MutationEnviarAlertaPruebaAuthFN"
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/MutationExtraerIndicadoresAuthFN/MutationExtraerIndicadoresAuthFN.AppSyncFunction": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MutationExtraerIndicadoresAuthFNMutationExtraerIndicadoresAuthFNAppSyncFunctionF2A10B31"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)",
+        "...@aws-amplify\\graphql-api-construct..."
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "MutationExtraerIndicadoresAuthFN"
     }
   ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/CDKMetadata/Default": [
@@ -11916,7 +13049,7 @@
       "type": "aws:cdk:creationStack",
       "data": [
         "...NodejsFunction.addToRolePolicy in aws-cdk-lib...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:46:40)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:48:40)",
         "...node internals, @aws-amplify/backend-deployer..."
       ]
     }
@@ -11930,7 +13063,7 @@
       "type": "aws:cdk:creationStack",
       "data": [
         "...NodejsFunction.addToRolePolicy in aws-cdk-lib...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:58:39)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:60:39)",
         "...node internals, @aws-amplify/backend-deployer..."
       ]
     }
@@ -11944,7 +13077,21 @@
       "type": "aws:cdk:creationStack",
       "data": [
         "...NodejsFunction.addToRolePolicy in aws-cdk-lib...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:82:45)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:84:45)",
+        "...node internals, @aws-amplify/backend-deployer..."
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/extraer-indicadores-lambda/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "extraerindicadoreslambdaServiceRoleDefaultPolicy8EC433F8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...NodejsFunction.addToRolePolicy in aws-cdk-lib...",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:92:45)",
         "...node internals, @aws-amplify/backend-deployer..."
       ]
     }
@@ -11958,7 +13105,7 @@
       "type": "aws:cdk:creationStack",
       "data": [
         "...NodejsFunction.addToRolePolicy in aws-cdk-lib...",
-        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:81:41)",
+        "<anonymous> (C:\\Users\\CAMILO ECHANDIA\\Documents\\MESI\\mesi-app\\amplify\\backend.ts:83:41)",
         "...node internals, @aws-amplify/backend-deployer..."
       ]
     }
@@ -12221,6 +13368,25 @@
       "data": "PerfilUsuario"
     }
   ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/IndicadorEmpresa/IndicadorEmpresaTable/Default/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "IndicadorEmpresaTable"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)",
+        "...<anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Map.forEach (:)"
+      ]
+    },
+    {
+      "type": "graphqltransformer:resourceName",
+      "data": "IndicadorEmpresa"
+    }
+  ],
   "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/AlertaEntregas/AlertaEntregasTable/Default/Default": [
     {
       "type": "aws:cdk:logicalId",
@@ -12270,6 +13436,19 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "FnEnviarAlertaPruebaLambdaDataSourceServiceRoleC4205FCB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, <anonymous> in @aws-amplify\\graphql-api-construct...",
+        "Array.forEach (:)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/FnExtraerIndicadoresLambdaDataSource/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "FnExtraerIndicadoresLambdaDataSourceServiceRole2959F4C0"
     },
     {
       "type": "aws:cdk:creationStack",
@@ -12380,6 +13559,19 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "FnEnviarAlertaPruebaLambdaDataSourceServiceRoleDefaultPolicy8E66950B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/data/amplifyData/FunctionDirectiveStack/FnExtraerIndicadoresLambdaDataSource/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "FnExtraerIndicadoresLambdaDataSourceServiceRoleDefaultPolicy85096436"
     },
     {
       "type": "aws:cdk:creationStack",

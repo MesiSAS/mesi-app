@@ -21,10 +21,11 @@ const { resourceConfig, libraryOptions } = await getAmplifyDataClientConfig(
 Amplify.configure(resourceConfig, libraryOptions);
 const client = generateClient<Schema>();
 
-// Claves estandar del dashboard que intentamos extraer.
-const CLAVES = ['ingresos', 'costos', 'margen_pct', 'cartera_total', 'cartera_vencida_pct', 'recaudo'] as const;
+// Claves estandar del dashboard. Todas en COP (valores) para poder consolidar
+// entre empresas; los porcentajes (margen, % vencida) se derivan en el dashboard.
+const CLAVES = ['ingresos', 'costos', 'cartera_total', 'cartera_vencida', 'recaudo'] as const;
 const UNIDAD: Record<string, string> = {
-  ingresos: 'COP', costos: 'COP', margen_pct: '%', cartera_total: 'COP', cartera_vencida_pct: '%', recaudo: 'COP',
+  ingresos: 'COP', costos: 'COP', cartera_total: 'COP', cartera_vencida: 'COP', recaudo: 'COP',
 };
 
 const streamToBuffer = async (stream: any): Promise<Buffer> => {
@@ -62,7 +63,8 @@ const extraerConIA = async (texto: string, empresa: string, anio: string, mes: s
     'Del texto que recibes, extrae UNICAMENTE los indicadores que aparezcan EXPLICITAMENTE para el periodo indicado.',
     'Devuelve SOLO un bloque JSON: {"indicadores":[{"clave":"...","valor":<numero>}]}',
     `Claves permitidas (usa exactamente estos nombres): ${CLAVES.join(', ')}.`,
-    'valor: numero sin separadores de miles, con punto decimal. Los porcentajes como numero (ej. 28.1 para 28,1%).',
+    'Todos los valores en COP (pesos), sin separadores de miles y con punto decimal.',
+    'cartera_vencida = valor EN COP de la cartera vencida; si el informe solo da el porcentaje vencido y la cartera total, multiplica para obtener el valor.',
     'Si un indicador NO aparece claramente, NO lo incluyas. NUNCA inventes cifras.',
   ].join('\n');
   const prompt = [
@@ -105,11 +107,49 @@ export const handler: Schema['extraerIndicadores']['functionHandler'] = async (e
       return { creados: 0, actualizados: 0, claves: '', mensaje: 'El archivo no tiene año/mes; no se puede ubicar el periodo.' };
     }
 
-    const obj = await s3.send(new GetObjectCommand({ Bucket: env.BUCKET_NAME, Key: archivo.s3Key }));
-    const buffer = await streamToBuffer(obj.Body);
-    const texto = await extractText(buffer, archivo.nombre || '', archivo.tipo);
+    const leerTexto = async (a: any): Promise<string> => {
+      const obj = await s3.send(new GetObjectCommand({ Bucket: env.BUCKET_NAME, Key: a.s3Key }));
+      const buffer = await streamToBuffer(obj.Body);
+      return extractText(buffer, a.nombre || '', a.tipo);
+    };
+
+    let texto = await leerTexto(archivo);
+    let fuenteArchivo = archivo;
+
+    // Fallback: si el PDF (u otro) no dio texto, buscar un hermano editable
+    // (mismo empresa/modulo/anio/mes) y extraer de ese — preferir el de nombre similar.
     if (!texto.trim()) {
-      return { creados: 0, actualizados: 0, claves: '', mensaje: 'Sin texto extraible (imagen/escaneado o tipo no soportado).' };
+      const baseNombre = (archivo.nombre || '').replace(/\.[^.]+$/, '').toLowerCase();
+      const hermanosRes = await client.models.Archivo.list({
+        filter: {
+          and: [
+            { empresa: { eq: archivo.empresa || '' } },
+            { modulo: { eq: archivo.modulo || '' } },
+            { anio: { eq: archivo.anio || '' } },
+            { mes: { eq: archivo.mes || '' } },
+          ],
+        },
+        limit: 200,
+      });
+      const editables = (hermanosRes.data || []).filter((h) => {
+        if (!h || h.id === archivo.id || !h.s3Key) return false;
+        const ext = (h.nombre || '').split('.').pop()?.toLowerCase();
+        return ['docx', 'doc', 'xlsx', 'xls', 'xlsm', 'txt', 'csv'].includes(ext || '');
+      });
+      // Preferir el que tenga el mismo nombre base.
+      editables.sort((a, b) => {
+        const am = (a.nombre || '').replace(/\.[^.]+$/, '').toLowerCase() === baseNombre ? 0 : 1;
+        const bm = (b.nombre || '').replace(/\.[^.]+$/, '').toLowerCase() === baseNombre ? 0 : 1;
+        return am - bm;
+      });
+      for (const h of editables) {
+        const t = await leerTexto(h);
+        if (t.trim()) { texto = t; fuenteArchivo = h; break; }
+      }
+    }
+
+    if (!texto.trim()) {
+      return { creados: 0, actualizados: 0, claves: '', mensaje: 'Sin texto extraible (ni en el archivo ni en un editable equivalente del mismo periodo).' };
     }
 
     const empresa = archivo.empresa || '';
@@ -135,9 +175,9 @@ export const handler: Schema['extraerIndicadores']['functionHandler'] = async (e
     for (const ind of indicadores) {
       const prev = existentes.find((e) => e.clave === ind.clave);
       const datos = {
-        empresa, anio: archivo.anio, mes: archivo.mes, clave: ind.clave,
+        empresa, anio: archivo.anio || '', mes: archivo.mes || '', clave: ind.clave,
         valor: ind.valor, unidad: UNIDAD[ind.clave] || '',
-        fuente: 'pdf', fuenteArchivoId: archivo.id, estado: 'por_confirmar',
+        fuente: 'pdf', fuenteArchivoId: fuenteArchivo.id, estado: 'por_confirmar',
         actualizado: new Date().toISOString(),
       };
       if (prev) { await client.models.IndicadorEmpresa.update({ id: prev.id, ...datos }); actualizados += 1; }
