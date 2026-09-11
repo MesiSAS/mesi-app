@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import JSZip from 'jszip';
 import { useArchivos } from './hooks/useArchivos';
 import { useModulos } from './hooks/useModulos';
 import { useSubmodulos } from './hooks/useSubmodulos';
@@ -149,6 +150,11 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
   const [gruposExpandidos, setGruposExpandidos] = useState({});
   const [previewArchivo, setPreviewArchivo] = useState(null);
 
+  // Selección múltiple para descarga masiva.
+  const [seleccion, setSeleccion] = useState(new Set());
+  const [descargando, setDescargando] = useState(false);
+  const [descargaMsg, setDescargaMsg] = useState('');
+
   const refreshArchivos = async (anio = filtroanio, mes = filtroMes) => {
     const data = await getArchivosFiltrados(
       empresa,
@@ -267,6 +273,61 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
     }
   };
 
+  // ----- Selección múltiple + descarga masiva -----
+  const visibles = archivos.filter(a => !a.oculto || isAdmin); // lo que realmente se lista
+  const toggleSel = (id) => {
+    setSeleccion(prev => {
+      const s = new Set(prev);
+      s.has(id) ? s.delete(id) : s.add(id);
+      return s;
+    });
+  };
+  const seleccionadosVisibles = visibles.filter(a => seleccion.has(a.id));
+  const todosSeleccionados = visibles.length > 0 && seleccionadosVisibles.length === visibles.length;
+  const toggleTodos = () => {
+    setSeleccion(todosSeleccionados ? new Set() : new Set(visibles.map(a => a.id)));
+  };
+
+  const descargarSeleccionados = async () => {
+    const items = visibles.filter(a => seleccion.has(a.id) && a.url);
+    if (!items.length || descargando) return;
+    setDescargando(true);
+    setDescargaMsg(`Preparando ${items.length} archivo(s)...`);
+    try {
+      const zip = new JSZip();
+      const usados = {};
+      let ok = 0;
+      for (const arch of items) {
+        try {
+          const resp = await fetch(arch.url);
+          if (!resp.ok) throw new Error('HTTP ' + resp.status);
+          const blob = await resp.blob();
+          // Evitar nombres repetidos dentro del zip.
+          let nombre = arch.nombre || `archivo-${arch.id}`;
+          if (usados[nombre]) { const n = ++usados[nombre]; const dot = nombre.lastIndexOf('.'); nombre = dot > 0 ? `${nombre.slice(0,dot)} (${n})${nombre.slice(dot)}` : `${nombre} (${n})`; }
+          else usados[nombre] = 1;
+          zip.file(nombre, blob);
+          ok += 1;
+          setDescargaMsg(`Descargando ${ok}/${items.length}...`);
+        } catch (e) {
+          console.error('No se pudo descargar', arch.nombre, e);
+        }
+      }
+      if (!ok) { setDescargaMsg('No se pudo descargar ningún archivo.'); return; }
+      const contenido = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(contenido);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${empresa}-${nombreVista}-${new Date().toISOString().slice(0,10)}.zip`;
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+      setDescargaMsg(`Listo: ${ok} archivo(s) descargados${ok < items.length ? ` (${items.length-ok} fallaron)` : ''}.`);
+      setTimeout(() => setDescargaMsg(''), 5000);
+    } finally {
+      setDescargando(false);
+    }
+  };
+
   const grupos = agruparPorFecha(archivos);
 
 
@@ -380,10 +441,31 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
 
         {/* Documentos */}
         <div className="bg-white rounded-3xl p-8 shadow-sm">
-          <h3 className="text-lg font-bold text-[#1d1d1f] mb-6 flex items-center gap-2">
+          <h3 className="text-lg font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
             <FolderOpen className="w-5 h-5 text-[#8CC63F]" /> Documentos
             <span className="ml-auto text-sm font-normal text-gray-400">{archivos.length} archivo(s)</span>
           </h3>
+
+          {/* Barra de selección / descarga masiva */}
+          {visibles.length > 0 && (
+            <div className="flex flex-wrap items-center gap-3 mb-5 pb-4 border-b border-gray-100">
+              <label className="flex items-center gap-2 text-sm text-[#0A353F] font-medium cursor-pointer select-none">
+                <input type="checkbox" checked={todosSeleccionados} onChange={toggleTodos}
+                  className="w-4 h-4 accent-[#8CC63F] cursor-pointer" />
+                Seleccionar todo lo filtrado ({visibles.length})
+              </label>
+              <span className="text-sm text-gray-400">·</span>
+              <span className="text-sm text-gray-500">{seleccionadosVisibles.length} seleccionado(s)</span>
+              <button
+                onClick={descargarSeleccionados}
+                disabled={descargando || seleccionadosVisibles.length === 0}
+                className="ml-auto flex items-center gap-2 bg-[#8CC63F] text-white rounded-xl px-4 py-2.5 text-sm font-semibold hover:bg-[#7ab234] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                <Download className="w-4 h-4" />
+                {descargando ? 'Descargando...' : `Descargar seleccionados${seleccionadosVisibles.length ? ` (${seleccionadosVisibles.length})` : ''}`}
+              </button>
+              {descargaMsg && <span className="w-full text-xs text-gray-500">{descargaMsg}</span>}
+            </div>
+          )}
           {grupos.length === 0 ? (
             <div className="text-center py-16 text-gray-400">
               <FolderOpen className="w-12 h-12 mx-auto mb-3 opacity-30" />
@@ -414,6 +496,8 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
                           <div key={arch.id}
                             data-archivo-id={arch.id}
                             className={`flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors group ${arch.oculto ? 'opacity-50' : ''} ${arch.id === archivoDestino ? 'bg-[#8CC63F]/10 ring-1 ring-inset ring-[#8CC63F]' : ''}`}>
+                            <input type="checkbox" checked={seleccion.has(arch.id)} onChange={() => toggleSel(arch.id)}
+                              className="w-4 h-4 accent-[#8CC63F] cursor-pointer flex-shrink-0" title="Seleccionar" />
                             <div className="w-10 h-10 bg-[#F5F5F7] rounded-xl flex items-center justify-center flex-shrink-0">
                               <FileText className="w-5 h-5 text-[#0A353F]" />
                             </div>

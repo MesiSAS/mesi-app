@@ -49,6 +49,15 @@ const estadoDe = (pdf, editable) => {
   return 'amarillo';
 };
 
+// Rollup: un conjunto (submodulos de un modulo, o modulos de una empresa) solo
+// esta 'verde' si TODO esta verde; 'rojo' solo si TODO esta rojo; si no, 'amarillo'.
+const rollup = (estados) => {
+  if (!estados.length) return 'rojo';
+  if (estados.every((e) => e === 'verde')) return 'verde';
+  if (estados.every((e) => e === 'rojo')) return 'rojo';
+  return 'amarillo';
+};
+
 const COLORES = {
   verde: { bg: 'bg-green-50', text: 'text-green-600', dot: 'bg-green-500', label: 'Completo' },
   amarillo: { bg: 'bg-amber-50', text: 'text-amber-600', dot: 'bg-amber-500', label: 'Incompleto' },
@@ -70,57 +79,44 @@ const VerificadorEntregas = ({ empresas, modulos, submodulos, empresaModulos, ar
         .map((em) => modulos.find((m) => m.id === em.moduloId))
         .filter(Boolean);
 
-      const celdas = [];
-      modulosActivos.forEach((modulo) => {
-        const subs = (submodulos || []).filter((s) => s.moduloId === modulo.id);
-        const unidades = subs.length > 0
-          ? subs.map((s) => ({
-              label: `${modulo.nombre} · ${s.nombre}`,
-              moduloNombre: modulo.nombre,
-              submodulo: s.nombre,
-              contexto: `${modulo.nombre}__${s.nombre}`,
-            }))
-          : [{
-              label: modulo.nombre,
-              moduloNombre: modulo.nombre,
-              submodulo: null,
-              contexto: modulo.nombre,
-            }];
+      const cuentaUnidad = (contexto) => {
+        const del = archivos.filter(
+          (a) =>
+            normEmpresa(a.empresa) === normEmpresa(empresa.nombre) &&
+            a.modulo === contexto &&
+            a.anio === periodo.anio &&
+            a.mes === periodo.mes
+        );
+        const pdf = del.filter((a) => clasificar(a.nombre, a.tipo) === 'pdf').length;
+        const editable = del.filter((a) => clasificar(a.nombre, a.tipo) === 'editable').length;
+        return { pdf, editable, estado: estadoDe(pdf, editable) };
+      };
 
-        unidades.forEach((u) => {
-          const delUnidad = archivos.filter(
-            (a) =>
-              normEmpresa(a.empresa) === normEmpresa(empresa.nombre) &&
-              a.modulo === u.contexto &&
-              a.anio === periodo.anio &&
-              a.mes === periodo.mes
-          );
-          const pdf = delUnidad.filter((a) => clasificar(a.nombre, a.tipo) === 'pdf').length;
-          const editable = delUnidad.filter((a) => clasificar(a.nombre, a.tipo) === 'editable').length;
-          celdas.push({ ...u, pdf, editable, estado: estadoDe(pdf, editable) });
-        });
+      // Cada modulo agrupa sus unidades (submodulos, o el modulo mismo si no tiene).
+      const modulosEval = modulosActivos.map((modulo) => {
+        const subs = (submodulos || []).filter((s) => s.moduloId === modulo.id);
+        const unidades = (subs.length > 0
+          ? subs.map((s) => ({ nombre: s.nombre, submodulo: s.nombre, contexto: `${modulo.nombre}__${s.nombre}` }))
+          : [{ nombre: modulo.nombre, submodulo: null, contexto: modulo.nombre }]
+        ).map((u) => ({ ...u, ...cuentaUnidad(u.contexto) }));
+
+        return {
+          modulo,
+          tieneSubs: subs.length > 0,
+          unidades,
+          estadoModulo: rollup(unidades.map((u) => u.estado)),
+        };
       });
 
-      const resumen = celdas.reduce(
-        (acc, c) => {
-          acc[c.estado] += 1;
-          return acc;
-        },
-        { verde: 0, amarillo: 0, rojo: 0 }
-      );
-      const estadoEmpresa = celdas.length === 0
-        ? 'rojo'
-        : resumen.rojo > 0 || resumen.amarillo > 0
-          ? (resumen.verde === 0 && resumen.amarillo === 0 ? 'rojo' : 'amarillo')
-          : 'verde';
-
-      return { empresa, celdas, estadoEmpresa };
+      const estadoEmpresa = rollup(modulosEval.map((m) => m.estadoModulo));
+      return { empresa, modulosEval, estadoEmpresa };
     });
-  }, [empresas, modulos, empresaModulos, archivos, periodo]);
+  }, [empresas, modulos, submodulos, empresaModulos, archivos, periodo]);
 
+  // Totales a nivel de unidad (submodulo) = lo accionable.
   const totales = useMemo(() => {
     const t = { verde: 0, amarillo: 0, rojo: 0 };
-    filas.forEach((f) => f.celdas.forEach((c) => { t[c.estado] += 1; }));
+    filas.forEach((f) => f.modulosEval.forEach((m) => m.unidades.forEach((u) => { t[u.estado] += 1; })));
     return t;
   }, [filas]);
 
@@ -130,7 +126,7 @@ const VerificadorEntregas = ({ empresas, modulos, submodulos, empresaModulos, ar
         <div>
           <h2 className="text-xl font-bold text-[#1d1d1f]">Verificador de entregas</h2>
           <p className="text-gray-500 text-sm">
-            Requisito por módulo: {REQ_PDF} PDF + {REQ_EDITABLE} editables (docx/pptx).
+            Requisito: {REQ_PDF} PDF + {REQ_EDITABLE} editables por submódulo (o por módulo si no tiene submódulos).
           </p>
         </div>
 
@@ -174,7 +170,7 @@ const VerificadorEntregas = ({ empresas, modulos, submodulos, empresaModulos, ar
         {filas.length === 0 && (
           <p className="text-gray-400 text-sm text-center py-6">No hay empresas para verificar.</p>
         )}
-        {filas.map(({ empresa, celdas, estadoEmpresa }) => (
+        {filas.map(({ empresa, modulosEval, estadoEmpresa }) => (
           <div key={empresa.id} className="border border-gray-100 rounded-2xl p-4">
             <div className="flex items-center gap-2 mb-3">
               <span className={`w-3 h-3 rounded-full ${COLORES[estadoEmpresa].dot}`} />
@@ -182,21 +178,39 @@ const VerificadorEntregas = ({ empresas, modulos, submodulos, empresaModulos, ar
               <span className={`text-xs ${COLORES[estadoEmpresa].text}`}>· {COLORES[estadoEmpresa].label}</span>
             </div>
 
-            {celdas.length === 0 ? (
+            {modulosEval.length === 0 ? (
               <p className="text-xs text-gray-400">Sin módulos activos.</p>
             ) : (
-              <div className="flex flex-wrap gap-2">
-                {celdas.map((c) => (
-                  <button
-                    key={c.contexto}
-                    onClick={() => onAbrir?.(empresa.nombre, c.moduloNombre, c.submodulo)}
-                    title={`${c.label}: ${c.pdf}/${REQ_PDF} PDF · ${c.editable}/${REQ_EDITABLE} editables`}
-                    className={`flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium transition-transform hover:scale-[1.03] ${COLORES[c.estado].bg} ${COLORES[c.estado].text}`}
-                  >
-                    <span className={`w-2 h-2 rounded-full ${COLORES[c.estado].dot}`} />
-                    {c.label}
-                    <span className="opacity-70">({c.pdf}·{c.editable})</span>
-                  </button>
+              <div className="space-y-2">
+                {modulosEval.map(({ modulo, tieneSubs, unidades, estadoModulo }) => (
+                  <div key={modulo.id} className="bg-[#F5F5F7] rounded-xl p-3">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className={`w-2.5 h-2.5 rounded-full ${COLORES[estadoModulo].dot}`} />
+                      <span className="font-semibold text-[#0A353F] text-sm">{modulo.nombre}</span>
+                      <span className={`text-[11px] font-medium ${COLORES[estadoModulo].text}`}>· {COLORES[estadoModulo].label}</span>
+                      {!tieneSubs && (
+                        <span className="text-[11px] text-gray-400 ml-auto">
+                          {unidades[0].pdf}/{REQ_PDF} PDF · {unidades[0].editable}/{REQ_EDITABLE} editables
+                        </span>
+                      )}
+                    </div>
+                    {tieneSubs && (
+                      <div className="flex flex-wrap gap-2 mt-1">
+                        {unidades.map((u) => (
+                          <button
+                            key={u.contexto}
+                            onClick={() => onAbrir?.(empresa.nombre, modulo.nombre, u.submodulo)}
+                            title={`${modulo.nombre} · ${u.nombre}: ${u.pdf}/${REQ_PDF} PDF · ${u.editable}/${REQ_EDITABLE} editables`}
+                            className={`flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-transform hover:scale-[1.03] ${COLORES[u.estado].bg} ${COLORES[u.estado].text}`}
+                          >
+                            <span className={`w-2 h-2 rounded-full ${COLORES[u.estado].dot}`} />
+                            {u.nombre}
+                            <span className="opacity-70">({u.pdf}·{u.editable})</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
             )}
