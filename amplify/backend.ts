@@ -7,6 +7,7 @@ import {
   indexArchivo,
   alertaEntregas,
   enviarAlertaPrueba,
+  extraerIndicadores,
   data,
   BEDROCK_CHAT_MODEL_ID,
   BEDROCK_EMBEDDING_MODEL_ID,
@@ -20,6 +21,7 @@ const backend = defineBackend({
   indexArchivo,
   alertaEntregas,
   enviarAlertaPrueba,
+  extraerIndicadores,
   storage,
 });
 
@@ -82,6 +84,19 @@ backend.alertaEntregas.resources.lambda.addToRolePolicy(sesPolicy);
 backend.enviarAlertaPrueba.resources.lambda.addToRolePolicy(sesPolicy);
 
 backend.indexArchivo.addEnvironment(
+  'BUCKET_NAME',
+  backend.storage.resources.bucket.bucketName
+);
+
+// El extractor de indicadores usa el modelo de chat (Claude) y lee los archivos.
+backend.extraerIndicadores.resources.lambda.addToRolePolicy(
+  new PolicyStatement({
+    actions: ['bedrock:InvokeModel'],
+    resources: chatModelResources,
+  })
+);
+backend.storage.resources.bucket.grantRead(backend.extraerIndicadores.resources.lambda);
+backend.extraerIndicadores.addEnvironment(
   'BUCKET_NAME',
   backend.storage.resources.bucket.bucketName
 );

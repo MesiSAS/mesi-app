@@ -44,6 +44,18 @@ export const enviarAlertaPrueba = defineFunction({
   memoryMB: 512,
 });
 
+// Extrae indicadores del dashboard desde el texto de un archivo (PDF/Word/Excel)
+// usando Claude. Los guarda como 'por_confirmar' para revision del admin.
+export const extraerIndicadores = defineFunction({
+  entry: '../functions/extraer-indicadores/handler.ts',
+  name: 'extraer-indicadores',
+  timeoutSeconds: 120,
+  memoryMB: 1024,
+  environment: {
+    BEDROCK_CHAT_MODEL_ID,
+  },
+});
+
 const schema = a.schema({
 
   Archivo: a
@@ -169,6 +181,24 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
+  // Indicadores del dashboard por empresa/periodo. Se alimentan de los PDFs
+  // (extraccion con IA, estado 'por_confirmar') o de un Excel (estado
+  // 'confirmado'), y el admin puede confirmar/corregir.
+  IndicadorEmpresa: a
+    .model({
+      empresa: a.string().required(),
+      anio: a.string().required(),
+      mes: a.string().required(),
+      clave: a.string().required(),   // ingresos, costos, margen_pct, cartera_total, cartera_vencida_pct...
+      valor: a.float(),
+      unidad: a.string(),             // COP, %, num
+      fuente: a.string(),             // pdf | excel | manual
+      fuenteArchivoId: a.string(),
+      estado: a.string(),             // por_confirmar | confirmado
+      actualizado: a.datetime(),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
   // Configuracion (singleton) de la alerta mensual de entregas. Opt-in: solo
   // se envia correo si 'activo' es true. 'email' = destinatarios (coma).
   AlertaEntregas: a
@@ -247,12 +277,27 @@ const schema = a.schema({
     .authorization((allow) => [allow.publicApiKey()])
     .handler(a.handler.function(enviarAlertaPrueba)),
 
+  ExtraccionResponse: a.customType({
+    creados: a.integer(),
+    actualizados: a.integer(),
+    claves: a.string(),
+    mensaje: a.string(),
+  }),
+
+  extraerIndicadores: a
+    .mutation()
+    .arguments({ archivoId: a.string().required() })
+    .returns(a.ref('ExtraccionResponse'))
+    .authorization((allow) => [allow.publicApiKey()])
+    .handler(a.handler.function(extraerIndicadores)),
+
 })
 .authorization((allow) => [
   allow.resource(chatAssistant),
   allow.resource(indexArchivo),
   allow.resource(alertaEntregas),
   allow.resource(enviarAlertaPrueba),
+  allow.resource(extraerIndicadores),
 ]);
 
 export type Schema = ClientSchema<typeof schema>;
