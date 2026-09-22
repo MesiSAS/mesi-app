@@ -1,4 +1,4 @@
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import AiAssistantChat from './AiAssistantChat';
 
@@ -8,6 +8,7 @@ import AiAssistantChat from './AiAssistantChat';
 const GlobalAssistant = () => {
   const { user } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Solo dentro de las areas autenticadas.
@@ -21,6 +22,15 @@ const GlobalAssistant = () => {
   const moduloActivo = searchParams.get('modulo') || null;
 
   const handleNavigate = (action) => {
+    // Dashboard: llevar al panel admin y aplicar empresa/rango vía la URL.
+    if (action?.type === 'set_dashboard') {
+      const p = new URLSearchParams();
+      if (action.empresa) p.set('dashEmpresa', action.empresa);
+      if (action.desde) p.set('dashDesde', action.desde);
+      if (action.hasta) p.set('dashHasta', action.hasta);
+      navigate(`/admin${p.toString() ? '?' + p.toString() : ''}`);
+      return;
+    }
     if (!action?.moduloNombre) return;
     const next = new URLSearchParams(searchParams);
     // Admin desde el panel principal: fijar la empresa para abrir su portal.

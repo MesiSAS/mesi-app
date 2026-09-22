@@ -23,6 +23,8 @@ type ChatAction = {
   submodulo?: string | null;
   archivoId?: string | null;
   nombreArchivo?: string | null;
+  desde?: string | null;
+  hasta?: string | null;
   label?: string | null;
 };
 
@@ -284,7 +286,16 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
     listAll((args) => client.models.Archivo.list(args), 'Archivo'),
   ]);
 
-  console.log(`[CHAT] BD -> archivos:${archivosData.length} modulos:${modulosData.length} relaciones:${relacionesData.length} | esAdmin:${esAdmin} verTodo:${verTodo} empresa:${empresaAutorizada || 'TODAS'}`);
+  // Indicadores del dashboard (respetando aislamiento por empresa).
+  const indicadoresData = await listAll(
+    (args) => client.models.IndicadorEmpresa.list(args),
+    'IndicadorEmpresa'
+  );
+  const indicadoresPermitidos = indicadoresData.filter((ind) =>
+    verTodo || (empresaAutorizada && normEmpresa(ind?.empresa) === normEmpresa(empresaAutorizada))
+  );
+
+  console.log(`[CHAT] BD -> archivos:${archivosData.length} modulos:${modulosData.length} relaciones:${relacionesData.length} indicadores:${indicadoresPermitidos.length} | esAdmin:${esAdmin} verTodo:${verTodo} empresa:${empresaAutorizada || 'TODAS'}`);
 
   const relacionesActivas = relacionesData.filter(
     relacion =>
@@ -373,6 +384,29 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
 
   const modulosDisponiblesLista = Array.from(modulosActivos).join(', ') || 'ninguno';
 
+  // Resumen compacto de indicadores del dashboard (cifras en millones COP).
+  const CLAVE_LBL_IND: Record<string, string> = {
+    ingresos: 'ingresos', costos: 'costos', cartera_total: 'cartera total',
+    cartera_vencida: 'cartera vencida', recaudo: 'recaudo',
+  };
+  const porPeriodo: Record<string, Record<string, number>> = {};
+  indicadoresPermitidos.forEach((i) => {
+    if (!i) return;
+    const k = `${i.empresa}|${i.anio}-${i.mes}`;
+    (porPeriodo[k] = porPeriodo[k] || {})[i.clave] = i.valor ?? 0;
+  });
+  const indicadoresResumen = Object.entries(porPeriodo)
+    .sort((a, b) => (a[0] < b[0] ? 1 : -1))
+    .slice(0, 120)
+    .map(([k, cl]) => {
+      const [emp, ym] = k.split('|');
+      const partes = Object.entries(cl).map(([c, v]) =>
+        `${CLAVE_LBL_IND[c] || c}=${typeof v === 'number' ? Math.round(v / 1e6) + 'M' : v}`
+      );
+      return `${emp} ${ym}: ${partes.join(', ')}`;
+    })
+    .join('\n') || 'Sin indicadores registrados.';
+
   const system = [
     'Eres el asistente IA de la plataforma Mesi, un portal donde las empresas consultan sus documentos.',
     '',
@@ -387,11 +421,13 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
     'REGLAS:',
     '- Responde solo con la informacion autorizada para este usuario. Si no hay informacion suficiente, dilo en una frase sencilla.',
     '- Nunca reveles datos de empresas, modulos o archivos que no correspondan al usuario.',
+    '- Puedes responder preguntas sobre los INDICADORES FINANCIEROS (ingresos, costos, margen, cartera, cartera vencida, recaudo) usando la lista de indicadores disponibles. Las cifras estan en millones de pesos (M). El margen = (ingresos-costos)/ingresos; el % de cartera vencida = cartera vencida / cartera total.',
     '',
-    'NAVEGACION (uso interno, nunca lo expliques al usuario):',
+    'NAVEGACION Y DASHBOARD (uso interno, nunca lo expliques al usuario):',
     'Si el usuario pide abrir/ir a un modulo o ver un archivo, agrega al FINAL un bloque ```json con la accion. El sistema lo convierte en un boton; el usuario NO ve el JSON.',
     'Para abrir un modulo: {"type":"open_module","moduloNombre":"<nombre exacto de un modulo disponible>","label":"Ir a <nombre>"}',
     'Para abrir un archivo: {"type":"open_file","archivoId":"<id exacto del archivo>","nombreArchivo":"<nombre>","label":"Abrir <nombre>"}',
+    ...(esAdmin ? ['Para mostrar el DASHBOARD de una empresa o periodo: {"type":"set_dashboard","empresa":"<empresa exacta o vacio para todas>","desde":"AAAA-MM","hasta":"AAAA-MM","label":"Ver dashboard ..."}. Usa desde/hasta solo si el usuario menciona un periodo.'] : []),
     'Usa solo moduloNombre de la lista disponible y archivoId de la lista visible. Si no implica navegar, no agregues bloque.',
     ...(perfilResumen
       ? ['', 'CONTEXTO DEL USUARIO (uso interno, no lo recites):', perfilResumen]
@@ -414,6 +450,9 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
     '',
     'Contenido recuperado por embeddings:',
     contextoChunks,
+    '',
+    'Indicadores financieros disponibles (empresa periodo: clave=valor en millones COP):',
+    indicadoresResumen,
     '',
     'Pregunta del usuario:',
     cleanMessage,
@@ -452,6 +491,20 @@ export const handler: Schema['chatAssistant']['functionHandler'] = async (event)
         label: rawAction.label || `Abrir ${archivo.nombre}`,
       };
     }
+  } else if (rawAction?.type === 'set_dashboard' && esAdmin) {
+    // Solo admins tienen dashboard. La empresa (si viene) debe existir.
+    const empSolicitada = (rawAction.empresa || '').trim();
+    const empValida = empSolicitada
+      ? empresasData.find(e => normEmpresa(e?.nombre) === normEmpresa(empSolicitada))?.nombre
+      : null;
+    const ymOk = (s?: string | null) => (s && /^\d{4}-\d{2}$/.test(s)) ? s : null;
+    action = {
+      type: 'set_dashboard',
+      empresa: empValida || null,       // null = todas
+      desde: ymOk(rawAction.desde),
+      hasta: ymOk(rawAction.hasta),
+      label: rawAction.label || `Ver dashboard${empValida ? ' de ' + empValida : ''}`,
+    };
   }
 
   // ChatMessage.empresa es requerido; para admin sin empresa usamos su propia

@@ -1,10 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { BarChart3, Check, X, Pencil, RefreshCw, Sparkles } from 'lucide-react';
 import { useIndicadores } from '../hooks/useIndicadores';
 import { useArchivos } from '../hooks/useArchivos';
 
 const MES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const fmt = (n) => new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 }).format(Math.round(n));
+// Resume cifras a millones: $4.883 M. Miles de millones se muestran como MM.
+const fmtM = (v) => {
+  if (v == null) return '—';
+  const abs = Math.abs(v);
+  if (abs >= 1e12) return '$' + new Intl.NumberFormat('es-CO',{maximumFractionDigits:1}).format(v/1e12) + ' B';
+  if (abs >= 1e9) return '$' + new Intl.NumberFormat('es-CO',{maximumFractionDigits:1}).format(v/1e9) + ' MM';
+  return '$' + new Intl.NumberFormat('es-CO',{maximumFractionDigits:0}).format(v/1e6) + ' M';
+};
 const ymLabel = (ym) => { const [a,m]=ym.split('-'); return `${MES[(+m)-1]} ${a}`; };
 const ymToIdx = (ym) => { const [a,m]=ym.split('-').map(Number); return a*12+(m-1); };
 const idxToYm = (i) => `${Math.floor(i/12)}-${String((i%12)+1).padStart(2,'0')}`;
@@ -17,13 +26,19 @@ const CLAVE_LBL = {
 const DashboardIndicadores = ({ empresas = [] }) => {
   const { getIndicadores, confirmarIndicador, editarValor, eliminarIndicador, extraer } = useIndicadores();
   const { getAllArchivos } = useArchivos();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Inicializar desde la URL (el asistente puede llegar con ?dashEmpresa/dashDesde/dashHasta).
   const [inds, setInds] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [extrayendoTodos, setExtrayendoTodos] = useState(false);
   const [progreso, setProgreso] = useState('');
-  const [empresaSel, setEmpresaSel] = useState('ALL');
-  const [desde, setDesde] = useState('');
-  const [hasta, setHasta] = useState('');
+  const [empresaSel, setEmpresaSel] = useState(searchParams.get('dashEmpresa') || 'ALL');
+  const [desde, setDesde] = useState(searchParams.get('dashDesde') || '');
+  const [hasta, setHasta] = useState(searchParams.get('dashHasta') || '');
+  const [modo, setModo] = useState('rango'); // rango | anio | mes (los presets activan comparación)
+  const [rangoManual, setRangoManual] = useState(!!(searchParams.get('dashDesde') || searchParams.get('dashHasta')));
+  const [tip, setTip] = useState(null); // tooltip del gráfico {x,y,ym,ing,cost}
   const [editId, setEditId] = useState(null);
   const [editVal, setEditVal] = useState('');
 
@@ -34,6 +49,20 @@ const DashboardIndicadores = ({ empresas = [] }) => {
   };
   useEffect(() => { cargar(); }, []);
 
+  // El asistente puede controlar el dashboard vía la URL (?dashEmpresa/dashDesde/dashHasta).
+  useEffect(() => {
+    const de = searchParams.get('dashEmpresa');
+    const dd = searchParams.get('dashDesde');
+    const dh = searchParams.get('dashHasta');
+    if (!de && !dd && !dh) return;
+    if (de) setEmpresaSel(de);
+    if (dd || dh) { setModo('rango'); setRangoManual(true); if (dd) setDesde(dd); if (dh) setHasta(dh); }
+    // Limpiar los params para no re-aplicarlos al navegar.
+    const next = new URLSearchParams(searchParams);
+    ['dashEmpresa','dashDesde','dashHasta'].forEach((k) => next.delete(k));
+    setSearchParams(next, { replace: true });
+  }, [searchParams]);
+
   // Rango de meses disponibles en los datos.
   const ymsData = useMemo(() => {
     const s = new Set(inds.map((i) => `${i.anio}-${i.mes}`));
@@ -41,6 +70,7 @@ const DashboardIndicadores = ({ empresas = [] }) => {
   }, [inds]);
 
   useEffect(() => {
+    if (rangoManual) return; // no pisar un rango elegido por el usuario/asistente
     if (!ymsData.length) {
       const now = new Date();
       const end = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
@@ -49,7 +79,7 @@ const DashboardIndicadores = ({ empresas = [] }) => {
     } else {
       setDesde(ymsData[0]); setHasta(ymsData[ymsData.length-1]);
     }
-  }, [ymsData]);
+  }, [ymsData, rangoManual]);
 
   // Indice: empresa|ym|clave -> valor
   const idx = useMemo(() => {
@@ -80,42 +110,66 @@ const DashboardIndicadores = ({ empresas = [] }) => {
 
   const serie = (clave) => meses.map((ym) => valor(ym, clave) ?? 0);
 
-  // Ultimo mes (dentro del rango) con dato para una clave, en el scope actual.
-  const latest = (clave) => {
-    for (let k = meses.length-1; k >= 0; k--) { const v = valor(meses[k], clave); if (v != null) return { ym: meses[k], v }; }
-    return { ym: null, v: null };
+  // Flujos (ingresos, costos, recaudo) se ACUMULAN sobre el rango; los stocks
+  // (cartera) toman el ultimo balance disponible.
+  const sumFlujo = (lista, clave) => {
+    let s = 0, hay = false;
+    lista.forEach((ym) => { const v = valor(ym, clave); if (v != null) { s += v; hay = true; } });
+    return hay ? s : null;
   };
-  const latestPair = (a, b) => {
-    for (let k = meses.length-1; k >= 0; k--) { const va = valor(meses[k], a), vb = valor(meses[k], b); if (va != null && vb != null) return { ym: meses[k], a: va, b: vb }; }
+  const stockUlt = (lista, clave) => {
+    for (let k = lista.length-1; k >= 0; k--) { const v = valor(lista[k], clave); if (v != null) return v; }
     return null;
   };
+  const acumular = (lista) => ({
+    ingresos: sumFlujo(lista,'ingresos'), costos: sumFlujo(lista,'costos'), recaudo: sumFlujo(lista,'recaudo'),
+    cartera_total: stockUlt(lista,'cartera_total'), cartera_vencida: stockUlt(lista,'cartera_vencida'),
+  });
 
-  // KPIs con el valor mas reciente disponible por clave (no un mes fijo vacio).
+  // Período de comparación según el preset activo.
+  const mesesComparacion = useMemo(() => {
+    if (modo === 'mes') return meses.length ? [idxToYm(ymToIdx(meses[0]) - 1)] : [];
+    if (modo === 'anio') return meses.map((ym) => idxToYm(ymToIdx(ym) - 12));
+    return null; // rango manual: sin comparación
+  }, [modo, meses]);
+
   const kpis = useMemo(() => {
     if (!meses.length) return [];
-    const ing = latest('ingresos'), cost = latest('costos'), cart = latest('cartera_total'), rec = latest('recaudo');
-    const mp = latestPair('ingresos','costos');
-    const margen = mp && mp.a ? (mp.a - mp.b)/mp.a*100 : null;
-    const vp = latestPair('cartera_total','cartera_vencida');
-    const vencPct = vp && vp.a ? vp.b/vp.a*100 : null;
-    const sub = (x) => x && x.ym ? ymLabel(x.ym) : '';
-    return [
-      { lbl:'Ingresos', txt: ing.v==null?'—':'$'+fmt(ing.v), sub: sub(ing) },
-      { lbl:'Costos', txt: cost.v==null?'—':'$'+fmt(cost.v), sub: sub(cost) },
-      { lbl:'Margen', txt: margen==null?'—':margen.toFixed(1)+'%', sub: mp?ymLabel(mp.ym):'' },
-      { lbl:'Cartera total', txt: cart.v==null?'—':'$'+fmt(cart.v), sub: sub(cart) },
-      { lbl:'Cartera vencida', txt: vencPct==null?'—':vencPct.toFixed(1)+'%', sub: vp?ymLabel(vp.ym):'' },
-      { lbl:'Recaudo', txt: rec.v==null?'—':'$'+fmt(rec.v), sub: sub(rec) },
-    ];
-  }, [idx, meses, empresaSel, empresas]);
+    const cur = acumular(meses);
+    const prev = mesesComparacion ? acumular(mesesComparacion) : null;
+    const margen = (cur.ingresos!=null && cur.ingresos) ? (cur.ingresos-cur.costos)/cur.ingresos*100 : null;
+    const vencPct = (cur.cartera_vencida!=null && cur.cartera_total) ? cur.cartera_vencida/cur.cartera_total*100 : null;
+    const pMargen = (prev && prev.ingresos) ? (prev.ingresos-prev.costos)/prev.ingresos*100 : null;
+    const pVenc = (prev && prev.cartera_total) ? prev.cartera_vencida/prev.cartera_total*100 : null;
 
-  // Comparación de ingresos por empresa (valor mas reciente en el rango).
+    const card = (lbl, c, p, tipo, goodUp) => {
+      const val = c==null ? '—' : (tipo==='pct' ? c.toFixed(1)+'%' : fmtM(c));
+      let delta = null, good = 'flat';
+      if (p != null && c != null) {
+        if (tipo==='pct') { const d=c-p; delta=(d>=0?'+':'')+d.toFixed(1)+' pts'; if(goodUp!=null) good=((d>0)===goodUp)?'pos':(d===0?'flat':'neg'); }
+        else if (p !== 0) { const d=(c-p)/Math.abs(p)*100; delta=(d>=0?'▲ ':'▼ ')+Math.abs(d).toFixed(1)+'%'; if(goodUp!=null) good=((d>0)===goodUp)?'pos':(d===0?'flat':'neg'); }
+      }
+      return { lbl, val, delta, good };
+    };
+    return [
+      card('Ingresos', cur.ingresos, prev?prev.ingresos:null, 'cop', true),
+      card('Costos', cur.costos, prev?prev.costos:null, 'cop', false),
+      card('Margen', margen, pMargen, 'pct', true),
+      card('Cartera total', cur.cartera_total, prev?prev.cartera_total:null, 'cop', null),
+      card('Cartera vencida', vencPct, pVenc, 'pct', false),
+      card('Recaudo', cur.recaudo, prev?prev.recaudo:null, 'cop', true),
+    ];
+  }, [idx, meses, mesesComparacion, empresaSel, empresas]);
+
+  const compLabel = modo==='anio' ? 'vs año anterior' : modo==='mes' ? 'vs mes anterior' : '';
+
+  // Ingresos acumulados por empresa en el rango.
   const comparacion = useMemo(() => {
     if (!meses.length) return [];
     return empresas.map((e) => {
-      let ing = null;
-      for (let k = meses.length-1; k >= 0; k--) { const v = idx[`${e.nombre}|${meses[k]}|ingresos`]; if (typeof v === 'number') { ing = v; break; } }
-      return { nombre: e.nombre, ing: ing || 0 };
+      let s = 0, hay = false;
+      meses.forEach((ym) => { const v = idx[`${e.nombre}|${ym}|ingresos`]; if (typeof v === 'number') { s += v; hay = true; } });
+      return { nombre: e.nombre, ing: hay ? s : 0 };
     }).filter((r) => r.ing > 0).sort((a,b) => b.ing - a.ing);
   }, [idx, meses, empresas]);
 
@@ -176,6 +230,15 @@ const DashboardIndicadores = ({ empresas = [] }) => {
   const onGuardarEdit = async (i) => { try { await editarValor(i.id, editVal); setEditId(null); cargar(); } catch(e){ alert(e.message); } };
   const onEliminar = async (i) => { if(!confirm('¿Descartar este indicador?'))return; await eliminarIndicador(i.id); cargar(); };
 
+  const ultimoYm = () => ymsData[ymsData.length-1] || `${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}`;
+  const aplicarPreset = (p) => {
+    const last = ultimoYm();
+    setRangoManual(true);
+    if (p === 'mes') { setDesde(last); setHasta(last); setModo('mes'); }
+    else if (p === 'anio') { setDesde(`${last.split('-')[0]}-01`); setHasta(last); setModo('anio'); }
+  };
+  const cambiarMesManual = (setter) => (e) => { setter(e.target.value); setModo('rango'); setRangoManual(true); };
+
   // Line chart (ingresos vs costos)
   const ing = serie('ingresos'), cost = serie('costos');
   const hayFinanciero = ing.some(v=>v>0) || cost.some(v=>v>0);
@@ -198,10 +261,16 @@ const DashboardIndicadores = ({ empresas = [] }) => {
             <option value="ALL">Todas las empresas</option>
             {empresas.map((e)=><option key={e.id} value={e.nombre}>{e.nombre}</option>)}
           </select>
-          <input type="month" value={desde} onChange={(e)=>setDesde(e.target.value)}
+          <div className="flex items-center bg-[#F5F5F7] rounded-xl p-0.5">
+            <button onClick={()=>aplicarPreset('anio')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${modo==='anio'?'bg-[#0A353F] text-white':'text-gray-500 hover:text-[#0A353F]'}`}>Este año</button>
+            <button onClick={()=>aplicarPreset('mes')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${modo==='mes'?'bg-[#0A353F] text-white':'text-gray-500 hover:text-[#0A353F]'}`}>Último mes</button>
+          </div>
+          <input type="month" value={desde} onChange={cambiarMesManual(setDesde)}
             className="bg-[#F5F5F7] rounded-xl px-3 py-2 text-sm font-medium text-[#0A353F] outline-none" />
           <span className="text-gray-400 text-sm">–</span>
-          <input type="month" value={hasta} onChange={(e)=>setHasta(e.target.value)}
+          <input type="month" value={hasta} onChange={cambiarMesManual(setHasta)}
             className="bg-[#F5F5F7] rounded-xl px-3 py-2 text-sm font-medium text-[#0A353F] outline-none" />
           <button onClick={extraerTodos} disabled={extrayendoTodos}
             title="Extraer indicadores de todos los archivos (primera carga)"
@@ -222,13 +291,15 @@ const DashboardIndicadores = ({ empresas = [] }) => {
         </div>
       )}
 
-      {/* KPIs */}
+      {/* KPIs (acumulado del rango) */}
       <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
         {kpis.map((k)=>(
           <div key={k.lbl} className="bg-[#F5F5F7] rounded-2xl p-4">
             <p className="text-[10.5px] uppercase tracking-wide text-gray-400 font-semibold truncate">{k.lbl}</p>
-            <p className="text-lg font-bold text-[#0A353F] mt-1">{k.txt}</p>
-            <p className="text-[10px] text-gray-400 mt-0.5 h-3">{k.sub || ''}</p>
+            <p className="text-lg font-bold text-[#0A353F] mt-1">{k.val}</p>
+            <p className={`text-[10px] mt-0.5 h-3 font-semibold ${k.good==='pos'?'text-green-600':k.good==='neg'?'text-red-500':'text-gray-400'}`}>
+              {k.delta ? `${k.delta} ${compLabel}` : ''}
+            </p>
           </div>
         ))}
       </div>
@@ -249,20 +320,38 @@ const DashboardIndicadores = ({ empresas = [] }) => {
             {[0,0.25,0.5,0.75,1].map((t)=>(
               <g key={t}>
                 <line x1={pl} y1={py(maxV*t)} x2={W-pr} y2={py(maxV*t)} stroke="#EEF3F1" />
-                <text x={pl-8} y={py(maxV*t)+3} textAnchor="end" fontSize="10" fill="#7B8D89" fontFamily="monospace">{fmt(maxV*t)}</text>
+                <text x={pl-8} y={py(maxV*t)+3} textAnchor="end" fontSize="10" fill="#7B8D89" fontFamily="monospace">{fmt(maxV*t/1e6)}M</text>
               </g>
             ))}
             {meses.map((ym,i)=><text key={ym} x={px(i)} y={H-8} textAnchor="middle" fontSize="10" fill="#7B8D89">{MES[(+ym.split('-')[1])-1]}</text>)}
             <path d={path(cost)} fill="none" stroke="#C4703C" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
             <path d={path(ing)} fill="none" stroke="#0097A7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+            {meses.map((ym,i)=>(
+              <g key={'p'+i}>
+                <circle cx={px(i)} cy={py(cost[i])} r={tip&&tip.i===i?3.5:2.5} fill="#C4703C" />
+                <circle cx={px(i)} cy={py(ing[i])} r={tip&&tip.i===i?3.5:2.5} fill="#0097A7" />
+                <rect x={px(i)-(iw/Math.max(meses.length,1)/2)} y={pt} width={iw/Math.max(meses.length,1)} height={ih} fill="transparent"
+                  onMouseMove={(e)=>setTip({x:e.clientX,y:e.clientY,i,ym,ing:ing[i],cost:cost[i]})}
+                  onMouseLeave={()=>setTip(null)} />
+              </g>
+            ))}
           </svg>
         )}
       </div>
 
+      {tip && (
+        <div style={{position:'fixed',left:tip.x+14,top:tip.y+14,zIndex:50,pointerEvents:'none'}}
+          className="bg-white border border-gray-200 rounded-xl shadow-lg px-3 py-2 text-xs">
+          <p className="font-semibold text-gray-600 mb-1">{ymLabel(tip.ym)}</p>
+          <p className="flex items-center justify-between gap-4"><span className="flex items-center gap-1.5"><i className="w-2 h-2 rounded-sm inline-block" style={{background:'#0097A7'}} />Ingresos</span><b className="font-mono">{fmtM(tip.ing)}</b></p>
+          <p className="flex items-center justify-between gap-4"><span className="flex items-center gap-1.5"><i className="w-2 h-2 rounded-sm inline-block" style={{background:'#C4703C'}} />Costos</span><b className="font-mono">{fmtM(tip.cost)}</b></p>
+        </div>
+      )}
+
       {/* Ingresos por empresa (consolidado) */}
       {empresaSel==='ALL' && comparacion.length>0 && (
         <div className="border border-gray-100 rounded-2xl p-4 mb-6">
-          <h3 className="text-sm font-semibold text-[#1d1d1f] mb-3">Ingresos por empresa</h3>
+          <h3 className="text-sm font-semibold text-[#1d1d1f] mb-3">Ingresos por empresa <span className="font-normal text-gray-400">· acumulado del rango</span></h3>
           <div className="flex flex-col gap-2.5">
             {comparacion.map((r)=>{
               const max = comparacion[0].ing || 1;
@@ -271,7 +360,7 @@ const DashboardIndicadores = ({ empresas = [] }) => {
                   className="grid items-center gap-3 text-left group" style={{gridTemplateColumns:'130px 1fr auto'}}>
                   <span className="text-xs font-semibold text-gray-600 truncate group-hover:text-[#0097A7]">{r.nombre}</span>
                   <span className="bg-[#EEF3F1] rounded-md h-3.5 overflow-hidden"><span className="block h-full rounded-md" style={{width:`${(r.ing/max*100).toFixed(1)}%`,background:'#0097A7'}} /></span>
-                  <span className="font-mono text-xs font-semibold text-[#1d1d1f]">${fmt(r.ing)}</span>
+                  <span className="font-mono text-xs font-semibold text-[#1d1d1f]">{fmtM(r.ing)}</span>
                 </button>
               );
             })}
@@ -308,7 +397,7 @@ const DashboardIndicadores = ({ empresas = [] }) => {
                   <input autoFocus value={editVal} onChange={(e)=>setEditVal(e.target.value)}
                     className="w-32 bg-white border border-gray-200 rounded-lg px-2 py-1 text-sm text-right font-mono" />
                 ) : (
-                  <span className="font-mono text-sm text-[#1d1d1f]">{i.unidad==='%'? (i.valor+'%') : '$'+fmt(i.valor)}</span>
+                  <span className="font-mono text-sm text-[#1d1d1f]" title={i.unidad==='%'?'':'$'+fmt(i.valor)}>{i.unidad==='%'? (i.valor+'%') : fmtM(i.valor)}</span>
                 )}
                 {editId===i.id ? (
                   <button onClick={()=>onGuardarEdit(i)} className="w-8 h-8 flex items-center justify-center rounded-lg text-[#8CC63F] hover:bg-white" title="Guardar"><Check className="w-4 h-4" /></button>

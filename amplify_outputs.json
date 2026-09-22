@@ -1197,6 +1197,20 @@
               "isRequired": false,
               "attributes": []
             },
+            "desde": {
+              "name": "desde",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "hasta": {
+              "name": "hasta",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "label": {
               "name": "label",
               "isArray": false,

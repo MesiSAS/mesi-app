@@ -226,6 +226,8 @@ const schema = a.schema({
     submodulo: a.string(),
     archivoId: a.string(),
     nombreArchivo: a.string(),
+    desde: a.string(),   // set_dashboard: rango YYYY-MM
+    hasta: a.string(),
     label: a.string(),
   }),
 
