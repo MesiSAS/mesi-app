@@ -403,19 +403,6 @@ const DashboardAdmin = () => {
         <p className="text-gray-500 mb-8">Gestiona empresas, usuarios y módulos de Mesi.</p>
 
         <DashboardIndicadores empresas={empresas} />
-        <div className="bg-white rounded-3xl p-6 shadow-sm mt-8">
-  <h2 className="text-xl font-bold text-[#1d1d1f] mb-6" >Panel de Reportes</h2>
-
-</div>
-  <div className="w-full rounded-2xl overflow-hidden" style={{ paddingBottom: '56.25%', position: 'relative', height: 0 }}>
-    <iframe
-      title="Data HR - PowerBI - 12022026 - V1"
-      src="https://app.powerbi.com/reportEmbed?reportId=1ef9e7e4-fdbd-4051-a893-1eeeaa1dbc80&autoAuth=true&ctid=06d757d5-8b3d-41bb-b39a-22a519f7140d"
-      frameBorder="0"
-      allowFullScreen={true}
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', paddingBottom: 30 }}
-    />
-  </div>
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
