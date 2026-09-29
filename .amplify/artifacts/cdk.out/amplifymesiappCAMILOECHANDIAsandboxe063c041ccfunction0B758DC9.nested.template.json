@@ -999,7 +999,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "3648a1735c720259f5478f786d04905890ba9e347c9503ef6bc520d58cdfa439.zip"
+     "S3Key": "b7c01526d7cd7ad26881587ab5de311581606a4efee5dc1b33a26b2014167203.zip"
     },
     "Environment": {
      "Variables": {
@@ -1050,7 +1050,7 @@
    "DeletionPolicy": "Delete",
    "Metadata": {
     "aws:cdk:path": "amplify-mesiapp-CAMILOECHANDIA-sandbox-e063c041cc/function/extraer-indicadores-lambda/Resource",
-    "aws:asset:path": "asset.3648a1735c720259f5478f786d04905890ba9e347c9503ef6bc520d58cdfa439",
+    "aws:asset:path": "asset.b7c01526d7cd7ad26881587ab5de311581606a4efee5dc1b33a26b2014167203",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }

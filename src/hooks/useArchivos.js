@@ -201,6 +201,25 @@ console.log('CREATE RESPONSE:', response);
   };
 
   // =========================
+  // MOVER ARCHIVO (entre módulos / submódulos)
+  // =========================
+  // El módulo+submódulo se guarda codificado en el campo `modulo` como
+  // `Base__Sub`. Mover un archivo = reasignar ese campo (y `submodulo`). El
+  // objeto físico en S3 no cambia de ruta: la descarga usa s3Key directamente
+  // y el listado filtra por el campo `modulo`, así que basta actualizar la BD.
+  const moverArchivo = async (id, nuevoContexto, submoduloNombre = '') => {
+    const response = await getClient().models.Archivo.update({
+      id,
+      modulo: nuevoContexto,
+      submodulo: submoduloNombre || '',
+    });
+    if (response?.errors?.length) {
+      throw new Error(response.errors.map((e) => e.message).join('; '));
+    }
+    return response?.data;
+  };
+
+  // =========================
   // ELIMINAR ARCHIVO
   // =========================
   const deleteArchivo = async (
@@ -308,6 +327,7 @@ console.log('CREATE RESPONSE:', response);
     saveArchivo,
     getArchivosFiltrados,
     getAllArchivos,
+    moverArchivo,
     deleteArchivo,
     downloadArchivo,
     toggleOculto,

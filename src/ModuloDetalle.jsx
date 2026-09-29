@@ -8,7 +8,7 @@ import { useSubmodulos } from './hooks/useSubmodulos';
 import {
   ArrowLeft, Upload, FileText, Trash2, Download,
   Filter, Calendar, FolderOpen, ChevronDown, ChevronRight,
-  EyeOff, Eye, Folder, X, BarChart3
+  EyeOff, Eye, Folder, X, BarChart3, FolderInput, Check
 } from 'lucide-react';
 
 const MESES = [
@@ -81,7 +81,8 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
     getArchivosFiltrados,
     deleteArchivo,
     downloadArchivo,
-    toggleOculto
+    toggleOculto,
+    moverArchivo
   } = useArchivos();
 
   const {
@@ -260,6 +261,31 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
     await refreshArchivos();
     setUploading(false);
     fileRef.current.value = '';
+  };
+
+  // ----- Mover archivo entre módulos / submódulos -----
+  const [moviendo, setMoviendo] = useState(null);   // archivo en proceso de mover
+  const [movModuloId, setMovModuloId] = useState('');
+  const [movSub, setMovSub] = useState('');
+  const [movMsg, setMovMsg] = useState('');
+  const abrirMover = (arch) => { setMoviendo(arch); setMovModuloId(moduloData?.id || ''); setMovSub(submoduloActivo || ''); };
+  const cerrarMover = () => { setMoviendo(null); setMovModuloId(''); setMovSub(''); };
+  const movModulo = modulos.find(m => m.id === movModuloId);
+  const movSubs = submodulos.filter(s => s.moduloId === movModuloId);
+  const confirmarMover = async () => {
+    if (!moviendo || !movModulo) return;
+    const nuevoContexto = movSub ? `${movModulo.nombre}__${movSub}` : movModulo.nombre;
+    if (nuevoContexto === contexto) { cerrarMover(); return; }
+    try {
+      await moverArchivo(moviendo.id, nuevoContexto, movSub || '');
+      setMovMsg(`"${moviendo.nombre}" movido a ${movSub ? `${movModulo.nombre} · ${movSub}` : movModulo.nombre}.`);
+      setTimeout(() => setMovMsg(''), 6000);
+      cerrarMover();
+      await refreshArchivos();
+    } catch (err) {
+      console.error('ERROR MOVIENDO ARCHIVO:', err);
+      setMovMsg(`Error al mover: ${err?.message || err}`);
+    }
   };
 
   const handleDelete = async (arch) => {
@@ -553,6 +579,11 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
                                 <Download className="w-4 h-4" />
                               </button>
                               {isAdmin && (<>
+                                <button onClick={() => abrirMover(arch)}
+                                  className="w-8 h-8 flex items-center justify-center rounded-lg text-[#0A353F] hover:bg-[#0A353F]/10 transition-colors"
+                                  title="Mover a otro módulo/submódulo">
+                                  <FolderInput className="w-4 h-4" />
+                                </button>
                                 <button onClick={() => handleExtraer(arch)} disabled={extrayendo===arch.id}
                                   className="w-8 h-8 flex items-center justify-center rounded-lg text-[#8CC63F] hover:bg-[#8CC63F]/10 transition-colors disabled:opacity-40"
                                   title="Extraer indicadores para el dashboard">
@@ -584,6 +615,48 @@ const ModuloDetalle = ({ empresa, modulo, onBack, isAdmin}) => {
             <BarChart3 className="w-4 h-4 mt-0.5 text-[#8CC63F] flex-shrink-0" />
             <span className="flex-1">{extraerMsg}</span>
             <button onClick={() => setExtraerMsg('')} className="text-white/60 hover:text-white">×</button>
+          </div>
+        )}
+        {movMsg && (
+          <div className="fixed bottom-6 left-6 z-50 max-w-sm bg-[#0A353F] text-white text-sm px-4 py-3 rounded-xl shadow-xl flex items-start gap-3">
+            <FolderInput className="w-4 h-4 mt-0.5 text-[#8CC63F] flex-shrink-0" />
+            <span className="flex-1">{movMsg}</span>
+            <button onClick={() => setMovMsg('')} className="text-white/60 hover:text-white">×</button>
+          </div>
+        )}
+        {moviendo && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={cerrarMover}>
+            <div className="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
+              <div className="flex items-center justify-between mb-1">
+                <h3 className="text-lg font-bold text-[#1d1d1f] flex items-center gap-2"><FolderInput className="w-5 h-5 text-[#8CC63F]" /> Mover archivo</h3>
+                <button onClick={cerrarMover} className="text-gray-400 hover:text-gray-600"><X className="w-5 h-5" /></button>
+              </div>
+              <p className="text-xs text-gray-400 mb-4 truncate">{moviendo.nombre}</p>
+
+              <label className="text-xs text-gray-500 font-semibold uppercase block mb-1">Módulo destino</label>
+              <select value={movModuloId} onChange={e => { setMovModuloId(e.target.value); setMovSub(''); }}
+                className="w-full bg-[#F5F5F7] rounded-xl px-3 py-2.5 text-sm text-[#0A353F] outline-none mb-4 cursor-pointer">
+                {modulos.map(m => <option key={m.id} value={m.id}>{m.nombre}</option>)}
+              </select>
+
+              <label className="text-xs text-gray-500 font-semibold uppercase block mb-1">Submódulo destino</label>
+              <select value={movSub} onChange={e => setMovSub(e.target.value)}
+                className="w-full bg-[#F5F5F7] rounded-xl px-3 py-2.5 text-sm text-[#0A353F] outline-none mb-2 cursor-pointer">
+                <option value="">— Sin submódulo (raíz del módulo) —</option>
+                {movSubs.map(s => <option key={s.id} value={s.nombre}>{s.nombre}</option>)}
+              </select>
+
+              <p className="text-xs text-gray-400 mb-5">
+                Destino: <span className="font-semibold text-[#0A353F]">{movModulo?.nombre}{movSub ? ` · ${movSub}` : ''}</span>
+              </p>
+
+              <div className="flex gap-3">
+                <button onClick={cerrarMover} className="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-500 text-sm font-medium hover:bg-gray-50 transition-colors">Cancelar</button>
+                <button onClick={confirmarMover} className="flex-1 py-2.5 rounded-xl bg-[#0A353F] text-white text-sm font-bold hover:bg-[#0A353F]/90 transition-colors flex items-center justify-center gap-1">
+                  <Check className="w-4 h-4" /> Mover
+                </button>
+              </div>
+            </div>
           </div>
         )}
         {previewArchivo && (

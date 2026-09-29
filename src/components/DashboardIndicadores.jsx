@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { BarChart3, Check, X, Pencil, RefreshCw, Sparkles, Users } from 'lucide-react';
+import { BarChart3, Check, X, Pencil, RefreshCw, Sparkles, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useIndicadores } from '../hooks/useIndicadores';
 import { useArchivos } from '../hooks/useArchivos';
 
@@ -20,11 +20,12 @@ const idxToYm = (i) => `${Math.floor(i/12)}-${String((i%12)+1).padStart(2,'0')}`
 const CLAVE_LBL = {
   ingresos:'Ingresos', costos:'Costos', cartera_total:'Cartera total',
   cartera_vencida:'Cartera vencida', recaudo:'Recaudo',
+  caja_operativa:'Caja operativa', dividendos:'Dividendos entregados', saldo_bancos:'Saldo en bancos',
   headcount:'Headcount', entradas:'Entradas de personal', salidas:'Salidas de personal',
 };
 
-const FLUJOS = ['ingresos','costos','recaudo']; // se acumulan en modo Totales
-const CLAVES_CALC = ['ingresos','costos','recaudo','cartera_total','cartera_vencida','headcount','entradas','salidas'];
+const FLUJOS = ['ingresos','costos','recaudo','caja_operativa','dividendos']; // se acumulan en modo Totales
+const CLAVES_CALC = ['ingresos','costos','recaudo','cartera_total','cartera_vencida','caja_operativa','dividendos','saldo_bancos','headcount','entradas','salidas'];
 
 const DashboardIndicadores = ({ empresas = [] }) => {
   const { getIndicadores, confirmarIndicador, editarValor, eliminarIndicador, extraer } = useIndicadores();
@@ -44,6 +45,8 @@ const DashboardIndicadores = ({ empresas = [] }) => {
   const [tip, setTip] = useState(null);
   const [tipP, setTipP] = useState(null);          // tooltip del gráfico de personal
   const [mostrarFlujos, setMostrarFlujos] = useState(true); // ver/ocultar entradas y salidas
+  const carRef = useRef(null);                     // carrusel de gráficos
+  const scrollCar = (dir) => { const el = carRef.current; if (el) el.scrollBy({ left: dir * el.clientWidth * 0.9, behavior: 'smooth' }); };
   const [editId, setEditId] = useState(null);
   const [editVal, setEditVal] = useState('');
   const [confirmandoTodos, setConfirmandoTodos] = useState(false);
@@ -154,6 +157,9 @@ const DashboardIndicadores = ({ empresas = [] }) => {
       mk('Cartera total', cur.cartera_total.v, prev?prev.cartera_total.v:null, 'cop', cur.cartera_total.ref, null),
       mk('Cartera vencida', cV, pV, 'pct', cur.cartera_total.ref, false),
       mk('Recaudo', cur.recaudo.v, prev?prev.recaudo.v:null, 'cop', cur.recaudo.ref, true),
+      mk('Caja operativa', cur.caja_operativa.v, prev?prev.caja_operativa.v:null, 'cop', cur.caja_operativa.ref, true),
+      mk('Dividendos entregados', cur.dividendos.v, prev?prev.dividendos.v:null, 'cop', cur.dividendos.ref, null),
+      mk('Saldo en bancos', cur.saldo_bancos.v, prev?prev.saldo_bancos.v:null, 'cop', cur.saldo_bancos.ref, true),
       mk('Headcount', cur.headcount.v, prev?prev.headcount.v:null, 'num', cur.headcount.ref, true),
       mk('Entradas', cur.entradas.v, prev?prev.entradas.v:null, 'num', cur.entradas.ref, true),
       mk('Salidas', cur.salidas.v, prev?prev.salidas.v:null, 'num', cur.salidas.ref, false),
@@ -288,8 +294,20 @@ const DashboardIndicadores = ({ empresas = [] }) => {
         ))}
       </div>
 
+      {/* Carrusel de gráficos: desliza horizontalmente entre paneles */}
+      <div className="relative mb-6">
+        <button type="button" onClick={()=>scrollCar(-1)} aria-label="Anterior"
+          className="hidden sm:flex absolute -left-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 items-center justify-center rounded-full bg-white shadow-md border border-gray-100 text-gray-500 hover:text-[#0A353F] hover:shadow-lg transition-all">
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        <button type="button" onClick={()=>scrollCar(1)} aria-label="Siguiente"
+          className="hidden sm:flex absolute -right-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 items-center justify-center rounded-full bg-white shadow-md border border-gray-100 text-gray-500 hover:text-[#0A353F] hover:shadow-lg transition-all">
+          <ChevronRight className="w-5 h-5" />
+        </button>
+        <div ref={carRef} className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-1 px-1" style={{scrollbarWidth:'thin'}}>
+
       {/* Ingresos vs Costos */}
-      <div className="border border-gray-100 rounded-2xl p-4 mb-6">
+      <div className="border border-gray-100 rounded-2xl p-4 snap-center shrink-0 w-full">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-sm font-semibold text-[#1d1d1f]">Ingresos vs Costos</h3>
           <div className="flex gap-3 text-xs text-gray-500">
@@ -319,17 +337,9 @@ const DashboardIndicadores = ({ empresas = [] }) => {
         })()}
       </div>
 
-      {tip && (
-        <div style={{position:'fixed',left:tip.x+14,top:tip.y+14,zIndex:50,pointerEvents:'none'}} className="bg-white border border-gray-200 rounded-xl shadow-lg px-3 py-2 text-xs">
-          <p className="font-semibold text-gray-600 mb-1">{ymLabel(tip.ym)}</p>
-          <p className="flex items-center justify-between gap-4"><span className="flex items-center gap-1.5"><i className="w-2 h-2 rounded-sm inline-block" style={{background:'#0097A7'}} />Ingresos</span><b className="font-mono">{fmtM(tip.ing)}</b></p>
-          <p className="flex items-center justify-between gap-4"><span className="flex items-center gap-1.5"><i className="w-2 h-2 rounded-sm inline-block" style={{background:'#C4703C'}} />Costos</span><b className="font-mono">{fmtM(tip.cost)}</b></p>
-        </div>
-      )}
-
       {/* Personal: Headcount (línea) + Entradas/Salidas (barras divergentes) en un solo gráfico */}
       {hayPersonal && (
-        <div className="border border-gray-100 rounded-2xl p-4 mb-6">
+        <div className="border border-gray-100 rounded-2xl p-4 snap-center shrink-0 w-full">
           <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
             <h3 className="text-sm font-semibold text-[#1d1d1f] flex items-center gap-2"><Users className="w-4 h-4 text-[#8CC63F]" /> Personal en el tiempo</h3>
             <div className="flex items-center gap-3 text-xs text-gray-500">
@@ -383,18 +393,9 @@ const DashboardIndicadores = ({ empresas = [] }) => {
         </div>
       )}
 
-      {tipP && (
-        <div style={{position:'fixed',left:tipP.x+14,top:tipP.y+14,zIndex:50,pointerEvents:'none'}} className="bg-white border border-gray-200 rounded-xl shadow-lg px-3 py-2 text-xs">
-          <p className="font-semibold text-gray-600 mb-1">{ymLabel(tipP.ym)}</p>
-          <p className="flex items-center justify-between gap-4"><span className="flex items-center gap-1.5"><i className="w-2 h-2 rounded-sm inline-block" style={{background:'#6D5FB8'}} />Headcount</span><b className="font-mono">{fmt(tipP.head)}</b></p>
-          {mostrarFlujos && <p className="flex items-center justify-between gap-4"><span className="flex items-center gap-1.5"><i className="w-2 h-2 rounded-sm inline-block" style={{background:'#16A34A'}} />Entradas</span><b className="font-mono">{fmt(tipP.ent)}</b></p>}
-          {mostrarFlujos && <p className="flex items-center justify-between gap-4"><span className="flex items-center gap-1.5"><i className="w-2 h-2 rounded-sm inline-block" style={{background:'#DC2626'}} />Salidas</span><b className="font-mono">{fmt(tipP.sal)}</b></p>}
-        </div>
-      )}
-
       {/* Ingresos por empresa (consolidado) */}
       {empresaSel==='ALL' && comparacion.length>0 && (
-        <div className="border border-gray-100 rounded-2xl p-4 mb-6">
+        <div className="border border-gray-100 rounded-2xl p-4 snap-center shrink-0 w-full">
           <h3 className="text-sm font-semibold text-[#1d1d1f] mb-3">Ingresos por empresa <span className="font-normal text-gray-400">· acumulado del rango</span></h3>
           <div className="flex flex-col gap-2.5">
             {comparacion.map((r)=>{ const max=comparacion[0].ing||1; return (
@@ -405,6 +406,25 @@ const DashboardIndicadores = ({ empresas = [] }) => {
               </button>
             ); })}
           </div>
+        </div>
+      )}
+
+        </div>{/* /carrusel */}
+      </div>
+
+      {tip && (
+        <div style={{position:'fixed',left:tip.x+14,top:tip.y+14,zIndex:50,pointerEvents:'none'}} className="bg-white border border-gray-200 rounded-xl shadow-lg px-3 py-2 text-xs">
+          <p className="font-semibold text-gray-600 mb-1">{ymLabel(tip.ym)}</p>
+          <p className="flex items-center justify-between gap-4"><span className="flex items-center gap-1.5"><i className="w-2 h-2 rounded-sm inline-block" style={{background:'#0097A7'}} />Ingresos</span><b className="font-mono">{fmtM(tip.ing)}</b></p>
+          <p className="flex items-center justify-between gap-4"><span className="flex items-center gap-1.5"><i className="w-2 h-2 rounded-sm inline-block" style={{background:'#C4703C'}} />Costos</span><b className="font-mono">{fmtM(tip.cost)}</b></p>
+        </div>
+      )}
+      {tipP && (
+        <div style={{position:'fixed',left:tipP.x+14,top:tipP.y+14,zIndex:50,pointerEvents:'none'}} className="bg-white border border-gray-200 rounded-xl shadow-lg px-3 py-2 text-xs">
+          <p className="font-semibold text-gray-600 mb-1">{ymLabel(tipP.ym)}</p>
+          <p className="flex items-center justify-between gap-4"><span className="flex items-center gap-1.5"><i className="w-2 h-2 rounded-sm inline-block" style={{background:'#6D5FB8'}} />Headcount</span><b className="font-mono">{fmt(tipP.head)}</b></p>
+          {mostrarFlujos && <p className="flex items-center justify-between gap-4"><span className="flex items-center gap-1.5"><i className="w-2 h-2 rounded-sm inline-block" style={{background:'#16A34A'}} />Entradas</span><b className="font-mono">{fmt(tipP.ent)}</b></p>}
+          {mostrarFlujos && <p className="flex items-center justify-between gap-4"><span className="flex items-center gap-1.5"><i className="w-2 h-2 rounded-sm inline-block" style={{background:'#DC2626'}} />Salidas</span><b className="font-mono">{fmt(tipP.sal)}</b></p>}
         </div>
       )}
 

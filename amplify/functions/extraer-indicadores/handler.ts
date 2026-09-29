@@ -23,9 +23,21 @@ const client = generateClient<Schema>();
 
 // Claves estandar del dashboard. Todas en COP (valores) para poder consolidar
 // entre empresas; los porcentajes (margen, % vencida) se derivan en el dashboard.
-const CLAVES = ['ingresos', 'costos', 'cartera_total', 'cartera_vencida', 'recaudo'] as const;
+const CLAVES = ['ingresos', 'costos', 'cartera_total', 'cartera_vencida', 'recaudo', 'caja_operativa', 'dividendos', 'saldo_bancos'] as const;
 const UNIDAD: Record<string, string> = {
   ingresos: 'COP', costos: 'COP', cartera_total: 'COP', cartera_vencida: 'COP', recaudo: 'COP',
+  caja_operativa: 'COP', dividendos: 'COP', saldo_bancos: 'COP',
+};
+// Descripción de cada clave para que el LLM la reconozca en el texto.
+const CLAVE_DESC: Record<string, string> = {
+  ingresos: 'ingresos / ventas del periodo',
+  costos: 'costos y/o gastos del periodo',
+  cartera_total: 'cartera total (cuentas por cobrar)',
+  cartera_vencida: 'cartera vencida en COP',
+  recaudo: 'recaudo / cobros del periodo',
+  caja_operativa: 'generación de caja operativa (documento de Tesorería / presentación de caja)',
+  dividendos: 'dividendos entregados a socios (Tesorería, "dividendos socios")',
+  saldo_bancos: 'saldo en bancos a fin de mes (Tesorería, "saldo banco fin de mes")',
 };
 
 const streamToBuffer = async (stream: any): Promise<Buffer> => {
@@ -62,7 +74,8 @@ const extraerConIA = async (texto: string, empresa: string, anio: string, mes: s
     'Eres un extractor de indicadores financieros de documentos empresariales.',
     'Del texto que recibes, extrae UNICAMENTE los indicadores que aparezcan EXPLICITAMENTE para el periodo indicado.',
     'Devuelve SOLO un bloque JSON: {"indicadores":[{"clave":"...","valor":<numero>}]}',
-    `Claves permitidas (usa exactamente estos nombres): ${CLAVES.join(', ')}.`,
+    `Claves permitidas (usa exactamente estos nombres):`,
+    ...CLAVES.map((c) => `- ${c}: ${CLAVE_DESC[c]}`),
     'Todos los valores en COP (pesos), sin separadores de miles y con punto decimal.',
     'cartera_vencida = valor EN COP de la cartera vencida; si el informe solo da el porcentaje vencido y la cartera total, multiplica para obtener el valor.',
     'Si un indicador NO aparece claramente, NO lo incluyas. NUNCA inventes cifras.',
