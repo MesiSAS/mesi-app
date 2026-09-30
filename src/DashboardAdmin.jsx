@@ -404,25 +404,8 @@ const DashboardAdmin = () => {
 
         <DashboardIndicadores empresas={empresas} />
 
-        {/* Administración: empresas, usuarios y alertas — última sección de la página */}
+        {/* Administración: el contenido va primero y el selector de tabs queda abajo */}
         <div className="border-t border-gray-200 mt-4 pt-8">
-          <h2 className="text-2xl font-bold text-[#1d1d1f] mb-1">Administración</h2>
-          <p className="text-gray-500 mb-6 text-sm">Gestiona empresas, usuarios y alertas.</p>
-
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
-          {tabs.map(t => (
-            <div key={t.key} onClick={() => setTab(t.key)}
-              className={`rounded-2xl p-6 shadow-sm cursor-pointer transition-all ${tab === t.key ? 'bg-[#0A353F] text-white' : 'bg-white hover:shadow-md'}`}>
-              <div className={tab === t.key ? 'text-[#8CC63F]' : 'text-[#8CC63F]'}>{t.icon}</div>
-              <p className={`text-3xl font-bold mt-2 ${tab === t.key ? 'text-white' : 'text-[#0A353F]'}`}>{t.count}</p>
-              <p className={`text-sm ${tab === t.key ? 'text-white/70' : 'text-gray-500'}`}>{t.label}</p>
-            </div>
-          ))}
-        </div>
-      
-
-
 
         {/* Tab: Alertas */}
         {tab === 'alertas' && (
@@ -604,6 +587,21 @@ const DashboardAdmin = () => {
           </div>
         )}
 
+          {/* Selector de secciones (tabs) — se gestiona desde abajo */}
+          <div className="border-t border-gray-200 mt-8 pt-8">
+            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-1">Administración</h2>
+            <p className="text-gray-500 mb-6 text-sm">Elige qué gestionar: empresas, usuarios o alertas.</p>
+            <div className="grid grid-cols-3 gap-4">
+              {tabs.map(t => (
+                <div key={t.key} onClick={() => setTab(t.key)}
+                  className={`rounded-2xl p-6 shadow-sm cursor-pointer transition-all ${tab === t.key ? 'bg-[#0A353F] text-white' : 'bg-white hover:shadow-md'}`}>
+                  <div className={tab === t.key ? 'text-[#8CC63F]' : 'text-[#8CC63F]'}>{t.icon}</div>
+                  <p className={`text-3xl font-bold mt-2 ${tab === t.key ? 'text-white' : 'text-[#0A353F]'}`}>{t.count}</p>
+                  <p className={`text-sm ${tab === t.key ? 'text-white/70' : 'text-gray-500'}`}>{t.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>{/* /Administración */}
       </div>
 
