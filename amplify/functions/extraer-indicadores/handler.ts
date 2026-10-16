@@ -46,6 +46,69 @@ const streamToBuffer = async (stream: any): Promise<Buffer> => {
   return Buffer.concat(chunks);
 };
 
+// ---- Parser determinístico del Excel de personal (headcount / entradas / salidas) ----
+// Formato: hoja con bloques "Indicadores de personal · EMPRESA · AAAA", seguidos de
+// una fila "Indicador | Enero | Febrero | ..." y filas Headcount / Entradas / Salidas.
+// Un solo archivo trae TODAS las empresas y TODOS los meses.
+const norm = (s: any) => (s ?? '').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+const MESES_NUM: Record<string, string> = {
+  enero: '01', febrero: '02', marzo: '03', abril: '04', mayo: '05', junio: '06',
+  julio: '07', agosto: '08', septiembre: '09', setiembre: '09', octubre: '10', noviembre: '11', diciembre: '12',
+};
+const LABEL_CLAVE: Record<string, string> = {
+  headcount: 'headcount', entradasdepersonal: 'entradas', salidasdepersonal: 'salidas',
+};
+type FilaPersonal = { empresaRaw: string; anio: string; mes: string; clave: string; valor: number };
+
+const parsearPersonalExcel = (buffer: Buffer): FilaPersonal[] => {
+  const wb = XLSX.read(buffer, { type: 'buffer' });
+  const out: FilaPersonal[] = [];
+  for (const sheetName of wb.SheetNames) {
+    const aoa = XLSX.utils.sheet_to_json<any[]>(wb.Sheets[sheetName], { header: 1, raw: true, defval: '' });
+    for (let i = 0; i < aoa.length; i++) {
+      const first = (aoa[i]?.[0] ?? '').toString();
+      const m = first.match(/indicadores de personal\s*·\s*(.+?)\s*·\s*(\d{4})/i);
+      if (!m) continue;
+      const empresaRaw = m[1].trim(), anio = m[2];
+      // Fila de encabezado "Indicador | Enero | ..." dentro de las siguientes filas.
+      let hdr = -1;
+      for (let k = i + 1; k < Math.min(i + 5, aoa.length); k++) { if (norm(aoa[k]?.[0]) === 'indicador') { hdr = k; break; } }
+      if (hdr < 0) continue;
+      const monthCols: Array<[number, string]> = [];
+      const hrow = aoa[hdr];
+      for (let c = 1; c < hrow.length; c++) { const mm = MESES_NUM[norm(hrow[c])]; if (mm) monthCols.push([c, mm]); }
+      for (let r = hdr + 1; r < aoa.length; r++) {
+        const lbl = norm(aoa[r]?.[0]);
+        if (!lbl) break;                                  // fila en blanco = fin del bloque
+        if (lbl.startsWith('indicadoresdepersonal')) break; // empieza otro bloque
+        const clave = LABEL_CLAVE[lbl];
+        if (!clave) continue;
+        for (const [c, mm] of monthCols) {
+          const v = aoa[r][c];
+          if (typeof v === 'number' && isFinite(v)) out.push({ empresaRaw, anio, mes: mm, clave, valor: v });
+        }
+      }
+    }
+  }
+  return out;
+};
+
+// Empareja el nombre del bloque con una empresa registrada (tolerante a mayúsculas,
+// acentos y sufijos: "4G Energia - Comercializadora" → "4G Energía").
+const matchEmpresa = (raw: string, empresas: Array<{ nombre: string }>): string | null => {
+  const r = norm(raw);
+  if (!r) return null;
+  let best: string | null = null, bestLen = 0;
+  for (const e of empresas) {
+    const n = norm(e.nombre);
+    if (!n) continue;
+    if (n === r || n.startsWith(r) || r.startsWith(n)) {
+      if (n.length > bestLen) { best = e.nombre; bestLen = n.length; }
+    }
+  }
+  return best;
+};
+
 const extractText = async (buffer: Buffer, nombre: string, tipo?: string | null): Promise<string> => {
   const ext = (nombre.split('.').pop() || '').toLowerCase();
   const mime = (tipo || '').toLowerCase();
@@ -120,11 +183,65 @@ export const handler: Schema['extraerIndicadores']['functionHandler'] = async (e
       return { creados: 0, actualizados: 0, claves: '', mensaje: 'El archivo no tiene año/mes; no se puede ubicar el periodo.' };
     }
 
-    const leerTexto = async (a: any): Promise<string> => {
+    const leerBuffer = async (a: any): Promise<Buffer> => {
       const obj = await s3.send(new GetObjectCommand({ Bucket: env.BUCKET_NAME, Key: a.s3Key }));
-      const buffer = await streamToBuffer(obj.Body);
-      return extractText(buffer, a.nombre || '', a.tipo);
+      return streamToBuffer(obj.Body);
     };
+    const leerTexto = async (a: any): Promise<string> => extractText(await leerBuffer(a), a.nombre || '', a.tipo);
+
+    // ---- Camino 1: Excel de personal (headcount/entradas/salidas, multi-empresa) ----
+    const extPrimario = (archivo.nombre || '').split('.').pop()?.toLowerCase() || '';
+    if (['xlsx', 'xls', 'xlsm'].includes(extPrimario)) {
+      const bufferXlsx = await leerBuffer(archivo);
+      const filas = parsearPersonalExcel(bufferXlsx);
+      if (filas.length) {
+        const empresasRes = await client.models.Empresa.list({ limit: 1000 });
+        const empresas = (empresasRes.data || []).filter(Boolean) as Array<{ nombre: string }>;
+        // Resolver nombre de empresa por bloque (cachear match por empresaRaw).
+        const matchCache = new Map<string, string | null>();
+        const resolver = (raw: string) => { if (!matchCache.has(raw)) matchCache.set(raw, matchEmpresa(raw, empresas)); return matchCache.get(raw) || null; };
+
+        // Indicadores existentes de las empresas emparejadas, para upsert por (empresa,anio,mes,clave).
+        const nombresMatch = [...new Set(filas.map((f) => resolver(f.empresaRaw)).filter(Boolean) as string[])];
+        const existentesPorEmpresa = new Map<string, any[]>();
+        for (const nombre of nombresMatch) {
+          const r = await client.models.IndicadorEmpresa.list({ filter: { empresa: { eq: nombre } }, limit: 1000 });
+          existentesPorEmpresa.set(nombre, r.data || []);
+        }
+
+        const PERSONAL_UNIDAD = 'num';
+        const noMatch = new Set<string>();
+        let creados = 0, actualizados = 0;
+        const ops: Array<Promise<any>> = [];
+        for (const f of filas) {
+          const empresa = resolver(f.empresaRaw);
+          if (!empresa) { noMatch.add(f.empresaRaw); continue; }
+          const existentes = existentesPorEmpresa.get(empresa) || [];
+          const prev = existentes.find((e) => e.anio === f.anio && e.mes === f.mes && e.clave === f.clave);
+          const datos = {
+            empresa, anio: f.anio, mes: f.mes, clave: f.clave,
+            valor: f.valor, unidad: PERSONAL_UNIDAD,
+            fuente: 'excel', fuenteArchivoId: archivo.id, estado: 'confirmado',
+            actualizado: new Date().toISOString(),
+          };
+          if (prev) { ops.push(client.models.IndicadorEmpresa.update({ id: prev.id, ...datos })); actualizados += 1; }
+          else { ops.push(client.models.IndicadorEmpresa.create(datos)); creados += 1; }
+          // Evitar duplicados dentro de la misma corrida (p.ej. clave repetida).
+          if (!prev) existentes.push({ id: '__nuevo__', anio: f.anio, mes: f.mes, clave: f.clave });
+        }
+        // Ejecutar en lotes para no exceder límites.
+        const CHUNK = 20;
+        for (let i = 0; i < ops.length; i += CHUNK) await Promise.all(ops.slice(i, i + CHUNK));
+
+        const empresasOk = nombresMatch.join(', ');
+        const aviso = noMatch.size ? ` (sin empresa registrada: ${[...noMatch].join(', ')})` : '';
+        return {
+          creados, actualizados, claves: 'headcount, entradas, salidas',
+          mensaje: `Personal importado: ${creados + actualizados} valores de ${nombresMatch.length} empresa(s) [${empresasOk}].${aviso}`,
+        };
+      }
+      // Si no es el formato de personal, sigue al camino de texto/LLM normal.
+    }
 
     let texto = await leerTexto(archivo);
     let fuenteArchivo = archivo;
