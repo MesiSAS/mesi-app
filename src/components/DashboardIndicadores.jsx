@@ -25,6 +25,7 @@ const CLAVE_LBL = {
 };
 
 const FLUJOS = ['ingresos','costos','recaudo','caja_operativa','dividendos']; // se acumulan en modo Totales
+const PERSONAL = ['headcount','entradas','salidas']; // en Promedio: total del grupo, no por empresa
 const CLAVES_CALC = ['ingresos','costos','recaudo','cartera_total','cartera_vencida','caja_operativa','dividendos','saldo_bancos','headcount','entradas','salidas'];
 
 const DashboardIndicadores = ({ empresas = [] }) => {
@@ -111,14 +112,26 @@ const DashboardIndicadores = ({ empresas = [] }) => {
   // Agregaciones sobre una lista de meses.
   const sumRango = (lista, clave) => { let s=0,hay=false; lista.forEach((ym)=>{const v=valorSum(ym,clave); if(v!=null){s+=v;hay=true;}}); return hay?s:null; };
   const ultimo = (lista, clave) => { for(let k=lista.length-1;k>=0;k--){const v=valorSum(lista[k],clave); if(v!=null) return {v, ym:lista[k]};} return {v:null,ym:null}; };
-  // Promedio mensual por empresa: por cada mes el promedio entre empresas, luego promedio en el tiempo.
+  // Promedio mensual POR EMPRESA: por cada mes el promedio entre empresas, luego
+  // promedio en el tiempo. Útil para comparar financieros entre empresas.
   const promMensual = (lista, clave) => {
     const vals=[]; lista.forEach((ym)=>{ const s=valorSum(ym,clave), c=valorCount(ym,clave); if(s!=null&&c>0) vals.push(s/c); });
     return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : null;
   };
+  // Promedio mensual DEL GRUPO: promedio en el tiempo del total consolidado del mes
+  // (sin dividir entre empresas). Para personal (headcount/entradas/salidas) este
+  // es el número intuitivo: "en un mes típico el grupo tuvo X".
+  const promGrupo = (lista, clave) => {
+    const vals=[]; lista.forEach((ym)=>{ const s=valorSum(ym,clave); if(s!=null) vals.push(s); });
+    return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : null;
+  };
   // Valor de una card según el modo (Totales / Promedio).
   const cardVal = (clave, lista) => {
-    if (modoAgg === 'promedio') return { v: promMensual(lista, clave), ref: 'prom' };
+    if (modoAgg === 'promedio') {
+      // Personal: promedio del total del grupo. Financieros: promedio por empresa.
+      if (PERSONAL.includes(clave)) return { v: promGrupo(lista, clave), ref: 'promg' };
+      return { v: promMensual(lista, clave), ref: 'prom' };
+    }
     if (FLUJOS.includes(clave)) return { v: sumRango(lista, clave), ref: 'acum' };
     const u = ultimo(lista, clave); return { v: u.v, ref: u.ym };   // stocks y personal → último dato
   };
@@ -137,7 +150,7 @@ const DashboardIndicadores = ({ empresas = [] }) => {
     const margen = (g) => (g && g.ingresos.v && g.costos.v!=null) ? (g.ingresos.v-g.costos.v)/g.ingresos.v*100 : null;
     const venc = (g) => (g && g.cartera_total.v) ? g.cartera_vencida.v/g.cartera_total.v*100 : null;
 
-    const subTxt = (ref) => ref==='prom' ? 'Promedio mensual' : ref==='acum' ? 'Acumulado' : ref ? ymLabel(ref) : '';
+    const subTxt = (ref) => ref==='prom' ? 'Prom. mensual/empresa' : ref==='promg' ? 'Prom. mensual del grupo' : ref==='acum' ? 'Acumulado' : ref ? ymLabel(ref) : '';
     const fmtVal = (v, t) => v==null ? '—' : t==='pct' ? v.toFixed(1)+'%' : t==='num' ? fmt(v) : fmtM(v);
     const mk = (lbl, cv, pv, t, ref, goodUp) => {
       let delta=null, good='flat';
@@ -276,7 +289,7 @@ const DashboardIndicadores = ({ empresas = [] }) => {
         <span className="text-xs text-gray-400">
           {modoAgg==='total'
             ? 'Ingresos, costos y recaudo acumulados; cartera y personal = último dato disponible (mes indicado en cada card).'
-            : 'Promedio mensual por empresa en el rango.'}
+            : 'Promedio mensual en el rango: financieros por empresa; personal = total del grupo.'}
         </span>
       </div>
 
